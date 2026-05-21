@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Пилот дрона — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header drone-bg" data-ani-msg="Пилоты дронов управляют небом! 🚁 Читай и узнавай!">
+      <span class="career-icon">🚁</span>
+      <h1>Пилот дрона</h1>
+      <p>Мастер неба и беспилотных технологий</p>
+    </header>
+
+    <main class="career-content">
+      <div class="xp-topbar" id="xp-topbar" style="display:none">
+        <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+        <div class="xp-label" id="xp-label">0 XP</div>
+      </div>
+
+      <div class="career-path-bar">
+        <span class="path-step active">🌱 Новичок</span><span class="path-arrow">→</span>
+        <span class="path-step">📚 Ученик</span><span class="path-arrow">→</span>
+        <span class="path-step">🔍 Знаток</span><span class="path-arrow">→</span>
+        <span class="path-step">🏆 Эксперт</span>
+      </div>
+
+      <div class="career-story-hook" data-ani-msg="Слушай эту историю — она про тебя! 🚁">
+        <div class="career-story-hook-label">📖 История</div>
+        <p class="career-story-hook-text">Представь: раннее утро, туман над горами. Где-то в лесу потерялся турист. Спасатели не могут пройти — слишком опасно. Но ты — пилот дрона. Ты запускаешь машину в небо, и через 10 минут находишь человека. Дрон доставляет аптечку. Жизнь спасена. Это не фантастика — это реальная работа пилота дрона уже сегодня.</p>
+      </div>
+
+      <section class="career-section" data-ani-msg="Пилоты дронов нужны везде! 🚁 Это профессия будущего!">
+        <h2>Чем занимается пилот дрона?</h2>
+        <p>Пилот дрона управляет беспилотными летательными аппаратами для съёмки, доставки, мониторинга и спасательных операций. Это профессия будущего, которая уже сегодня активно развивается!</p>
+        <div class="career-impact-box">
+          <span class="impact-icon">🌍</span>
+          <div><strong>Влияние на мир:</strong> Дроны спасают жизни — доставляют лекарства в Африку за минуты, находят потерявшихся людей и тушат пожары!</div>
+        </div>
+      </section>
+
+      <section class="career-section" data-ani-msg="Навыки пилота — это сила! 💪 Начни учиться сегодня!">
+        <h2>🛠️ Навыки</h2>
+        <div class="skills-grid">
+          <div class="skill-card hard">
+            <div class="skill-card-icon">⚙️</div>
+            <div class="skill-card-name">Технические</div>
+            <ul class="skill-list">
+              <li>✅ Управление дронами и симуляторами</li>
+              <li>✅ Знание правил воздушного пространства</li>
+              <li>✅ Обработка аэрофотосъёмки</li>
+              <li>✅ Программирование маршрутов (Python)</li>
+            </ul>
+          </div>
+          <div class="skill-card soft">
+            <div class="skill-card-icon">🧠</div>
+            <div class="skill-card-name">Мягкие навыки</div>
+            <ul class="skill-list">
+              <li>✅ Внимательность и концентрация</li>
+              <li>✅ Быстрое принятие решений</li>
+              <li>✅ Ответственность за безопасность</li>
+              <li>✅ Командная работа</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="career-section">
+        <h2>📚 Путь обучения</h2>
+        <div class="learning-path">
+          <div class="lp-step"><div class="lp-num">1</div><div class="lp-content"><strong>Начинающий</strong><p>Физика полёта, основы аэродинамики, правила безопасности</p></div></div>
+          <div class="lp-step"><div class="lp-num">2</div><div class="lp-content"><strong>Средний</strong><p>Программирование маршрутов, GPS и картография, фотосъёмка</p></div></div>
+          <div class="lp-step"><div class="lp-num">3</div><div class="lp-content"><strong>Продвинутый</strong><p>Сертификация пилота, коммерческие миссии, управление флотом дронов</p></div></div>
+        </div>
+      </section>
+
+      <section class="career-section">
+        <h2>🌟 Интересные факты</h2>
+        <div class="fact-box">🚁 Дроны используются для доставки лекарств в труднодоступные районы Африки!</div>
+        <div class="fact-box">📸 Пилоты дронов снимают голливудские фильмы и рекламу!</div>
+        <div class="fact-box">🌊 Подводные дроны исследуют глубины океана!</div>
+        <div class="fact-box">💰 Профессиональные пилоты дронов зарабатывают от 60 000 руб/мес!</div>
+      </section>
+
+      <section class="career-section career-exercise-section" id="drone-exercise">
+        <h2>🎯 Мини-задание: Проверь себя!</h2>
+        <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+        <div class="career-micro-quiz" id="drone-micro-quiz">
+          <div class="micro-q active" data-q="0">
+            <p class="micro-question">Сколько моторов у стандартного квадрокоптера?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false">2</button>
+              <button class="micro-opt" data-correct="true">4</button>
+              <button class="micro-opt" data-correct="false">6</button>
+            </div>
+          </div>
+          <div class="micro-q" data-q="1">
+            <p class="micro-question">На какой максимальной высоте можно летать без разрешения?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false">500 метров</button>
+              <button class="micro-opt" data-correct="true">120 метров</button>
+              <button class="micro-opt" data-correct="false">1000 метров</button>
+            </div>
+          </div>
+          <div class="micro-q" data-q="2">
+            <p class="micro-question">Что нужно проверить ПЕРЕД каждым полётом?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false">Только погоду</button>
+              <button class="micro-opt" data-correct="false">Ничего — просто взлетать</button>
+              <button class="micro-opt" data-correct="true">Заряд батареи и погоду</button>
+            </div>
+          </div>
+          <div class="micro-result hidden" id="drone-micro-result"></div>
+        </div>
+      </section>
+
+      <section class="career-section">
+        <h2>📚 Что нужно изучить?</h2>
+        <div class="study-cards">
+          <span class="study-card">Физика и аэродинамика</span>
+          <span class="study-card">Программирование (Python)</span>
+          <span class="study-card">Картография и GPS</span>
+          <span class="study-card">Фото и видеосъёмка</span>
+        </div>
+      </section>
+
+      <div class="career-nav">
+        <a href="cyber-defender.html" class="btn-glass-dark">Следующая профессия →</a>
+        <a href="quiz.html" class="btn-main">Пройти квиз</a>
+      </div>
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Пилоты дронов — это крутая профессия! 🚁</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

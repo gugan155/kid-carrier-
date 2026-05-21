@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Исследователь космоса — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header space-bg" data-ani-msg="Космос бесконечен! 🌌 Давай исследуем вместе!">
+      <span class="career-icon">🌌</span>
+      <h1>Исследователь космоса</h1>
+      <p>Первооткрыватель вселенной</p>
+    </header>
+
+    <main class="career-content">
+    <div class="xp-topbar" id="xp-topbar" style="display:none">
+      <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+      <div class="xp-label" id="xp-label">0 XP</div>
+    </div>
+
+    <div class="career-path-bar">
+      <span class="path-step active">🌱 Новичок</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">📚 Ученик</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🔍 Знаток</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🏆 Эксперт</span>
+    </div>
+
+    <div class="career-story-hook" data-ani-msg="Представь себя в открытом космосе! 🌌">
+      <div class="career-story-hook-label">📖 История</div>
+      <p class="career-story-hook-text">2031 год. Первый пилотируемый корабль летит к Марсу. На борту — ты. За иллюминатором — бесконечная чернота, усыпанная звёздами. Через 7 месяцев ты ступишь на красную планету первым из людей. Но этот момент стал возможен благодаря годам изучения физики, математики и астрономии. Всё начинается с любопытства — прямо сейчас.</p>
+    </div>
+
+    <section class="career-section" data-ani-msg="Космос ждёт исследователей! 🚀 Может, это ты?">
+      <h2>Чем занимается исследователь космоса?</h2>
+      <p>Астронавты, астрофизики и инженеры космических миссий изучают планеты, звёзды и галактики. Они разрабатывают ракеты, спутники и готовятся к полётам на Марс!</p>
+      <div class="career-impact-box">
+        <span class="impact-icon">🌍</span>
+        <div><strong>Влияние на мир:</strong> Космические исследования дали нам GPS, интернет-спутники, тефлон и даже солнечные батареи. Космос меняет жизнь на Земле!</div>
+      </div>
+    </section>
+
+    <section class="career-section" data-ani-msg="Физика и математика — ключи к звёздам! ⭐">
+      <h2>🛠️ Навыки</h2>
+      <div class="skills-grid">
+        <div class="skill-card hard">
+          <div class="skill-card-icon">⚙️</div>
+          <div class="skill-card-name">Технические</div>
+          <ul class="skill-list">
+            <li>✅ Астрофизика и астрономия</li>
+            <li>✅ Управление космическими аппаратами</li>
+            <li>✅ Анализ научных данных</li>
+            <li>✅ Программирование и моделирование</li>
+          </ul>
+        </div>
+        <div class="skill-card soft">
+          <div class="skill-card-icon">🧠</div>
+          <div class="skill-card-name">Мягкие навыки</div>
+          <ul class="skill-list">
+            <li>✅ Любопытство и исследовательский дух</li>
+            <li>✅ Терпение и настойчивость</li>
+            <li>✅ Работа в международной команде</li>
+            <li>✅ Физическая выносливость</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Путь обучения</h2>
+      <div class="learning-path">
+        <div class="lp-step">
+          <div class="lp-num">1</div>
+          <div class="lp-content">
+            <strong>Начинающий</strong>
+            <p>Физика, математика, астрономия — основы вселенной</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">2</div>
+          <div class="lp-content">
+            <strong>Средний</strong>
+            <p>Программирование для анализа данных, участие в астрономических клубах</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">3</div>
+          <div class="lp-content">
+            <strong>Продвинутый</strong>
+            <p>Программы NASA/ESA, исследовательские проекты, подготовка к миссиям</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>🌟 Интересные факты</h2>
+      <div class="fact-box">🚀 Первый человек полетел в космос в 1961 году — это был Юрий Гагарин!</div>
+      <div class="fact-box">🔴 NASA планирует отправить людей на Марс в 2030-х годах!</div>
+      <div class="fact-box">🌙 На Луне уже побывали 12 человек!</div>
+      <div class="fact-box">⭐ В нашей галактике более 200 миллиардов звёзд!</div>
+    </section>
+
+    <!-- INTERACTIVE MICRO-EXERCISE -->
+    <section class="career-section career-exercise-section" id="space-exercise">
+      <h2>🎯 Мини-задание: Проверь себя!</h2>
+      <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+      <div class="career-micro-quiz" id="space-micro-quiz">
+        <div class="micro-q active" data-q="0">
+          <p class="micro-question">Кто был первым человеком в космосе?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">Нил Армстронг</button>
+            <button class="micro-opt" data-correct="true">Юрий Гагарин</button>
+            <button class="micro-opt" data-correct="false">Илон Маск</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="1">
+          <p class="micro-question">Сколько планет в Солнечной системе?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">7</button>
+            <button class="micro-opt" data-correct="true">8</button>
+            <button class="micro-opt" data-correct="false">9</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="2">
+          <p class="micro-question">Что изучает астрофизика?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">Рыб в океане</button>
+            <button class="micro-opt" data-correct="false">Строение Земли</button>
+            <button class="micro-opt" data-correct="true">Физические свойства звёзд и галактик</button>
+          </div>
+        </div>
+        <div class="micro-result hidden" id="space-micro-result"></div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Что нужно изучить?</h2>
+      <div class="study-cards">
+        <span class="study-card">Физика и математика</span>
+        <span class="study-card">Астрономия</span>
+        <span class="study-card">Программирование</span>
+        <span class="study-card">Иностранные языки</span>
+      </div>
+    </section>
+
+    <div class="career-nav">
+      <a href="robotics-engineer.html" class="btn-glass-dark">Следующая профессия →</a>
+      <a href="quiz.html" class="btn-main">Пройти квиз</a>
+    </div>
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Звёзды ждут тебя! Полетели? 🌌</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Гейм-дизайнер — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header game-bg" data-ani-msg="Игры создают целые миры! 🎮 Ты тоже так сможешь!">
+      <span class="career-icon">🎮</span>
+      <h1>Гейм-дизайнер</h1>
+      <p>Творец игровых миров</p>
+    </header>
+
+    <main class="career-content">
+    <div class="xp-topbar" id="xp-topbar" style="display:none">
+      <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+      <div class="xp-label" id="xp-label">0 XP</div>
+    </div>
+
+    <!-- CAREER PATH BAR -->
+    <div class="career-path-bar">
+      <span class="path-step active">🌱 Новичок</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">📚 Ученик</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🔍 Знаток</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🏆 Эксперт</span>
+    </div>
+
+    <div class="career-story-hook" data-ani-msg="Игры — это целые миры! 🎮 Ты можешь их создавать!">
+      <div class="career-story-hook-label">📖 История</div>
+      <p class="career-story-hook-text">Один человек. Один компьютер. Два года работы. Так Маркус Перссон создал Minecraft — игру, в которую сыграли более 238 миллионов человек. Дети строят в ней замки, учёные моделируют молекулы, а учителя проводят уроки. Одна игра изменила мир. Следующая может быть твоей.</p>
+    </div>
+
+    <section class="career-section" data-ani-msg="Гейм-дизайнеры создают целые вселенные! 🎮">
+      <h2>Чем занимается гейм-дизайнер?</h2>
+      <p>Гейм-дизайнеры придумывают правила, механики, сюжеты и персонажей видеоигр. Они работают в команде с программистами и художниками, чтобы создавать захватывающие игровые миры!</p>
+      <div class="career-impact-box">
+        <span class="impact-icon">🌍</span>
+        <div><strong>Влияние на мир:</strong> Игры обучают, развивают мышление и объединяют миллиарды людей по всему миру. Индустрия игр зарабатывает больше, чем кино и музыка вместе взятые!</div>
+      </div>
+    </section>
+
+    <section class="career-section" data-ani-msg="Творчество + технологии = игры! 🎨💻">
+      <h2>🛠️ Навыки</h2>
+      <div class="skills-grid">
+        <div class="skill-card hard">
+          <div class="skill-card-icon">⚙️</div>
+          <div class="skill-card-name">Технические</div>
+          <ul class="skill-list">
+            <li>✅ Работа в Unity или Unreal Engine</li>
+            <li>✅ Программирование (C#, Python)</li>
+            <li>✅ Прототипирование и тестирование</li>
+            <li>✅ Разработка игровых механик</li>
+          </ul>
+        </div>
+        <div class="skill-card soft">
+          <div class="skill-card-icon">🧠</div>
+          <div class="skill-card-name">Мягкие навыки</div>
+          <ul class="skill-list">
+            <li>✅ Творческое мышление</li>
+            <li>✅ Сторителлинг и сценарии</li>
+            <li>✅ Понимание психологии игроков</li>
+            <li>✅ Командная работа</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Путь обучения</h2>
+      <div class="learning-path">
+        <div class="lp-step">
+          <div class="lp-num">1</div>
+          <div class="lp-content">
+            <strong>Начинающий</strong>
+            <p>Основы дизайна, рисование, базовое программирование на Scratch или Python</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">2</div>
+          <div class="lp-content">
+            <strong>Средний</strong>
+            <p>Unity/Godot, создание первой игры, изучение игровых механик и UX</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">3</div>
+          <div class="lp-content">
+            <strong>Продвинутый</strong>
+            <p>Участие в Game Jam, публикация игр на itch.io, создание портфолио</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>🌟 Интересные факты</h2>
+      <div class="fact-box">🎮 Индустрия видеоигр зарабатывает больше, чем кино и музыка вместе взятые!</div>
+      <div class="fact-box">🌍 Minecraft создал один человек — Маркус Перссон!</div>
+      <div class="fact-box">🏆 Профессиональные геймеры зарабатывают миллионы на турнирах!</div>
+      <div class="fact-box">💰 Гейм-дизайнеры зарабатывают от 100 000 руб/мес!</div>
+    </section>
+
+    <!-- INTERACTIVE MICRO-EXERCISE -->
+    <section class="career-section career-exercise-section" id="game-exercise">
+      <h2>🎯 Мини-задание: Проверь себя!</h2>
+      <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+      <div class="career-micro-quiz" id="game-micro-quiz">
+        <div class="micro-q active" data-q="0">
+          <p class="micro-question">Какой движок чаще всего используют начинающие гейм-дизайнеры?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">Photoshop</button>
+            <button class="micro-opt" data-correct="true">Unity или Godot</button>
+            <button class="micro-opt" data-correct="false">Excel</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="1">
+          <p class="micro-question">Что такое игровая механика?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">Физический движок игры</button>
+            <button class="micro-opt" data-correct="true">Правила и системы взаимодействия в игре</button>
+            <button class="micro-opt" data-correct="false">Графика игры</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="2">
+          <p class="micro-question">Что такое Game Jam?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false">Музыкальный фестиваль</button>
+            <button class="micro-opt" data-correct="false">Магазин игр</button>
+            <button class="micro-opt" data-correct="true">Соревнование по созданию игры за короткое время</button>
+          </div>
+        </div>
+        <div class="micro-result hidden" id="game-micro-result"></div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Что нужно изучить?</h2>
+      <div class="study-cards">
+        <span class="study-card">Программирование (C#, Python)</span>
+        <span class="study-card">Рисование и дизайн</span>
+        <span class="study-card">Сторителлинг</span>
+        <span class="study-card">Математика и логика</span>
+      </div>
+    </section>
+
+    <div class="career-nav">
+      <a href="drone-pilot.html" class="btn-glass-dark">← Первая профессия</a>
+      <a href="quiz.html" class="btn-main">Пройти квиз</a>
+    </div>
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Создавай игры и меняй мир! 🎮</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
