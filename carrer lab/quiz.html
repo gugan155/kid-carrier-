@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Тест — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="app-layout">
@@ -67,6 +71,14 @@
       </div>
     </div>
   </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item active"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
@@ -83,6 +95,24 @@
     </header>
 
     <main class="quiz-container">
+
+      <!-- Journey progress indicator -->
+      <div class="journey-steps">
+        <div class="journey-step active">
+          <div class="js-num">1</div>
+          <div class="js-label">🧠 Тест</div>
+        </div>
+        <div class="journey-line"></div>
+        <div class="journey-step">
+          <div class="js-num">2</div>
+          <div class="js-label">📚 Учёба</div>
+        </div>
+        <div class="journey-line"></div>
+        <div class="journey-step">
+          <div class="js-num">3</div>
+          <div class="js-label">🎮 Игра</div>
+        </div>
+      </div>
 
       <!-- XP bar -->
       <div class="xp-topbar" id="xp-topbar">
@@ -211,7 +241,14 @@
           <h2>Твой результат!</h2>
           <span id="result-text"></span>
           <div id="result-cards"></div>
-          <button class="btn-glass-dark" id="quiz-retry-btn" style="margin-top:28px">🔄 Пройти снова</button>
+          <div class="quiz-next-step">
+            <p>🎯 Твой следующий шаг — изучи свою профессию!</p>
+            <div class="qns-btns">
+              <a href="learn.html" class="btn-main">📚 Перейти к обучению →</a>
+              <a href="explorer.html" class="btn-glass-dark">🔭 Все профессии</a>
+            </div>
+          </div>
+          <button class="btn-glass-dark" id="quiz-retry-btn" style="margin-top:16px">🔄 Пройти снова</button>
         </div>
       </div>
 
@@ -248,3 +285,4 @@
 <script type="module" src="script.js"></script>
 </body>
 </html>
+

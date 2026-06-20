@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Исследователь космоса — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="app-layout">
@@ -46,7 +50,7 @@
         <span class="sidebar-icon">🧠</span>
         <span class="sidebar-label">Тест</span>
       </a>
-      <a href="explorer.html" class="sidebar-link">
+      <a href="explorer.html" class="sidebar-link active">
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
@@ -58,6 +62,14 @@
       <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
     </div>
   </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
@@ -168,25 +180,25 @@
         <div class="micro-q active" data-q="0">
           <p class="micro-question">Кто был первым человеком в космосе?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="false">Нил Армстронг</button>
-            <button class="micro-opt" data-correct="true">Юрий Гагарин</button>
-            <button class="micro-opt" data-correct="false">Илон Маск</button>
+            <button class="micro-opt" data-correct="false" data-explain="Нил Армстронг был первым человеком на Луне (1969), но в космос первым полетел советский космонавт!">Нил Армстронг</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! 12 апреля 1961 года Юрий Гагарин стал первым человеком в космосе. Это гордость России! 🚀">Юрий Гагарин</button>
+            <button class="micro-opt" data-correct="false" data-explain="Илон Маск — основатель SpaceX, но в космос первым полетел Юрий Гагарин ещё в 1961 году.">Илон Маск</button>
           </div>
         </div>
         <div class="micro-q" data-q="1">
           <p class="micro-question">Сколько планет в Солнечной системе?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="false">7</button>
-            <button class="micro-opt" data-correct="true">8</button>
-            <button class="micro-opt" data-correct="false">9</button>
+            <button class="micro-opt" data-correct="false" data-explain="В нашей Солнечной системе 8 планет. Плутон в 2006 году разжаловали до "карликовой планеты".">7</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Меркурий, Венера, Земля, Марс, Юпитер, Сатурн, Уран и Нептун — 8 планет. 🪐">8</button>
+            <button class="micro-opt" data-correct="false" data-explain="Когда-то считали 9 планет, но в 2006 году Плутон был переквалифицирован в карликовую планету.">9</button>
           </div>
         </div>
         <div class="micro-q" data-q="2">
           <p class="micro-question">Что изучает астрофизика?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="false">Рыб в океане</button>
-            <button class="micro-opt" data-correct="false">Строение Земли</button>
-            <button class="micro-opt" data-correct="true">Физические свойства звёзд и галактик</button>
+            <button class="micro-opt" data-correct="false" data-explain="Это изучает биология и океанология, не астрофизика. Астрофизики изучают объекты за пределами Земли.">Рыб в океане</button>
+            <button class="micro-opt" data-correct="false" data-explain="Строение Земли изучает геология. Астрофизика смотрит за пределы нашей планеты — в глубины вселенной!">Строение Земли</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Астрофизики изучают звёзды, галактики, чёрные дыры и всю Вселенную. ✨">Физические свойства звёзд и галактик</button>
           </div>
         </div>
         <div class="micro-result hidden" id="space-micro-result"></div>
@@ -202,6 +214,123 @@
         <span class="study-card">Иностранные языки</span>
       </div>
     </section>
+
+    <!-- ═══ КАРЬЕРНЫЙ ПУТЬ ═══ -->
+    <section class="career-section roadmap-section" id="career-roadmap">
+      <h2>🗺️ Твой путь к профессии исследователя космоса</h2>
+      <p class="roadmap-intro">📍 Роскосмос запускает спутники и готовит новых космонавтов. Россия — одна из ведущих космических держав мира. Твоя очередь!</p>
+      <div class="roadmap-timeline">
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-1">1</div>
+          <div class="roadmap-card rs-1">
+            <div class="roadmap-age">🌱 Возраст 10–12 лет</div>
+            <div class="roadmap-title">Влюбись в космос!</div>
+            <ul class="roadmap-tags">
+              <li>Изучай звёздное небо — приложение StarWalk или SkySafari</li>
+              <li>Смотри ролики про Роскосмос и МКС</li>
+              <li>Построй и запусти водяную ракету</li>
+              <li>Посети планетарий в своём городе</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-2">2</div>
+          <div class="roadmap-card rs-2">
+            <div class="roadmap-age">📚 Возраст 12–14 лет</div>
+            <div class="roadmap-title">Научный фундамент</div>
+            <ul class="roadmap-tags">
+              <li>Олимпиада по математике (муниципальный уровень)</li>
+              <li>Выставки наук — модели солнечной системы</li>
+              <li>Вступи в астрономический кружок рядом с домом</li>
+              <li>Программа «Космонавтика» — кружки РКК «Энергия»</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-3">3</div>
+          <div class="roadmap-card rs-3">
+            <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+            <div class="roadmap-title">Школьный фокус</div>
+            <ul class="roadmap-tags">
+              <li>⭐ Физика (абсолютно необходима!)</li>
+              <li>⭐ Математика (математический анализ, векторы)</li>
+              <li>Химия (ракетные топлива)</li>
+              <li>Олимпиады по физике (ВСОШ) и астрономии</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-4">4</div>
+          <div class="roadmap-card rs-4">
+            <div class="roadmap-age">📝 Возраст 16–18 лет</div>
+            <div class="roadmap-title">Подготовка к поступлению</div>
+            <ul class="roadmap-tags">
+              <li>ЕГЭ по физике и математике (профильный)</li>
+              <li>Олимпиада по физике и астрономии (ВСОШ)</li>
+              <li>Изучи Python для анализа данных и симуляций</li>
+              <li>Стажировка в авиамодельном клубе или кружке</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-5">5</div>
+          <div class="roadmap-card rs-5">
+            <div class="roadmap-age">🎓 Университет (4–5 лет)</div>
+            <div class="roadmap-title">Куда поступить?</div>
+            <ul class="roadmap-tags">
+              <li>🏛️ МАИ — ракетостроение и космические системы</li>
+              <li>🏛️ МВТУ им. Баумана — аэрокосмические технологии</li>
+              <li>🏛️ МФТИ — прикладная физика и астрофизика</li>
+              <li>Стажировка в Роскосмосе или ЦПК на последнем курсе</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-6">6</div>
+          <div class="roadmap-card rs-6">
+            <div class="roadmap-age">💼 Первая работа</div>
+            <div class="roadmap-title">Старт карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Инженер-конструктор в Роскосмосе</li>
+              <li>Специалист по навигации в РКК «Энергия»</li>
+              <li>Научный сотрудник в Институте космических исследований</li>
+              <li>Инженер спутниковых систем в ГЛОНАСС</li>
+            </ul>
+            <div class="roadmap-salary">💰 100–180 тыс. руб/мес</div>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-7">7</div>
+          <div class="roadmap-card rs-7">
+            <div class="roadmap-age">🚀 Через 10 лет</div>
+            <div class="roadmap-title">Вершина карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Руководитель космической миссии Роскосмоса</li>
+              <li>Ведущий учёный российской лунной программы</li>
+              <li>Начальник отдела спутниковых технологий</li>
+              <li>Кандидат в отряд космонавтов России!</li>
+            </ul>
+            <div class="roadmap-salary">💰 300–600 тыс. руб/мес</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="career-next-step">
+      <h3>🎯 Что делать дальше?</h3>
+      <p>Звёзды ждут тебя! Пройди тест и узнай, подходит ли тебе профессия исследователя космоса!</p>
+      <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
+      <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+      <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
+    </div>
 
     <div class="career-nav">
       <a href="robotics-engineer.html" class="btn-glass-dark">Следующая профессия →</a>
@@ -223,3 +352,4 @@
 <script type="module" src="script.js"></script>
 </body>
 </html>
+

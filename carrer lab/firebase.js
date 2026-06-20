@@ -14,16 +14,17 @@ import {
   enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD9s9v-O77PMqAipRKpYSQWqnubZi7PVeY",
-  authDomain: "carrierlab-a5e2a.firebaseapp.com",
-  databaseURL: "https://carrierlab-a5e2a-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "carrierlab-a5e2a",
-  storageBucket: "carrierlab-a5e2a.appspot.com",
-  messagingSenderId: "104669318159",
-  appId: "1:104669318159:web:5d83da2067e10dd763677a",
-  measurementId: "G-C847DNT6W7"
-};
+// ⚠️  SECURITY: Never commit real keys here.
+// Copy firebase.config.example.js → firebase.config.js and fill in your values.
+// firebase.config.js is gitignored and must NOT be deployed as source.
+//
+// For static hosting (GitHub Pages / Vercel / Netlify) inject via:
+//   - Netlify: Site settings → Environment variables
+//   - Vercel:  Project settings → Environment variables
+//   - Or use a build step that writes firebase.config.js from env vars at deploy time.
+
+import { FIREBASE_CONFIG } from "./firebase.config.js";
+const firebaseConfig = FIREBASE_CONFIG;
 
 // Guard: only initialize once (safe for hot-reload / module re-evaluation)
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);

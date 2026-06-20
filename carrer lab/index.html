@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="home app-layout">
@@ -68,6 +72,15 @@
     </div>
   </aside>
 
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Мобильная навигация">
+    <a href="index.html"    class="mbn-item active"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
 
@@ -85,11 +98,22 @@
     <!-- name popup -->
     <div class="name-popup-overlay" id="name-overlay">
       <div class="name-popup">
-        <div class="name-popup-icon">🤖</div>
-        <h2>Как тебя зовут?</h2>
-        <p>Я Анюша — твой помощник в мире профессий!</p>
-        <input type="text" id="name-input" placeholder="Введи своё имя..." maxlength="20" />
-        <button class="btn-main" id="name-submit">Поехали! 🚀</button>
+
+        <!-- Ввод имени — только русский -->
+        <div id="name-step">
+          <div class="name-popup-icon">🤖</div>
+          <h2 id="welcome-title">Добро пожаловать в КарьераЛаб!</h2>
+          <p class="name-popup-sub" id="welcome-sub">Исследуй профессии будущего и зарабатывай XP!</p>
+          <div class="name-popup-steps">
+            <div class="name-step"><span class="step-icon">🔭</span><span class="step-text" id="step-text-1"><strong>Изучи</strong> 6 профессий будущего</span></div>
+            <div class="name-step"><span class="step-icon">🎮</span><span class="step-text" id="step-text-2"><strong>Пройди</strong> симуляции карьер</span></div>
+            <div class="name-step"><span class="step-icon">🏆</span><span class="step-text" id="step-text-3"><strong>Зарабатывай</strong> XP и повышай уровень</span></div>
+          </div>
+          <p class="name-popup-ask" id="welcome-ask">Как тебя зовут?</p>
+          <input type="text" id="name-input" placeholder="Введи своё имя..." maxlength="20" autocomplete="off" />
+          <button class="btn-main" id="name-submit">Поехали! 🚀</button>
+        </div>
+
       </div>
     </div>
 
@@ -110,7 +134,7 @@
           🚀 Карьерная Лаборатория
         </span>
         <h1 class="hero-story-title" id="hero-title">Твоё будущее<br>начинается сегодня</h1>
-        <p class="hero-sub hero-story-sub" id="header-subtitle">Исследуй профессии будущего вместе с Анюшей!</p>
+        <p class="hero-sub hero-story-sub" id="header-subtitle">Исследуй профессии через интерактивные симуляции</p>
 
         <!-- Ani integrated into hero -->
         <div class="hero-ani-row" aria-hidden="true">
@@ -119,13 +143,13 @@
         </div>
 
         <div class="hero-actions hero-story-actions">
-          <a href="quiz.html" class="btn-main btn-hero-cta">
-            <span class="btn-cta-icon">🧠</span>
-            Начать путешествие
-          </a>
-          <a href="learn.html" class="btn-glass">📚 Учиться</a>
-          <a href="play.html" class="btn-glass">🎮 Симуляции</a>
+          <button class="btn-main btn-hero-primary" id="start-onboarding-btn">
+            <span class="btn-icon">🚀</span>
+            <span>Начать</span>
+          </button>
         </div>
+
+        <p class="hero-hint">Пройди симуляции и узнай, какая профессия тебе подходит</p>
 
         <!-- Scroll hint -->
         <div class="hero-scroll-hint" aria-hidden="true">
@@ -162,34 +186,9 @@
         </div>
       </section>
 
-      <!-- ═══ PHASE 6.2 PREMIUM DASHBOARD ═══ -->
-      <section class="section-block p6-premium-section" id="p6-premium-dashboard" style="display:none">
-        <div style="max-width:900px;margin:0 auto">
-          <span class="section-badge">💎 Премиум аналитика</span>
-          <h2 class="section-title-sm">Расширенная статистика</h2>
-          <div id="p6-preview-timer"></div>
-          <div id="p6-heatmap"></div>
-          <div id="p6-radar"></div>
-          <div id="p6-intelligence"></div>
-          <div id="p6-confidence"></div>
-          <div id="p6-activities"></div>
-          <div id="p6-readiness"></div>
-          <button onclick="generateProgressSnapshot()" class="btn-main" style="margin-top:20px">
-            📥 Скачать отчёт
-          </button>
-        </div>
-      </section>
 
-      <!-- ═══ PHASE 6.3 MISSION ECONOMY ═══ -->
-      <section class="section-block p6-economy-section" id="p6-mission-economy" style="display:none">
-        <div style="max-width:900px;margin:0 auto">
-          <span class="section-badge">💰 Экономика миссий</span>
-          <h2 class="section-title-sm">Кошелёк и награды</h2>
-          <div id="p6-wallet"></div>
-          <div id="p6-inventory"></div>
-          <div id="p6-spin"></div>
-        </div>
-      </section>
+
+
 
       <!-- ═══ DAILY CAREER DISCOVERY ═══ -->
       <section class="section-block career-discovery-section" id="career-discovery-section" data-ani-msg="Выбери профессию дня! Каждый день — новое приключение! 🌟">
@@ -256,6 +255,17 @@
                   <span class="cd-card-arrow">→</span>
                 </div>
               </a>
+              <a href="doctor.html" class="cd-card cd-card--robot">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🩺</div>
+                <div class="cd-card-tag">Медицина</div>
+                <h3 class="cd-card-title">Врач</h3>
+                <p class="cd-card-desc">Помогай людям и спасай жизни каждый день</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -277,38 +287,7 @@
         </div>
       </section>
 
-      <!-- ═══ CAREERS SECTION ═══ -->
-      <section class="section-block purple-section" id="careers-section">
-        <h2 class="section-title">🎯 Исследовать профессии</h2>
-        <div class="cards-grid">
-          <a href="drone-pilot.html" class="card">
-            <span class="card-icon">🚁</span>
-            <h3>Пилот дрона</h3>
-            <p>Управляй беспилотниками и исследуй мир с высоты!</p>
-          </a>
-          <a href="cyber-defender.html" class="card">
-            <span class="card-icon">🛡️</span>
-            <h3>Кибер-защитник</h3>
-            <p>Защищай интернет от хакеров и вирусов!</p>
-          </a>
-          <a href="space-explorer.html" class="card">
-            <span class="card-icon">🌌</span>
-            <h3>Исследователь космоса</h3>
-            <p>Открывай новые планеты и звёзды!</p>
-          </a>
-          <a href="robotics-engineer.html" class="card">
-            <span class="card-icon">🤖</span>
-            <h3>Инженер-робототехник</h3>
-            <p>Создавай роботов, которые помогают людям!</p>
-          </a>
-          <a href="game-designer.html" class="card">
-            <span class="card-icon">🎮</span>
-            <h3>Гейм-дизайнер</h3>
-            <p>Придумывай и создавай крутые игры!</p>
-          </a>
-        </div>
-        <a href="explorer.html" class="explore-link">🔭 Все профессии →</a>
-      </section>
+
 
       <!-- ═══ REAL HERO STORY BLOCK ═══ -->
       <section class="section-block hero-story-block" id="hero-story-block">
@@ -403,73 +382,17 @@
         <div class="section-inner-flex">
           <div class="section-emoji" aria-hidden="true">🎮</div>
           <div class="section-text">
-            <span class="section-badge">🎮 Играть</span>
-            <h2>Симуляции профессий</h2>
-            <p>Попробуй себя в роли IT-специалиста, пилота или строй карьеру дрон-пилота!</p>
-            <div class="sim-buttons">
-              <button class="btn-main" id="open-it-sim">💻 IT Симуляция</button>
-              <button class="btn-glass-dark" id="open-pilot-sim">🚁 Пилот Симуляция</button>
-              <button class="btn-glass-dark" id="open-drone-sim">🚀 Карьера Дрон-Пилота</button>
-              <button class="btn-glass-dark" id="open-cyber-sim">🛡️ Кибер Симуляция</button>
-              <button class="btn-glass-dark" id="open-drone-game">🎮 Игра: Доставь посылку</button>
-            </div>
-            <a href="play.html" class="explore-link" style="margin-top:18px">🎮 Все симуляции →</a>
+            <span class="section-badge">🎮 Симуляции</span>
+            <h2>Попробуй себя в деле!</h2>
+            <p>5 профессий, реальные сценарии, XP за каждый шаг. Стань пилотом, программистом или инженером прямо сейчас!</p>
+            <a href="play.html" class="btn-main" style="margin-top:20px;display:inline-flex;align-items:center;gap:8px">
+              <span>🎮</span><span>Играть →</span>
+            </a>
           </div>
         </div>
       </section>
 
-      <!-- Simulation modals -->
-      <div class="modal-overlay hidden" id="it-sim-modal">
-        <div class="modal-box">
-          <button class="modal-close" id="close-it-sim">✕</button>
-          <h2>💻 IT Симуляция</h2>
-          <p class="sim-desc">Ты — программист. Реши задачу!</p>
-          <div id="it-sim-content"></div>
-        </div>
-      </div>
-      <div class="modal-overlay hidden" id="pilot-sim-modal">
-        <div class="modal-box">
-          <button class="modal-close" id="close-pilot-sim">✕</button>
-          <h2>😊 Симуляция пилота</h2>
-          <p class="sim-desc">Управляй дроном! Выполни все этапы полёта.</p>
-          <div id="pilot-sim-content"></div>
-        </div>
-      </div>
-      <div class="modal-overlay hidden" id="drone-sim-modal">
-        <div class="modal-box">
-          <button class="modal-close" id="close-drone-sim">✕</button>
-          <h2>� Карьера Дрон-Пилота</h2>
-          <p class="sim-desc">Пройди 4 уровня и стань профессиональным пилотом!</p>
-          <div id="drone-sim-content"></div>
-        </div>
-      </div>
-      <div class="modal-overlay hidden" id="drone-game-modal">
-        <div class="modal-box drone-game-modal-box">
-          <button class="modal-close" id="close-drone-game">✕</button>
-          <h2>🚁 Доставь посылку!</h2>
-          <p class="sim-desc">Управляй дроном — избегай препятствий и достигни цели!</p>
-          <div class="drone-game-wrap">
-            <canvas id="drone-game-canvas" width="480" height="320"></canvas>
-            <div class="drone-game-controls">
-              <button class="dg-ctrl-btn" id="dg-btn-up" data-key="ArrowUp">▲</button>
-              <div class="dg-ctrl-row">
-                <button class="dg-ctrl-btn" id="dg-btn-left" data-key="ArrowLeft">◀</button>
-                <button class="dg-ctrl-btn" id="dg-btn-down" data-key="ArrowDown">▼</button>
-                <button class="dg-ctrl-btn" id="dg-btn-right" data-key="ArrowRight">▶</button>
-              </div>
-            </div>
-            <button class="btn-main dg-retry-btn" id="dg-retry" style="display:none;margin-top:12px">� Попробовать снова</button>
-          </div>
-        </div>
-      </div>
-      <div class="modal-overlay hidden" id="cyber-sim-modal">
-        <div class="modal-box">
-          <button class="modal-close" id="close-cyber-sim">✕</button>
-          <h2>🛡️ Кибер Симуляция</h2>
-          <p class="sim-desc">Защити цифровой мир от хакеров!</p>
-          <div id="cyber-sim-content"></div>
-        </div>
-      </div>
+
 
       <!-- ═══ MINI QUIZ SECTION ═══ -->
       <section class="section-block teal-section">
@@ -558,14 +481,7 @@
         </div>
       </section>
 
-      <!-- ═══ STORY ARC SECTION ═══ -->
-      <section class="section-block indigo-section" id="story-arc-section">
-        <div style="max-width:900px;margin:0 auto">
-          <span class="section-badge">📖 Твоя история</span>
-          <h2 class="section-title-sm">Карьерное приключение</h2>
-          <div id="story-arc-container"></div>
-        </div>
-      </section>
+
 
       <!-- ═══ LEADERBOARD SECTION ═══ -->
       <section class="section-block blue-section" id="leaderboard-section">
@@ -575,46 +491,41 @@
           <div class="leaderboard-box" id="leaderboard-list">
             <div class="lb-empty">Загрузка...</div>
           </div>
+          <button class="btn-glass-dark" id="view-feedback-btn" style="margin-top:20px">📋 Посмотреть все отзывы</button>
         </div>
       </section>
 
-      <!-- ═══ FEEDBACK SECTION ═══ -->
-      <section class="section-block indigo-section" id="feedback-section">
-        <div class="section-inner-flex">
-          <div class="section-text">
-            <span class="section-badge">💬 Обратная связь</span>
-            <h2>Напиши нам!</h2>
-            <p>Расскажи, что тебе понравилось 😊</p>
-            <button class="btn-glass view-fb-btn" id="view-feedback-btn" style="margin-top:18px">
-              📋 Просмотреть все отзывы
-            </button>
-          </div>
-          <div class="feedback-form-wrap">
-            <form class="feedback-form" id="feedback-form">
+
+
+      <!-- ═══ FEEDBACK FORM SECTION ═══ -->
+      <section class="section-block teal-section" id="feedback-section">
+        <div style="max-width:560px;margin:0 auto">
+          <span class="section-badge">💬 Обратная связь</span>
+          <h2 class="section-title-sm">Расскажи нам что думаешь!</h2>
+          <p class="section-sub">Твоё мнение помогает сделать CareerLab лучше 🌟</p>
+          <div class="feedback-form-card">
+            <form id="feedback-form" class="feedback-form">
               <div class="form-row">
                 <div class="form-group">
-                  <label for="fb-name">Твоё имя</label>
-                  <input type="text" id="fb-name" placeholder="Например: Алиса" required />
+                  <label for="fb-name">Твоё имя *</label>
+                  <input type="text" id="fb-name" placeholder="Напиши имя..." maxlength="40" required />
                 </div>
                 <div class="form-group">
                   <label for="fb-email">Email (необязательно)</label>
-                  <input type="email" id="fb-email" placeholder="example@mail.ru" />
+                  <input type="email" id="fb-email" placeholder="твой@email.com" />
                 </div>
               </div>
               <div class="form-group">
-                <label for="fb-msg">Ваш отзыв...</label>
-                <textarea id="fb-msg" rows="4" placeholder="Ваш отзыв..." required></textarea>
+                <label for="fb-msg">Твоё мнение *</label>
+                <textarea id="fb-msg" placeholder="Что понравилось? Что можно улучшить?..." maxlength="500" rows="4" required></textarea>
               </div>
-              <div class="fb-actions">
-                <button type="submit" class="btn-main">Отправить 🚀</button>
-                <button type="button" class="btn-glass-dark" id="view-feedback-btn-2">📋 Все отзывы</button>
-              </div>
+              <button type="submit" class="btn-main" style="width:100%;margin-top:4px">Отправить отзыв 💬</button>
             </form>
-            <div class="feedback-success hidden" id="feedback-success">
+            <div id="feedback-success" class="feedback-success hidden">
               <div class="success-icon">🎉</div>
               <h3>Спасибо за отзыв!</h3>
-              <p>Мы обязательно прочитаем твоё сообщение 😊</p>
-              <button class="btn-glass-dark" id="fb-send-another" style="margin-top:14px">Написать ещё</button>
+              <p>Твоё мнение очень важно для нас 💜</p>
+              <button class="btn-glass-dark" id="fb-send-another" style="margin-top:12px">Написать ещё</button>
             </div>
           </div>
         </div>
@@ -667,11 +578,11 @@
 <!-- ═══ ANI CHARACTER (fixed to body) ═══ -->
 <div class="ani-wrapper" id="ani-wrapper">
   <div class="ani-bubble" id="ani-bubble">
-    <span class="speech-text" id="ani-text">Нажми, чтобы послушать 😊</span>
+    <span class="speech-text" id="ani-text">Привет! Нажми на меня! 😊</span>
   </div>
   <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
 </div>
-<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="voice-toggle" id="voice-toggle" title="Выключить голос Анюши">🔊</button>
 <button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
 
 <script>
@@ -694,5 +605,87 @@
 })();
 </script>
 <script type="module" src="script.js"></script>
+  <!-- ═══ BULLETPROOF ONBOARDING FALLBACK ═══
+       Runs as plain JS (no modules) so it works on file:// and localhost.
+       If script.js loads fine, it will rebind and override this — that's OK.
+       This guarantees the name popup ALWAYS works no matter what.
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+  /* Onboarding fallback — только русский язык */
+  (function(){
+    var lt = {
+      title:'Добро пожаловать в КарьераЛаб!',
+      sub:'Исследуй профессии будущего и зарабатывай XP!',
+      ask:'Как тебя зовут?', ph:'Введи своё имя...', btn:'Поехали! 🚀',
+      s1:'<strong>Изучи</strong> 6 профессий будущего',
+      s2:'<strong>Пройди</strong> симуляции карьер',
+      s3:'<strong>Зарабатывай</strong> XP и повышай уровень',
+      err:'Пожалуйста, введи своё имя! 😊',
+      cel_h:function(n){return 'Привет, '+n+'!';},
+      cel_xp:'Ты получил <strong style="color:#7c3aed">+10 XP</strong> за регистрацию!',
+      cel_sub:'Готов исследовать профессии? 🚀', cel_go:'Вперёд! 🚀'
+    };
+    function ge(id){return document.getElementById(id);}
+    function applyLT(){
+      if(ge('welcome-title')) ge('welcome-title').textContent=lt.title;
+      if(ge('welcome-sub'))   ge('welcome-sub').textContent=lt.sub;
+      if(ge('welcome-ask'))   ge('welcome-ask').textContent=lt.ask;
+      if(ge('name-input'))    ge('name-input').placeholder=lt.ph;
+      if(ge('name-submit'))   ge('name-submit').textContent=lt.btn;
+      if(ge('step-text-1'))   ge('step-text-1').innerHTML=lt.s1;
+      if(ge('step-text-2'))   ge('step-text-2').innerHTML=lt.s2;
+      if(ge('step-text-3'))   ge('step-text-3').innerHTML=lt.s3;
+    }
+    function klReady(fn){
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn);
+      else fn();
+    }
+    klReady(function(){
+      var overlay=ge('name-overlay');
+      if(!overlay) return;
+      try{localStorage.setItem('kl_lang','ru');}catch(e){}
+      var saved='';
+      try{saved=localStorage.getItem('kl_name')||'';}catch(e){}
+      try{if(!saved)saved=sessionStorage.getItem('kl_name_session')||'';}catch(e){}
+      if(saved){ overlay.style.display='none'; applyNameFB(saved); return; }
+      overlay.style.display='flex';
+      applyLT();
+      setTimeout(function(){var inp=ge('name-input');if(inp)inp.focus();},100);
+      bindName();
+
+      function bindName(){
+        var btn=ge('name-submit'); var inp=ge('name-input');
+        if(!btn||!inp||btn.dataset.fbbound) return;
+        btn.dataset.fbbound='1';
+        function doSubmit(){
+          var v=inp.value.trim();
+          if(!v){inp.style.border='2px solid #e53e3e';inp.placeholder=lt.err;inp.focus();setTimeout(function(){inp.style.border='';inp.placeholder=lt.ph;},2000);return;}
+          try{localStorage.setItem('kl_name',v);}catch(e){}
+          try{sessionStorage.setItem('kl_name_session',v);}catch(e){}
+          overlay.style.transition='opacity 0.3s ease-out';overlay.style.opacity='0';
+          setTimeout(function(){overlay.style.display='none';applyNameFB(v);showCelFB(v);},300);
+        }
+        btn.addEventListener('click',doSubmit);
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')doSubmit();});
+      }
+    });
+
+    function applyNameFB(name){
+      var ht=ge('hero-title');
+      if(ht) ht.textContent='Привет, '+name+'! 🚀';
+      document.querySelectorAll('.user-name-display').forEach(function(el){el.textContent=name;});
+    }
+    function showCelFB(name){
+      var old=ge('kl-celebrate'); if(old) old.remove();
+      var cel=document.createElement('div'); cel.id='kl-celebrate';
+      cel.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center';
+      var safe=name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      cel.innerHTML='<div style="background:#fff;border-radius:20px;padding:2rem 2.5rem;text-align:center;max-width:320px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)"><div style="font-size:56px;margin-bottom:12px">🎉</div><h2 style="font-size:22px;margin-bottom:8px;color:#1a1a2e">'+lt.cel_h(safe)+'</h2><p style="color:#555;margin-bottom:8px">'+lt.cel_xp+'</p><p style="color:#888;font-size:13px;margin-bottom:20px">'+lt.cel_sub+'</p><button id="kl-cel-go" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:12px 32px;font-size:16px;font-weight:700;cursor:pointer;width:100%">'+lt.cel_go+'</button></div>';
+      document.body.appendChild(cel);
+      ge('kl-cel-go').addEventListener('click',function(){cel.style.opacity='0';cel.style.transition='opacity 0.2s';setTimeout(function(){cel.remove();},200);});
+    }
+  })();
+  </script>
 </body>
 </html>
+

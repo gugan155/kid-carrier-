@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Пилот дрона — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="app-layout">
@@ -46,7 +50,7 @@
         <span class="sidebar-icon">🧠</span>
         <span class="sidebar-label">Тест</span>
       </a>
-      <a href="explorer.html" class="sidebar-link">
+      <a href="explorer.html" class="sidebar-link active">
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
@@ -58,6 +62,14 @@
       <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
     </div>
   </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
@@ -146,25 +158,25 @@
           <div class="micro-q active" data-q="0">
             <p class="micro-question">Сколько моторов у стандартного квадрокоптера?</p>
             <div class="micro-options">
-              <button class="micro-opt" data-correct="false">2</button>
-              <button class="micro-opt" data-correct="true">4</button>
-              <button class="micro-opt" data-correct="false">6</button>
+              <button class="micro-opt" data-correct="false" data-explain="2 мотора — это слишком мало для устойчивого полёта. Дрон не сможет держать баланс!">2</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Правильно! 4 мотора дают квадрокоптеру стабильность и возможность маневрировать в любую сторону. ✈️">4</button>
+              <button class="micro-opt" data-correct="false" data-explain="6 моторов — это гексакоптер, более мощная версия. Стандартный квадрокоптер имеет именно 4 мотора.">6</button>
             </div>
           </div>
           <div class="micro-q" data-q="1">
             <p class="micro-question">На какой максимальной высоте можно летать без разрешения?</p>
             <div class="micro-options">
-              <button class="micro-opt" data-correct="false">500 метров</button>
-              <button class="micro-opt" data-correct="true">120 метров</button>
-              <button class="micro-opt" data-correct="false">1000 метров</button>
+              <button class="micro-opt" data-correct="false" data-explain="500 метров — это уже зона авиации! На такой высоте летают самолёты, полёт без разрешения опасен и незаконен.">500 метров</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Правильно! По российским правилам, без специального разрешения можно летать не выше 120 метров. 📏">120 метров</button>
+              <button class="micro-opt" data-correct="false" data-explain="1000 метров — это высота авиалайнера! Полёт дрона на такой высоте строго запрещён без разрешения.">1000 метров</button>
             </div>
           </div>
           <div class="micro-q" data-q="2">
             <p class="micro-question">Что нужно проверить ПЕРЕД каждым полётом?</p>
             <div class="micro-options">
-              <button class="micro-opt" data-correct="false">Только погоду</button>
-              <button class="micro-opt" data-correct="false">Ничего — просто взлетать</button>
-              <button class="micro-opt" data-correct="true">Заряд батареи и погоду</button>
+              <button class="micro-opt" data-correct="false" data-explain="Погода важна, но не единственное! Если батарея разряжена, дрон упадёт даже при отличной погоде.">Только погоду</button>
+              <button class="micro-opt" data-correct="false" data-explain="Никогда не взлетай без проверки! Неподготовленный полёт — это риск аварии и потери дрона.">Ничего — просто взлетать</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Правильно! Перед полётом всегда проверяй заряд батареи и погодные условия. Это базовое правило безопасности! 🔋⛅">Заряд батареи и погоду</button>
             </div>
           </div>
           <div class="micro-result hidden" id="drone-micro-result"></div>
@@ -180,6 +192,123 @@
           <span class="study-card">Фото и видеосъёмка</span>
         </div>
       </section>
+
+      <!-- ═══ КАРЬЕРНЫЙ ПУТЬ ═══ -->
+      <section class="career-section roadmap-section" id="career-roadmap">
+        <h2>🗺️ Твой путь к профессии пилота дрона</h2>
+        <p class="roadmap-intro">📍 В России рынок БПЛА растёт на 30% в год. Лицензированные пилоты нужны везде — начни готовиться уже сейчас!</p>
+        <div class="roadmap-timeline">
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-1">1</div>
+            <div class="roadmap-card rs-1">
+              <div class="roadmap-age">🌱 Возраст 10–12 лет</div>
+              <div class="roadmap-title">Знакомство с дронами!</div>
+              <ul class="roadmap-tags">
+                <li>Купи игрушечный квадрокоптер — учись управлять</li>
+                <li>Смотри YouTube: каналы про БПЛА и авиамодели</li>
+                <li>Узнай как летают самолёты — аэродинамика</li>
+                <li>Посети авиамодельный кружок в своём городе</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-2">2</div>
+            <div class="roadmap-card rs-2">
+              <div class="roadmap-age">📚 Возраст 12–14 лет</div>
+              <div class="roadmap-title">Строй и программируй!</div>
+              <ul class="roadmap-tags">
+                <li>Сборка дрона своими руками из конструктора</li>
+                <li>Основы Python — программируй маршруты полёта</li>
+                <li>Физика полёта: подъёмная сила, тяга, сопротивление</li>
+                <li>Авиамоделизм — участвуй в соревнованиях</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-3">3</div>
+            <div class="roadmap-card rs-3">
+              <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+              <div class="roadmap-title">Школьный фокус</div>
+              <ul class="roadmap-tags">
+                <li>⭐ Физика (аэродинамика, электроника)</li>
+                <li>⭐ Математика (навигация, расчёты)</li>
+                <li>Информатика (программирование автопилота)</li>
+                <li>Кружки робототехники и авиамоделирования</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-4">4</div>
+            <div class="roadmap-card rs-4">
+              <div class="roadmap-age">📝 Возраст 16–18 лет</div>
+              <div class="roadmap-title">Подготовка к поступлению</div>
+              <ul class="roadmap-tags">
+                <li>ЕГЭ по физике и математике (профильный)</li>
+                <li>Изучи правила полётов РОСАВИАЦИИ</li>
+                <li>Тренируйся на симуляторах полётов</li>
+                <li>Олимпиады по физике и информатике</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-5">5</div>
+            <div class="roadmap-card rs-5">
+              <div class="roadmap-age">🎓 Университет (4–5 лет)</div>
+              <div class="roadmap-title">Куда поступить?</div>
+              <ul class="roadmap-tags">
+                <li>🏛️ МАИ — авиационные и ракетные системы</li>
+                <li>🏛️ МВТУ им. Баумана — робототехника и автоматика</li>
+                <li>🏛️ УГАТУ Уфа — авиационные системы управления</li>
+                <li>Получи свидетельство пилота БПЛА РОСАВИАЦИИ</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-6">6</div>
+            <div class="roadmap-card rs-6">
+              <div class="roadmap-age">💼 Первая работа</div>
+              <div class="roadmap-title">Старт карьеры</div>
+              <ul class="roadmap-tags">
+                <li>Оператор БПЛА в аэрофотосъёмочной компании</li>
+                <li>Агродрон-пилот — опрыскивание полей</li>
+                <li>Оператор дрона для кино и рекламы</li>
+                <li>Инженер-технолог БПЛА на производстве</li>
+              </ul>
+              <div class="roadmap-salary">💰 80–150 тыс. руб/мес</div>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-7">7</div>
+            <div class="roadmap-card rs-7">
+              <div class="roadmap-age">🚀 Через 10 лет</div>
+              <div class="roadmap-title">Вершина карьеры</div>
+              <ul class="roadmap-tags">
+                <li>Главный конструктор БПЛА-систем</li>
+                <li>Руководитель подразделения беспилотников</li>
+                <li>Основатель собственной дрон-компании</li>
+                <li>Эксперт и тренер для пилотов по всей стране</li>
+              </ul>
+              <div class="roadmap-salary">💰 250–500 тыс. руб/мес</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="career-next-step">
+        <h3>🎯 Что делать дальше?</h3>
+        <p>Небо ждёт тебя! Пройди тест и узнай, подходит ли тебе профессия пилота!</p>
+        <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
+        <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+        <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
+      </div>
 
       <div class="career-nav">
         <a href="cyber-defender.html" class="btn-glass-dark">Следующая профессия →</a>
@@ -201,3 +330,4 @@
 <script type="module" src="script.js"></script>
 </body>
 </html>
+

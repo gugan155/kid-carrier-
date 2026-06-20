@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Исследователь — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="app-layout">
@@ -67,6 +71,14 @@
       </div>
     </div>
   </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
@@ -97,6 +109,10 @@
         <span class="exp-icon">🎮</span>
         <div><h3>Гейм-дизайнер</h3><p>Создавай игровые миры, персонажей и механики.</p></div>
       </a>
+      <a href="doctor.html" class="explorer-card">
+        <span class="exp-icon">🩺</span>
+        <div><h3>Врач</h3><p>Помогай людям и спасай жизни каждый день.</p></div>
+      </a>
     </main>
 
     <div class="explorer-cta">
@@ -118,3 +134,4 @@
 <script type="module" src="script.js"></script>
 </body>
 </html>
+

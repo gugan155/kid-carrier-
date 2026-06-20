@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Lab — Feedback Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0edff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 32px 16px; }
+    .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 28px rgba(0,0,0,.09); padding: 32px; max-width: 720px; width: 100%; margin-bottom: 20px; }
+    .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #f0edff; }
+    .logo-icon { font-size: 2rem; }
+    .logo-text { font-size: 1.25rem; font-weight: 800; color: #1a1a2e; }
+    .logo-sub { font-size: 0.8rem; color: #6b7280; margin-top: 1px; }
+    /* Password gate */
+    #pw-gate { text-align: center; }
+    .lock-icon { font-size: 3rem; margin-bottom: 12px; }
+    #pw-gate h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; color: #1a1a2e; }
+    #pw-gate p { color: #6b7280; margin-bottom: 24px; }
+    #pw-input { width: 100%; padding: 13px 16px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; margin-bottom: 12px; transition: border-color .15s; }
+    #pw-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.15); }
+    #pw-btn { background: linear-gradient(135deg,#7c3aed,#a855f7); color: #fff; border: none; border-radius: 12px; padding: 13px 28px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: opacity .15s; }
+    #pw-btn:hover { opacity: .9; }
+    .pw-error { color: #e53e3e; font-size: 0.88rem; margin-top: 8px; display: none; }
+    /* Admin panel */
+    #admin-panel { display: none; }
+    .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .toolbar h3 { font-size: 1rem; font-weight: 800; color: #1a1a2e; }
+    .count-badge { background: #7c3aed; color: #fff; border-radius: 100px; padding: 2px 12px; font-size: 0.8rem; font-weight: 700; }
+    .btn-refresh { background: none; border: 2px solid #7c3aed; color: #7c3aed; border-radius: 8px; padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background .15s; }
+    .btn-refresh:hover { background: #f5f3ff; }
+    .btn-danger { background: none; border: 2px solid #e53e3e; color: #e53e3e; border-radius: 8px; padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-left: auto; transition: background .15s; }
+    .btn-danger:hover { background: #fef2f2; }
+    .source-label { font-size: 0.75rem; color: #a78bfa; font-style: italic; margin-bottom: 12px; }
+    .loading { text-align: center; color: #7c3aed; padding: 24px; font-weight: 600; }
+    .fb-list { display: flex; flex-direction: column; gap: 10px; }
+    .fb-item { background: #f8f7ff; border-radius: 14px; padding: 16px 18px; border-left: 4px solid #a78bfa; }
+    .fb-item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .fb-item-name { font-weight: 800; color: #1a1a2e; font-size: 0.95rem; }
+    .fb-item-date { font-size: 0.75rem; color: #9ca3af; }
+    .fb-item-email { font-size: 0.8rem; color: #6b7280; margin-bottom: 5px; }
+    .fb-item-msg { font-size: 0.9rem; color: #374151; line-height: 1.55; word-break: break-word; }
+    .fb-del { background: none; border: none; color: #e53e3e; font-size: 1.1rem; cursor: pointer; opacity: .5; padding: 2px 4px; line-height: 1; transition: opacity .15s; }
+    .fb-del:hover { opacity: 1; }
+    .fb-empty { text-align: center; color: #6b7280; padding: 32px 0; font-size: 0.95rem; }
+    .btn-logout { display: block; margin: 20px auto 0; background: none; border: none; color: #9ca3af; font-size: 0.82rem; cursor: pointer; text-decoration: underline; }
+    .btn-logout:hover { color: #7c3aed; }
+    a.back-link { display: inline-block; margin-top: 4px; color: #7c3aed; font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+    a.back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-row">
+    <span class="logo-icon">🚀</span>
+    <div>
+      <div class="logo-text">Career Lab — Admin</div>
+      <div class="logo-sub">Feedback management panel</div>
+    </div>
+  </div>
+
+  <!-- ── Password gate ── -->
+  <div id="pw-gate">
+    <div class="lock-icon">🔒</div>
+    <h2>Admin Login</h2>
+    <p>Enter the admin password to manage feedback</p>
+    <input type="password" id="pw-input" placeholder="Password..." autocomplete="current-password" />
+    <button id="pw-btn">Unlock →</button>
+    <div class="pw-error" id="pw-error">Incorrect password — try again.</div>
+  </div>
+
+  <!-- ── Admin panel ── -->
+  <div id="admin-panel">
+    <div class="toolbar">
+      <h3>📋 All Feedback</h3>
+      <span class="count-badge" id="fb-count">0</span>
+      <button class="btn-refresh" id="btn-refresh">🔄 Refresh</button>
+      <button class="btn-danger" id="btn-clear">🗑️ Clear All</button>
+    </div>
+    <div class="source-label" id="fb-source"></div>
+    <div class="loading" id="fb-loading">Loading...</div>
+    <div class="fb-list" id="fb-list"></div>
+    <button class="btn-logout" id="btn-logout">Log out</button>
+    <br/>
+    <a class="back-link" href="index.html">← Back to Career Lab</a>
+  </div>
+</div>
+
+<script type="module">
+  const ADMIN_PW  = "KareerLab@2026";
+  const LS_KEY    = "kl_feedback";
+  const SESS_KEY  = "kl_admin_auth";
+
+  const pwGate    = document.getElementById("pw-gate");
+  const adminPanel= document.getElementById("admin-panel");
+  const pwInput   = document.getElementById("pw-input");
+  const pwError   = document.getElementById("pw-error");
+  const fbCount   = document.getElementById("fb-count");
+  const fbSource  = document.getElementById("fb-source");
+  const fbLoading = document.getElementById("fb-loading");
+  const fbList    = document.getElementById("fb-list");
+
+  // Auto-login if session already authenticated
+  if (sessionStorage.getItem(SESS_KEY) === "1") showPanel();
+
+  document.getElementById("pw-btn").addEventListener("click", checkPw);
+  pwInput.addEventListener("keydown", e => { if (e.key === "Enter") checkPw(); });
+
+  function checkPw() {
+    if (pwInput.value === ADMIN_PW) {
+      sessionStorage.setItem(SESS_KEY, "1");
+      showPanel();
+    } else {
+      pwError.style.display = "block";
+      pwInput.value = "";
+      pwInput.focus();
+      setTimeout(() => { pwError.style.display = "none"; }, 3000);
+    }
+  }
+
+  function showPanel() {
+    pwGate.style.display = "none";
+    adminPanel.style.display = "block";
+    loadFeedback();
+  }
+
+  document.getElementById("btn-logout").addEventListener("click", () => {
+    sessionStorage.removeItem(SESS_KEY);
+    location.reload();
+  });
+
+  document.getElementById("btn-refresh").addEventListener("click", loadFeedback);
+
+  document.getElementById("btn-clear").addEventListener("click", async () => {
+    if (!confirm("Delete ALL feedback? This cannot be undone.")) return;
+    localStorage.removeItem(LS_KEY);
+    try {
+      const fb = await tryFirebase();
+      if (fb) {
+        const { deleteAll } = fb;
+        await deleteAll();
+      }
+    } catch(e) { /* Firebase optional */ }
+    loadFeedback();
+  });
+
+  async function loadFeedback() {
+    fbLoading.style.display = "block";
+    fbList.innerHTML = "";
+    fbSource.textContent = "";
+
+    let entries = [];
+    let source = "";
+
+    // Try Firebase
+    try {
+      const fb = await tryFirebase();
+      if (fb && fb.entries.length > 0) {
+        entries = fb.entries;
+        source = "Firebase Firestore";
+      }
+    } catch(e) {
+      console.warn("[Admin] Firebase unavailable:", e.message);
+    }
+
+    // Merge localStorage backup
+    try {
+      const lsRaw = localStorage.getItem(LS_KEY);
+      if (lsRaw) {
+        const lsArr = JSON.parse(lsRaw).slice().reverse();
+        if (entries.length === 0) {
+          entries = lsArr;
+          source = "localStorage (offline backup)";
+        } else {
+          const seen = new Set(entries.map(e => (e.name||"") + (e.msg||"")));
+          lsArr.forEach(e => {
+            if (!seen.has((e.name||"") + (e.msg||""))) entries.push(e);
+          });
+          source = "Firebase + localStorage";
+        }
+      }
+    } catch(e) { /* localStorage unavailable */ }
+
+    fbLoading.style.display = "none";
+    fbCount.textContent = entries.length;
+    fbSource.textContent = entries.length > 0 ? "Source: " + source : "No feedback yet.";
+
+    if (entries.length === 0) {
+      fbList.innerHTML = "<div class='fb-empty'>No feedback yet 😊<br/>Students can leave feedback on the main page.</div>";
+      return;
+    }
+
+    fbList.innerHTML = entries.map((e, i) => {
+      const safe = s => String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      let dateStr = "";
+      try {
+        if (e.date && typeof e.date.toDate === "function") dateStr = e.date.toDate().toLocaleDateString("en-GB");
+        else if (e.date) dateStr = new Date(e.date).toLocaleDateString("en-GB");
+      } catch(ex) {}
+      return `<div class="fb-item" id="fbi-${i}">
+        <div class="fb-item-header">
+          <span class="fb-item-name">${safe(e.name)}</span>
+          <span class="fb-item-date">${dateStr}</span>
+          <button class="fb-del" data-i="${i}" title="Delete">🗑️</button>
+        </div>
+        ${e.email ? `<div class="fb-item-email">✉️ ${safe(e.email)}</div>` : ""}
+        <div class="fb-item-msg">${safe(e.msg)}</div>
+      </div>`;
+    }).join("");
+
+    // Individual delete buttons — localStorage only (Firebase would need doc IDs)
+    fbList.querySelectorAll(".fb-del").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (!confirm("Delete this feedback entry?")) return;
+        try {
+          const arr = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+          const target = entries[parseInt(btn.dataset.i)];
+          const filtered = arr.filter(e => !(e.name === target.name && e.msg === target.msg));
+          localStorage.setItem(LS_KEY, JSON.stringify(filtered));
+        } catch(ex) {}
+        document.getElementById("fbi-" + btn.dataset.i)?.remove();
+        fbCount.textContent = Math.max(0, parseInt(fbCount.textContent) - 1);
+      });
+    });
+  }
+
+  async function tryFirebase() {
+    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js");
+    const { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } =
+      await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js");
+    const { FIREBASE_CONFIG } = await import("./firebase.config.js");
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    const snap = await getDocs(query(collection(db, "feedback"), orderBy("date", "desc")));
+    const entries = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
+
+    async function deleteAll() {
+      await Promise.all(snap.docs.map(d => deleteDoc(doc(db, "feedback", d.id))));
+    }
+
+    return { entries, deleteAll };
+  }
+</script>
+</body>
+</html>
+

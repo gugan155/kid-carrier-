@@ -1,0 +1,19 @@
+# Secrets — NEVER commit these
+firebase.config.js
+ani-config.js
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Build output (if added later)
+dist/
+node_modules/
+
+# PowerShell build scripts
+*.ps1

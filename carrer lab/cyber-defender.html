@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Кибер-защитник — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="app-layout">
@@ -46,7 +50,7 @@
         <span class="sidebar-icon">🧠</span>
         <span class="sidebar-label">Тест</span>
       </a>
-      <a href="explorer.html" class="sidebar-link">
+      <a href="explorer.html" class="sidebar-link active">
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
@@ -58,6 +62,14 @@
       <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
     </div>
   </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="app-main">
@@ -168,25 +180,25 @@
         <div class="micro-q active" data-q="0">
           <p class="micro-question">Что такое фишинг?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="false">Вид рыбалки</button>
-            <button class="micro-opt" data-correct="true">Обман пользователей для кражи паролей</button>
-            <button class="micro-opt" data-correct="false">Тип вируса</button>
+            <button class="micro-opt" data-correct="false" data-explain="Не совсем! "Фишинг" звучит как "fishing" (рыбалка), но это интернет-мошенничество для кражи паролей.">Вид рыбалки</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Фишинг — это когда злоумышленники создают поддельные сайты или письма, чтобы украсть твои данные. 🎣">Обман пользователей для кражи паролей</button>
+            <button class="micro-opt" data-correct="false" data-explain="Фишинг — это не вирус, а метод обмана. Но его результат может быть таким же опасным!">Тип вируса</button>
           </div>
         </div>
         <div class="micro-q" data-q="1">
           <p class="micro-question">Какой пароль самый надёжный?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="false">123456</button>
-            <button class="micro-opt" data-correct="false">password</button>
-            <button class="micro-opt" data-correct="true">Xk9#mP2!qR</button>
+            <button class="micro-opt" data-correct="false" data-explain="Этот пароль взламывается за секунды! Хакеры проверяют простые пароли первыми. Никогда так не делай! 🚫">123456</button>
+            <button class="micro-opt" data-correct="false" data-explain=""password" — один из самых популярных и опасных паролей. Хакеры знают его наизусть!">password</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Случайный набор символов, цифр и букв — самый надёжный пароль. Используй менеджер паролей! 🔐">Xk9#mP2!qR</button>
           </div>
         </div>
         <div class="micro-q" data-q="2">
           <p class="micro-question">Что делает файрвол?</p>
           <div class="micro-options">
-            <button class="micro-opt" data-correct="true">Блокирует нежелательный сетевой трафик</button>
-            <button class="micro-opt" data-correct="false">Ускоряет интернет</button>
-            <button class="micro-opt" data-correct="false">Хранит пароли</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Файрвол — это защитный барьер между твоим компьютером и интернетом. Он фильтрует опасные подключения. 🛡️">Блокирует нежелательный сетевой трафик</button>
+            <button class="micro-opt" data-correct="false" data-explain="Файрвол не ускоряет интернет — он его фильтрует. Иногда может даже немного замедлить.">Ускоряет интернет</button>
+            <button class="micro-opt" data-correct="false" data-explain="Пароли хранит менеджер паролей, а не файрвол. У каждого инструмента своя задача!">Хранит пароли</button>
           </div>
         </div>
         <div class="micro-result hidden" id="cyber-micro-result"></div>
@@ -202,6 +214,123 @@
         <span class="study-card">Математика и логика</span>
       </div>
     </section>
+
+    <!-- ═══ КАРЬЕРНЫЙ ПУТЬ ═══ -->
+    <section class="career-section roadmap-section" id="career-roadmap">
+      <h2>🗺️ Твой путь к профессии кибер-защитника</h2>
+      <p class="roadmap-intro">📍 Россия входит в топ-5 стран по кибератакам. Специалисты по информационной безопасности нужны везде — в банках, госструктурах и IT-компаниях!</p>
+      <div class="roadmap-timeline">
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-1">1</div>
+          <div class="roadmap-card rs-1">
+            <div class="roadmap-age">🌱 Возраст 10–12 лет</div>
+            <div class="roadmap-title">Мир кибербезопасности!</div>
+            <ul class="roadmap-tags">
+              <li>Узнай что такое хакер и как защищаться в сети</li>
+              <li>Начни программировать на Scratch или Python</li>
+              <li>Смотри: YouTube-канал «Computerphile»</li>
+              <li>Играй в игры по интернет-безопасности</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-2">2</div>
+          <div class="roadmap-card rs-2">
+            <div class="roadmap-age">📚 Возраст 12–14 лет</div>
+            <div class="roadmap-title">Строй фундамент!</div>
+            <ul class="roadmap-tags">
+              <li>Python: пароли, основы шифрования</li>
+              <li>Как работает интернет — TCP/IP протоколы</li>
+              <li>Попробуй задания CTF на TryHackMe</li>
+              <li>Установи и изучи Linux (Ubuntu)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-3">3</div>
+          <div class="roadmap-card rs-3">
+            <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+            <div class="roadmap-title">Школьный фокус</div>
+            <ul class="roadmap-tags">
+              <li>⭐ Информатика (обязательно!)</li>
+              <li>⭐ Математика (логика + криптография)</li>
+              <li>Физика (сетевое оборудование)</li>
+              <li>Участвуй в хакатонах и олимпиадах по ИБ</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-4">4</div>
+          <div class="roadmap-card rs-4">
+            <div class="roadmap-age">📝 Возраст 16–18 лет</div>
+            <div class="roadmap-title">Подготовка к поступлению</div>
+            <ul class="roadmap-tags">
+              <li>ЕГЭ по информатике и математике (профильный)</li>
+              <li>Тренируйся на HackTheBox, TryHackMe</li>
+              <li>Глубоко изучи командную строку Linux</li>
+              <li>Олимпиады по информатике (ВСОШ)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-5">5</div>
+          <div class="roadmap-card rs-5">
+            <div class="roadmap-age">🎓 Университет (4–5 лет)</div>
+            <div class="roadmap-title">Куда поступить?</div>
+            <ul class="roadmap-tags">
+              <li>🏛️ МФТИ — информационная безопасность</li>
+              <li>🏛️ ВШЭ — кибербезопасность и цифровые технологии</li>
+              <li>🏛️ ИТМО — защита информации и сетевые технологии</li>
+              <li>Получи сертификат CEH / CompTIA Security+ во время учёбы</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-6">6</div>
+          <div class="roadmap-card rs-6">
+            <div class="roadmap-age">💼 Первая работа</div>
+            <div class="roadmap-title">Старт карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Junior Pentest-инженер в IT-компании</li>
+              <li>Аналитик информационной безопасности в банке</li>
+              <li>Специалист ИБ в Касперском или Яндексе</li>
+              <li>Bug Bounty охотник на HackerOne / Bugcrowd</li>
+            </ul>
+            <div class="roadmap-salary">💰 100–180 тыс. руб/мес</div>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-7">7</div>
+          <div class="roadmap-card rs-7">
+            <div class="roadmap-age">🚀 Через 10 лет</div>
+            <div class="roadmap-title">Вершина карьеры</div>
+            <ul class="roadmap-tags">
+              <li>CISO — директор по информационной безопасности</li>
+              <li>Собственная компания по кибербезопасности</li>
+              <li>Эксперт международного Bug Bounty (доход в USD)</li>
+              <li>Советник по кибербезопасности для госструктур</li>
+            </ul>
+            <div class="roadmap-salary">💰 300–700 тыс. руб/мес</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="career-next-step">
+      <h3>🎯 Что делать дальше?</h3>
+      <p>Защити цифровой мир! Пройди тест и узнай, подходит ли тебе профессия кибер-защитника!</p>
+      <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
+      <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+      <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
+    </div>
 
     <div class="career-nav">
       <a href="space-explorer.html" class="btn-glass-dark">Следующая профессия →</a>
@@ -223,3 +352,4 @@
 <script type="module" src="script.js"></script>
 </body>
 </html>
+
