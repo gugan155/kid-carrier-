@@ -1,0 +1,691 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="home app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link active">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row">
+        <span>📖 Уроков</span>
+        <span id="sb-lessons">0</span>
+      </div>
+      <div class="sidebar-prog-row">
+        <span>🔓 Симуляций</span>
+        <span id="sb-sims">0</span>
+      </div>
+      <div class="sidebar-prog-row">
+        <span>⭐ XP</span>
+        <span id="sb-xp">0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Мобильная навигация">
+    <a href="index.html"    class="mbn-item active"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <div class="bg-shapes" aria-hidden="true">
+      <span class="shape s1">⭐</span>
+      <span class="shape s2">💜</span>
+      <span class="shape s3">✨</span>
+      <span class="shape s4">⭐</span>
+      <span class="shape s5">🔵</span>
+      <span class="shape s6">✨</span>
+      <span class="shape s7">💜</span>
+      <span class="shape s8">⭐</span>
+    </div>
+
+    <!-- name popup -->
+    <div class="name-popup-overlay" id="name-overlay">
+      <div class="name-popup">
+
+        <!-- Ввод имени — только русский -->
+        <div id="name-step">
+          <div class="name-popup-icon">🤖</div>
+          <h2 id="welcome-title">Добро пожаловать в КарьераЛаб!</h2>
+          <p class="name-popup-sub" id="welcome-sub">Исследуй профессии будущего и зарабатывай XP!</p>
+          <div class="name-popup-steps">
+            <div class="name-step"><span class="step-icon">🔭</span><span class="step-text" id="step-text-1"><strong>Изучи</strong> 6 профессий будущего</span></div>
+            <div class="name-step"><span class="step-icon">🎮</span><span class="step-text" id="step-text-2"><strong>Пройди</strong> симуляции карьер</span></div>
+            <div class="name-step"><span class="step-icon">🏆</span><span class="step-text" id="step-text-3"><strong>Зарабатывай</strong> XP и повышай уровень</span></div>
+          </div>
+          <p class="name-popup-ask" id="welcome-ask">Как тебя зовут?</p>
+          <input type="text" id="name-input" placeholder="Введи своё имя..." maxlength="20" autocomplete="off" />
+          <button class="btn-main" id="name-submit">Поехали! 🚀</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ HERO STORY SCENE ═══ -->
+    <header class="hero-banner hero-story" id="hero-section">
+      <div class="hero-banner-overlay"></div>
+
+      <!-- Depth layer: floating orbs -->
+      <div class="hero-orbs" aria-hidden="true">
+        <span class="hero-orb orb-1"></span>
+        <span class="hero-orb orb-2"></span>
+        <span class="hero-orb orb-3"></span>
+      </div>
+
+      <div class="hero-banner-content hero-story-content">
+        <span class="hero-badge hero-story-badge">
+          <span class="hero-badge-dot"></span>
+          🚀 Карьерная Лаборатория
+        </span>
+        <h1 class="hero-story-title" id="hero-title">Твоё будущее<br>начинается сегодня</h1>
+        <p class="hero-sub hero-story-sub" id="header-subtitle">Исследуй профессии через интерактивные симуляции</p>
+
+        <!-- Ani integrated into hero -->
+        <div class="hero-ani-row" aria-hidden="true">
+          <div class="hero-ani-bubble">Привет! Давай начнём! 👋</div>
+          <div class="hero-ani-avatar">🤖</div>
+        </div>
+
+        <div class="hero-actions hero-story-actions">
+          <button class="btn-main btn-hero-primary" id="start-onboarding-btn">
+            <span class="btn-icon">🚀</span>
+            <span>Начать</span>
+          </button>
+        </div>
+
+        <p class="hero-hint">Пройди симуляции и узнай, какая профессия тебе подходит</p>
+
+        <!-- Scroll hint -->
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <span class="scroll-hint-line"></span>
+          <span class="scroll-hint-text">Прокрути вниз</span>
+          <span class="scroll-hint-arrow">↓</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- ═══ XP TOP BAR ═══ -->
+      <div class="xp-topbar" id="xp-topbar" style="display:none">
+        <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div>
+        </div>
+        <div class="xp-label" id="xp-label">0 XP</div>
+      </div>
+
+      <!-- ═══ PROGRESS DASHBOARD ═══ -->
+      <section class="section-block dash-section" id="progress-dashboard" style="display:none">
+        <div style="max-width:900px;margin:0 auto">
+          <span class="section-badge">� Мой прогресс</span>
+          <div class="dash-grid" id="dash-grid">
+            <div class="dash-card" id="dash-points"><span class="dash-icon">⭐</span><span class="dash-val" id="dp-points">0</span><span class="dash-label">Очков</span></div>
+            <div class="dash-card" id="dash-streak"><span class="dash-icon">🔥</span><span class="dash-val" id="dp-streak">0</span><span class="dash-label">Дней подряд</span></div>
+            <div class="dash-card" id="dash-quizzes"><span class="dash-icon">🧠</span><span class="dash-val" id="dp-quizzes">0</span><span class="dash-label">Тестов</span></div>
+            <div class="dash-card" id="dash-sims"><span class="dash-icon">🎮</span><span class="dash-val" id="dp-sims">0</span><span class="dash-label">Симуляций</span></div>
+          </div>
+          <div class="dash-badges" id="dash-badges"></div>
+          <div class="dash-level" id="dash-level-bar"></div>
+        </div>
+      </section>
+
+
+
+
+
+      <!-- ═══ DAILY CAREER DISCOVERY ═══ -->
+      <section class="section-block career-discovery-section" id="career-discovery-section" data-ani-msg="Выбери профессию дня! Каждый день — новое приключение! 🌟">
+        <div class="career-discovery-inner">
+          <div class="career-discovery-header">
+            <span class="section-badge cd-badge">🌟 Миссия дня</span>
+            <h2 class="career-discovery-title">Какой путь выберешь сегодня?</h2>
+            <p class="career-discovery-sub">Каждая карточка — новое приключение. Нажми и начни!</p>
+          </div>
+          <div class="career-discovery-track">
+            <div class="cd-cards-scroll">
+              <a href="drone-pilot.html" class="cd-card cd-card--sky">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🚁</div>
+                <div class="cd-card-tag">Небо</div>
+                <h3 class="cd-card-title">Пилот дрона</h3>
+                <p class="cd-card-desc">Управляй беспилотниками и исследуй мир с высоты</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+              <a href="cyber-defender.html" class="cd-card cd-card--cyber">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🛡️</div>
+                <div class="cd-card-tag">Технологии</div>
+                <h3 class="cd-card-title">Кибер-защитник</h3>
+                <p class="cd-card-desc">Защищай интернет от хакеров и вирусов</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+              <a href="space-explorer.html" class="cd-card cd-card--space">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🌌</div>
+                <div class="cd-card-tag">Космос</div>
+                <h3 class="cd-card-title">Исследователь</h3>
+                <p class="cd-card-desc">Открывай новые планеты и звёзды</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+              <a href="robotics-engineer.html" class="cd-card cd-card--robot">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🤖</div>
+                <div class="cd-card-tag">Инженерия</div>
+                <h3 class="cd-card-title">Инженер-робот</h3>
+                <p class="cd-card-desc">Создавай роботов, которые помогают людям</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+              <a href="game-designer.html" class="cd-card cd-card--game">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🎮</div>
+                <div class="cd-card-tag">Творчество</div>
+                <h3 class="cd-card-title">Гейм-дизайнер</h3>
+                <p class="cd-card-desc">Придумывай и создавай крутые игры</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+              <a href="doctor.html" class="cd-card cd-card--robot">
+                <div class="cd-card-glow"></div>
+                <div class="cd-card-icon">🩺</div>
+                <div class="cd-card-tag">Медицина</div>
+                <h3 class="cd-card-title">Врач</h3>
+                <p class="cd-card-desc">Помогай людям и спасай жизни каждый день</p>
+                <div class="cd-card-footer">
+                  <span class="cd-card-xp">+30 XP</span>
+                  <span class="cd-card-arrow">→</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ DAILY LEARNING ═══ -->
+      <section class="section-block teal-section" id="daily-section">
+        <span class="section-badge">📚 Урок дня</span>
+        <h2 class="section-title-sm">Узнай что-то новое сегодня!</h2>
+        <div id="daily-panel" style="max-width:680px;margin:0 auto"></div>
+      </section>
+
+      <!-- ═══ DAILY MISSIONS ═══ -->
+      <section class="section-block daily-missions-section" id="daily-missions-section">
+        <div style="max-width:900px;margin:0 auto">
+          <span class="section-badge">🎯 Ежедневные миссии</span>
+          <h2 class="section-title-sm">Выполняй задания и зарабатывай XP!</h2>
+          <div class="missions-grid" id="daily-missions-container"></div>
+        </div>
+      </section>
+
+
+
+      <!-- ═══ REAL HERO STORY BLOCK ═══ -->
+      <section class="section-block hero-story-block" id="hero-story-block">
+        <div class="hsb-inner">
+          <!-- Achiever spotlight -->
+          <div class="hsb-spotlight reveal-on-scroll">
+            <div class="hsb-avatar-wrap">
+              <div class="hsb-avatar">🚀</div>
+              <div class="hsb-avatar-ring"></div>
+            </div>
+            <div class="hsb-quote-card">
+              <div class="hsb-quote-mark">"</div>
+              <p class="hsb-quote-text">Я начал с простого вопроса: кем я хочу стать? Теперь я знаю — инженером, который строит роботов для помощи людям.</p>
+              <div class="hsb-quote-author">
+                <span class="hsb-author-name">Алексей, 13 лет</span>
+                <span class="hsb-author-role">🤖 Будущий инженер-робот</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats row -->
+          <div class="hsb-stats reveal-on-scroll">
+            <div class="hsb-stat">
+              <span class="hsb-stat-num">5</span>
+              <span class="hsb-stat-label">профессий<br>для изучения</span>
+            </div>
+            <div class="hsb-stat-divider"></div>
+            <div class="hsb-stat">
+              <span class="hsb-stat-num">10+</span>
+              <span class="hsb-stat-label">симуляций<br>и заданий</span>
+            </div>
+            <div class="hsb-stat-divider"></div>
+            <div class="hsb-stat">
+              <span class="hsb-stat-num">∞</span>
+              <span class="hsb-stat-label">возможностей<br>для тебя</span>
+            </div>
+          </div>
+
+          <!-- Story cards row -->
+          <div class="hsb-stories reveal-on-scroll">
+            <div class="hsb-story-card">
+              <span class="hsb-story-icon">🌱</span>
+              <h4>Начни с нуля</h4>
+              <p>Не нужно ничего знать заранее. Анюша проведёт тебя шаг за шагом.</p>
+            </div>
+            <div class="hsb-story-card">
+              <span class="hsb-story-icon">🔥</span>
+              <h4>Зарабатывай XP</h4>
+              <p>Каждое задание приносит очки. Поднимайся по уровням и открывай награды.</p>
+            </div>
+            <div class="hsb-story-card">
+              <span class="hsb-story-icon">🏆</span>
+              <h4>Стань героем</h4>
+              <p>Пройди все профессии и получи звание «Легенда Карьерной Лаборатории».</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ QUIZ PROMO SECTION ═══ -->
+      <section class="section-block blue-section" id="quiz-section" data-ani-msg="Попробуй тест! Узнай свою профессию! 🧠">
+        <div class="section-inner-flex">
+          <div class="section-text">
+            <span class="section-badge">😊 Пройти тест</span>
+            <h2>Узнай свою профессию!</h2>
+            <p>Ответь на 10 вопросов и получи персональный результат с объяснением.</p>
+            <a href="quiz.html" class="btn-main" style="margin-top:20px">Начать тест →</a>
+          </div>
+          <div class="section-emoji" aria-hidden="true">🧠</div>
+        </div>
+      </section>
+
+      <!-- ═══ LEARNING HUB PROMO ═══ -->
+      <section class="section-block teal-section" id="learn-promo-section" data-ani-msg="Учись с Анюшей! Открывай новые симуляции! 📚">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">📚</div>
+          <div class="section-text">
+            <span class="section-badge">📚 Центр Обучения</span>
+            <h2>Учись и открывай симуляции!</h2>
+            <p>Пройди уроки по профессиям — и разблокируй симуляции. Чем больше знаешь, тем больше можешь!</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+              <a href="learn.html" class="btn-main">📖 Начать обучение</a>
+              <a href="play.html" class="btn-glass-dark">🎮 Симуляции</a>
+              <div class="learn-unlock-status" id="learn-unlock-status"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SIMULATIONS SECTION ═══ -->
+      <section class="section-block pink-section" id="sim-section" data-ani-msg="Давай поиграем! Попробуй симуляцию! 🎮">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">🎮</div>
+          <div class="section-text">
+            <span class="section-badge">🎮 Симуляции</span>
+            <h2>Попробуй себя в деле!</h2>
+            <p>5 профессий, реальные сценарии, XP за каждый шаг. Стань пилотом, программистом или инженером прямо сейчас!</p>
+            <a href="play.html" class="btn-main" style="margin-top:20px;display:inline-flex;align-items:center;gap:8px">
+              <span>🎮</span><span>Играть →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- ═══ MINI QUIZ SECTION ═══ -->
+      <section class="section-block teal-section">
+        <span class="section-badge">⚡ Быстрый тест</span>
+        <h2 class="section-title-sm">Кто ты за 2 вопроса?</h2>
+        <p class="section-sub">Быстрый результат — без регистрации!</p>
+        <div class="mini-quiz-inner">
+          <div class="mq-step active" id="mq-step-1">
+            <p class="mq-question">Что тебе больше нравится?</p>
+            <div class="mq-options">
+              <button class="mq-btn" data-step="1" data-val="tech">💻 Технологии</button>
+              <button class="mq-btn" data-step="1" data-val="sky">🌤️ Небо и полёты</button>
+              <button class="mq-btn" data-step="1" data-val="space">🌌 Космос</button>
+              <button class="mq-btn" data-step="1" data-val="create">🎨 Создавать</button>
+            </div>
+          </div>
+          <div class="mq-step" id="mq-step-2">
+            <p class="mq-question">Какой ты человек?</p>
+            <div class="mq-options">
+              <button class="mq-btn" data-step="2" data-val="logic">🧩 Логик</button>
+              <button class="mq-btn" data-step="2" data-val="hands">🛠️ Мастер</button>
+              <button class="mq-btn" data-step="2" data-val="dream">💡 Мечтатель</button>
+              <button class="mq-btn" data-step="2" data-val="brave">🦁 Смелый</button>
+            </div>
+          </div>
+          <div class="mq-step mq-result" id="mq-result">
+            <div class="mq-result-icon" id="mq-result-icon">😊</div>
+            <h3>Твоя профессия:</h3>
+            <p class="mq-result-name" id="mq-result-name"></p>
+            <a class="btn-main" id="mq-result-link" href="#">Узнать подробнее</a>
+            <br/><br/>
+            <button class="btn-glass-dark" id="mq-restart">Попробовать снова</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SKILL LAB SECTION ═══ -->
+      <section class="section-block skill-lab-section" id="skill-lab-section" data-ani-msg="Попробуй Лабораторию навыков! Учись шаг за шагом! 🧪">
+        <span class="section-badge">🧪 Лаборатория навыков</span>
+        <h2 class="section-title">Прокачай свои навыки!</h2>
+        <p class="section-sub">Выбери модуль и учись шаг за шагом — от новичка до эксперта!</p>
+        <div class="skill-modules-grid" id="skill-modules-grid">
+          <button class="skill-module-card" data-module="logic">
+            <span class="skill-module-icon">🧩</span>
+            <span class="skill-module-name">Логика</span>
+            <span class="skill-module-desc">Задачи и головоломки</span>
+            <span class="skill-module-level" id="sml-logic">Ур. 1</span>
+          </button>
+          <button class="skill-module-card" data-module="creative">
+            <span class="skill-module-icon">🎨</span>
+            <span class="skill-module-name">Творчество</span>
+            <span class="skill-module-desc">Дизайн и идеи</span>
+            <span class="skill-module-level" id="sml-creative">Ур. 1</span>
+          </button>
+          <button class="skill-module-card" data-module="science">
+            <span class="skill-module-icon">🔬</span>
+            <span class="skill-module-name">Наука</span>
+            <span class="skill-module-desc">Эксперименты и открытия</span>
+            <span class="skill-module-level" id="sml-science">Ур. 1</span>
+          </button>
+          <button class="skill-module-card" data-module="social">
+            <span class="skill-module-icon">🤝</span>
+            <span class="skill-module-name">Общение</span>
+            <span class="skill-module-desc">Лидерство и команда</span>
+            <span class="skill-module-level" id="sml-social">Ур. 1</span>
+          </button>
+        </div>
+      </section>
+      <div class="modal-overlay hidden" id="skill-lab-modal">
+        <div class="modal-box skill-lab-modal-box">
+          <button class="modal-close" id="close-skill-lab">✕</button>
+          <div id="skill-lab-content"></div>
+        </div>
+      </div>
+
+      <!-- ═══ AI MENTOR SECTION ═══ -->
+      <section class="section-block purple-section" id="ai-mentor-home">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">🤖</div>
+          <div class="section-text">
+            <span class="section-badge">🤖 AI Ментор</span>
+            <h2>Персональный план развития</h2>
+            <p>Пройди тест и получи персональные рекомендации от AI ментора — карьерный путь, навыки и ресурсы специально для тебя!</p>
+            <a href="quiz.html" class="btn-main" style="margin-top:20px">Получить план →</a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- ═══ LEADERBOARD SECTION ═══ -->
+      <section class="section-block blue-section" id="leaderboard-section">
+        <div style="max-width:600px;margin:0 auto;text-align:center">
+          <span class="section-badge">🏆 Таблица лидеров</span>
+          <h2 class="section-title-sm">Топ-5 исследователей</h2>
+          <div class="leaderboard-box" id="leaderboard-list">
+            <div class="lb-empty">Загрузка...</div>
+          </div>
+          <button class="btn-glass-dark" id="view-feedback-btn" style="margin-top:20px">📋 Посмотреть все отзывы</button>
+        </div>
+      </section>
+
+
+
+      <!-- ═══ FEEDBACK FORM SECTION ═══ -->
+      <section class="section-block teal-section" id="feedback-section">
+        <div style="max-width:560px;margin:0 auto">
+          <span class="section-badge">💬 Обратная связь</span>
+          <h2 class="section-title-sm">Расскажи нам что думаешь!</h2>
+          <p class="section-sub">Твоё мнение помогает сделать CareerLab лучше 🌟</p>
+          <div class="feedback-form-card">
+            <form id="feedback-form" class="feedback-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fb-name">Твоё имя *</label>
+                  <input type="text" id="fb-name" placeholder="Напиши имя..." maxlength="40" required />
+                </div>
+                <div class="form-group">
+                  <label for="fb-email">Email (необязательно)</label>
+                  <input type="email" id="fb-email" placeholder="твой@email.com" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="fb-msg">Твоё мнение *</label>
+                <textarea id="fb-msg" placeholder="Что понравилось? Что можно улучшить?..." maxlength="500" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn-main" style="width:100%;margin-top:4px">Отправить отзыв 💬</button>
+            </form>
+            <div id="feedback-success" class="feedback-success hidden">
+              <div class="success-icon">🎉</div>
+              <h3>Спасибо за отзыв!</h3>
+              <p>Твоё мнение очень важно для нас 💜</p>
+              <button class="btn-glass-dark" id="fb-send-another" style="margin-top:12px">Написать ещё</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feedback viewer modal -->
+      <div class="modal-overlay hidden" id="feedback-modal">
+        <div class="modal-box feedback-modal-box">
+          <button class="modal-close" id="close-feedback-modal">✕</button>
+          <h2>📋 Все отзывы</h2>
+          <p class="sim-desc" id="fb-modal-count">Загрузка...</p>
+          <div id="fb-modal-list" class="fb-modal-list"></div>
+          <button class="btn-glass-dark" id="fb-clear-btn" style="margin-top:16px;width:100%">🗑️ Очистить все отзывы</button>
+        </div>
+      </div>
+
+      <!-- ═══ MISSION LAUNCH CTA ═══ -->
+      <section class="section-block mission-launch-section" id="mission-launch-section">
+        <div class="mission-launch-inner">
+          <div class="mission-launch-bg" aria-hidden="true">
+            <span class="ml-orb ml-orb-1"></span>
+            <span class="ml-orb ml-orb-2"></span>
+          </div>
+          <div class="mission-launch-content reveal-on-scroll">
+            <div class="mission-launch-icon">🚀</div>
+            <h2 class="mission-launch-title">Начни сегодняшнюю миссию</h2>
+            <p class="mission-launch-sub">Каждый день — новый шаг к твоей мечте. Анюша уже ждёт тебя!</p>
+            <div class="mission-launch-actions">
+              <a href="learn.html" class="btn-main btn-launch">
+                <span>📖 Начать обучение</span>
+                <span class="btn-launch-arrow">→</span>
+              </a>
+              <a href="quiz.html" class="btn-glass btn-launch-secondary">🧠 Пройти тест</a>
+            </div>
+            <div class="mission-launch-trust">
+              <span>⭐ Бесплатно</span>
+              <span class="ml-dot">·</span>
+              <span>🔒 Безопасно</span>
+              <span class="ml-dot">·</span>
+              <span>🎮 Интересно</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<!-- ═══ ANI CHARACTER (fixed to body) ═══ -->
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Привет! Нажми на меня! 😊</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Выключить голос Анюши">🔊</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script>
+/* Phase 4A — scroll reveal for .reveal-on-scroll elements */
+(function(){
+  if(!window.IntersectionObserver) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('revealed');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.18 });
+  document.querySelectorAll('.reveal-on-scroll').forEach(function(el){ obs.observe(el); });
+  /* Re-run after DOM is fully ready (for dynamically added elements) */
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.reveal-on-scroll').forEach(function(el){ obs.observe(el); });
+  });
+})();
+</script>
+<script type="module" src="script.js"></script>
+  <!-- ═══ BULLETPROOF ONBOARDING FALLBACK ═══
+       Runs as plain JS (no modules) so it works on file:// and localhost.
+       If script.js loads fine, it will rebind and override this — that's OK.
+       This guarantees the name popup ALWAYS works no matter what.
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+  /* Onboarding fallback — только русский язык */
+  (function(){
+    var lt = {
+      title:'Добро пожаловать в КарьераЛаб!',
+      sub:'Исследуй профессии будущего и зарабатывай XP!',
+      ask:'Как тебя зовут?', ph:'Введи своё имя...', btn:'Поехали! 🚀',
+      s1:'<strong>Изучи</strong> 6 профессий будущего',
+      s2:'<strong>Пройди</strong> симуляции карьер',
+      s3:'<strong>Зарабатывай</strong> XP и повышай уровень',
+      err:'Пожалуйста, введи своё имя! 😊',
+      cel_h:function(n){return 'Привет, '+n+'!';},
+      cel_xp:'Ты получил <strong style="color:#7c3aed">+10 XP</strong> за регистрацию!',
+      cel_sub:'Готов исследовать профессии? 🚀', cel_go:'Вперёд! 🚀'
+    };
+    function ge(id){return document.getElementById(id);}
+    function applyLT(){
+      if(ge('welcome-title')) ge('welcome-title').textContent=lt.title;
+      if(ge('welcome-sub'))   ge('welcome-sub').textContent=lt.sub;
+      if(ge('welcome-ask'))   ge('welcome-ask').textContent=lt.ask;
+      if(ge('name-input'))    ge('name-input').placeholder=lt.ph;
+      if(ge('name-submit'))   ge('name-submit').textContent=lt.btn;
+      if(ge('step-text-1'))   ge('step-text-1').innerHTML=lt.s1;
+      if(ge('step-text-2'))   ge('step-text-2').innerHTML=lt.s2;
+      if(ge('step-text-3'))   ge('step-text-3').innerHTML=lt.s3;
+    }
+    function klReady(fn){
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn);
+      else fn();
+    }
+    klReady(function(){
+      var overlay=ge('name-overlay');
+      if(!overlay) return;
+      try{localStorage.setItem('kl_lang','ru');}catch(e){}
+      var saved='';
+      try{saved=localStorage.getItem('kl_name')||'';}catch(e){}
+      try{if(!saved)saved=sessionStorage.getItem('kl_name_session')||'';}catch(e){}
+      if(saved){ overlay.style.display='none'; applyNameFB(saved); return; }
+      overlay.style.display='flex';
+      applyLT();
+      setTimeout(function(){var inp=ge('name-input');if(inp)inp.focus();},100);
+      bindName();
+
+      function bindName(){
+        var btn=ge('name-submit'); var inp=ge('name-input');
+        if(!btn||!inp||btn.dataset.fbbound) return;
+        btn.dataset.fbbound='1';
+        function doSubmit(){
+          var v=inp.value.trim();
+          if(!v){inp.style.border='2px solid #e53e3e';inp.placeholder=lt.err;inp.focus();setTimeout(function(){inp.style.border='';inp.placeholder=lt.ph;},2000);return;}
+          try{localStorage.setItem('kl_name',v);}catch(e){}
+          try{sessionStorage.setItem('kl_name_session',v);}catch(e){}
+          overlay.style.transition='opacity 0.3s ease-out';overlay.style.opacity='0';
+          setTimeout(function(){overlay.style.display='none';applyNameFB(v);showCelFB(v);},300);
+        }
+        btn.addEventListener('click',doSubmit);
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')doSubmit();});
+      }
+    });
+
+    function applyNameFB(name){
+      var ht=ge('hero-title');
+      if(ht) ht.textContent='Привет, '+name+'! 🚀';
+      document.querySelectorAll('.user-name-display').forEach(function(el){el.textContent=name;});
+    }
+    function showCelFB(name){
+      var old=ge('kl-celebrate'); if(old) old.remove();
+      var cel=document.createElement('div'); cel.id='kl-celebrate';
+      cel.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center';
+      var safe=name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      cel.innerHTML='<div style="background:#fff;border-radius:20px;padding:2rem 2.5rem;text-align:center;max-width:320px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)"><div style="font-size:56px;margin-bottom:12px">🎉</div><h2 style="font-size:22px;margin-bottom:8px;color:#1a1a2e">'+lt.cel_h(safe)+'</h2><p style="color:#555;margin-bottom:8px">'+lt.cel_xp+'</p><p style="color:#888;font-size:13px;margin-bottom:20px">'+lt.cel_sub+'</p><button id="kl-cel-go" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:12px 32px;font-size:16px;font-weight:700;cursor:pointer;width:100%">'+lt.cel_go+'</button></div>';
+      document.body.appendChild(cel);
+      ge('kl-cel-go').addEventListener('click',function(){cel.style.opacity='0';cel.style.transition='opacity 0.2s';setTimeout(function(){cel.remove();},200);});
+    }
+  })();
+  </script>
+</body>
+</html>
+

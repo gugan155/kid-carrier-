@@ -1,0 +1,1 @@
+export const _log=()=>{};export const _warn=()=>{};export const _err=console.error.bind(console);

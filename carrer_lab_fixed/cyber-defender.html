@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Кибер-защитник — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link active">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header cyber-bg" data-ani-msg="Кибер-защитники охраняют интернет! 🛡️ Узнай как!">
+      <span class="career-icon">🛡️</span>
+      <h1>Кибер-защитник</h1>
+      <p>Страж цифрового мира</p>
+    </header>
+
+    <main class="career-content">
+    <div class="xp-topbar" id="xp-topbar" style="display:none">
+      <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+      <div class="xp-label" id="xp-label">0 XP</div>
+    </div>
+
+    <div class="career-path-bar">
+      <span class="path-step active">🌱 Новичок</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">📚 Ученик</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🔍 Знаток</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🏆 Эксперт</span>
+    </div>
+
+    <div class="career-story-hook" data-ani-msg="Это история про настоящего героя! 🛡️">
+      <div class="career-story-hook-label">📖 История</div>
+      <p class="career-story-hook-text">Ночь. Хакеры атакуют больницу — пытаются заблокировать системы жизнеобеспечения. Тысячи пациентов под угрозой. Но в команде безопасности есть ты — кибер-защитник. За 20 минут ты находишь уязвимость, блокируешь атаку и восстанавливаешь системы. Никто не пострадал. Это не кино — это реальная работа специалиста по кибербезопасности.</p>
+    </div>
+
+    <section class="career-section" data-ani-msg="Кибер-защитники — герои цифрового мира! 🛡️">
+      <h2>Чем занимается кибер-защитник?</h2>
+      <p>Специалист по кибербезопасности защищает компьютерные системы, данные и сети от хакеров, вирусов и кибератак. Без таких специалистов интернет был бы очень опасным местом!</p>
+      <div class="career-impact-box">
+        <span class="impact-icon">🌍</span>
+        <div><strong>Влияние на мир:</strong> Кибер-защитники охраняют банки, больницы и правительства от атак. Без них миллионы людей потеряли бы свои данные!</div>
+      </div>
+    </section>
+
+    <section class="career-section" data-ani-msg="Навыки кибер-защитника — это суперсила! 💻">
+      <h2>🛠️ Навыки</h2>
+      <div class="skills-grid">
+        <div class="skill-card hard">
+          <div class="skill-card-icon">⚙️</div>
+          <div class="skill-card-name">Технические</div>
+          <ul class="skill-list">
+            <li>✅ Анализ угроз и уязвимостей</li>
+            <li>✅ Программирование (Python, C++)</li>
+            <li>✅ Настройка файрволов и защиты</li>
+            <li>✅ Этичный хакинг (пентестинг)</li>
+          </ul>
+        </div>
+        <div class="skill-card soft">
+          <div class="skill-card-icon">🧠</div>
+          <div class="skill-card-name">Мягкие навыки</div>
+          <ul class="skill-list">
+            <li>✅ Аналитическое мышление</li>
+            <li>✅ Внимание к деталям</li>
+            <li>✅ Стрессоустойчивость</li>
+            <li>✅ Постоянное самообучение</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Путь обучения</h2>
+      <div class="learning-path">
+        <div class="lp-step">
+          <div class="lp-num">1</div>
+          <div class="lp-content">
+            <strong>Начинающий</strong>
+            <p>Основы сетей (TCP/IP), Linux, базовое программирование</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">2</div>
+          <div class="lp-content">
+            <strong>Средний</strong>
+            <p>CTF-соревнования, анализ вредоносного ПО, криптография</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">3</div>
+          <div class="lp-content">
+            <strong>Продвинутый</strong>
+            <p>Сертификация CEH/OSCP, пентестинг, работа в SOC-центре</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>🌟 Интересные факты</h2>
+      <div class="fact-box">🛡️ Каждые 39 секунд в мире происходит кибератака!</div>
+      <div class="fact-box">💰 Кибербезопасность — одна из самых высокооплачиваемых IT-профессий!</div>
+      <div class="fact-box">🕵️ Этичные хакеры помогают компаниям найти уязвимости до злоумышленников!</div>
+      <div class="fact-box">🌐 К 2025 году нехватка кибер-специалистов составит 3,5 миллиона человек!</div>
+    </section>
+
+    <!-- INTERACTIVE MICRO-EXERCISE -->
+    <section class="career-section career-exercise-section" id="cyber-exercise">
+      <h2>🎯 Мини-задание: Проверь себя!</h2>
+      <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+      <div class="career-micro-quiz" id="cyber-micro-quiz">
+        <div class="micro-q active" data-q="0">
+          <p class="micro-question">Что такое фишинг?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false" data-explain="Не совсем! "Фишинг" звучит как "fishing" (рыбалка), но это интернет-мошенничество для кражи паролей.">Вид рыбалки</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Фишинг — это когда злоумышленники создают поддельные сайты или письма, чтобы украсть твои данные. 🎣">Обман пользователей для кражи паролей</button>
+            <button class="micro-opt" data-correct="false" data-explain="Фишинг — это не вирус, а метод обмана. Но его результат может быть таким же опасным!">Тип вируса</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="1">
+          <p class="micro-question">Какой пароль самый надёжный?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false" data-explain="Этот пароль взламывается за секунды! Хакеры проверяют простые пароли первыми. Никогда так не делай! 🚫">123456</button>
+            <button class="micro-opt" data-correct="false" data-explain=""password" — один из самых популярных и опасных паролей. Хакеры знают его наизусть!">password</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Случайный набор символов, цифр и букв — самый надёжный пароль. Используй менеджер паролей! 🔐">Xk9#mP2!qR</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="2">
+          <p class="micro-question">Что делает файрвол?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Файрвол — это защитный барьер между твоим компьютером и интернетом. Он фильтрует опасные подключения. 🛡️">Блокирует нежелательный сетевой трафик</button>
+            <button class="micro-opt" data-correct="false" data-explain="Файрвол не ускоряет интернет — он его фильтрует. Иногда может даже немного замедлить.">Ускоряет интернет</button>
+            <button class="micro-opt" data-correct="false" data-explain="Пароли хранит менеджер паролей, а не файрвол. У каждого инструмента своя задача!">Хранит пароли</button>
+          </div>
+        </div>
+        <div class="micro-result hidden" id="cyber-micro-result"></div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Что нужно изучить?</h2>
+      <div class="study-cards">
+        <span class="study-card">Программирование (Python, C++)</span>
+        <span class="study-card">Сети и протоколы</span>
+        <span class="study-card">Операционные системы</span>
+        <span class="study-card">Математика и логика</span>
+      </div>
+    </section>
+
+    <!-- ═══ КАРЬЕРНЫЙ ПУТЬ ═══ -->
+    <section class="career-section roadmap-section" id="career-roadmap">
+      <h2>🗺️ Твой путь к профессии кибер-защитника</h2>
+      <p class="roadmap-intro">📍 Россия входит в топ-5 стран по кибератакам. Специалисты по информационной безопасности нужны везде — в банках, госструктурах и IT-компаниях!</p>
+      <div class="roadmap-timeline">
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-1">1</div>
+          <div class="roadmap-card rs-1">
+            <div class="roadmap-age">🌱 Возраст 10–12 лет</div>
+            <div class="roadmap-title">Мир кибербезопасности!</div>
+            <ul class="roadmap-tags">
+              <li>Узнай что такое хакер и как защищаться в сети</li>
+              <li>Начни программировать на Scratch или Python</li>
+              <li>Смотри: YouTube-канал «Computerphile»</li>
+              <li>Играй в игры по интернет-безопасности</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-2">2</div>
+          <div class="roadmap-card rs-2">
+            <div class="roadmap-age">📚 Возраст 12–14 лет</div>
+            <div class="roadmap-title">Строй фундамент!</div>
+            <ul class="roadmap-tags">
+              <li>Python: пароли, основы шифрования</li>
+              <li>Как работает интернет — TCP/IP протоколы</li>
+              <li>Попробуй задания CTF на TryHackMe</li>
+              <li>Установи и изучи Linux (Ubuntu)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-3">3</div>
+          <div class="roadmap-card rs-3">
+            <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+            <div class="roadmap-title">Школьный фокус</div>
+            <ul class="roadmap-tags">
+              <li>⭐ Информатика (обязательно!)</li>
+              <li>⭐ Математика (логика + криптография)</li>
+              <li>Физика (сетевое оборудование)</li>
+              <li>Участвуй в хакатонах и олимпиадах по ИБ</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-4">4</div>
+          <div class="roadmap-card rs-4">
+            <div class="roadmap-age">📝 Возраст 16–18 лет</div>
+            <div class="roadmap-title">Подготовка к поступлению</div>
+            <ul class="roadmap-tags">
+              <li>ЕГЭ по информатике и математике (профильный)</li>
+              <li>Тренируйся на HackTheBox, TryHackMe</li>
+              <li>Глубоко изучи командную строку Linux</li>
+              <li>Олимпиады по информатике (ВСОШ)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-5">5</div>
+          <div class="roadmap-card rs-5">
+            <div class="roadmap-age">🎓 Университет (4–5 лет)</div>
+            <div class="roadmap-title">Куда поступить?</div>
+            <ul class="roadmap-tags">
+              <li>🏛️ МФТИ — информационная безопасность</li>
+              <li>🏛️ ВШЭ — кибербезопасность и цифровые технологии</li>
+              <li>🏛️ ИТМО — защита информации и сетевые технологии</li>
+              <li>Получи сертификат CEH / CompTIA Security+ во время учёбы</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-6">6</div>
+          <div class="roadmap-card rs-6">
+            <div class="roadmap-age">💼 Первая работа</div>
+            <div class="roadmap-title">Старт карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Junior Pentest-инженер в IT-компании</li>
+              <li>Аналитик информационной безопасности в банке</li>
+              <li>Специалист ИБ в Касперском или Яндексе</li>
+              <li>Bug Bounty охотник на HackerOne / Bugcrowd</li>
+            </ul>
+            <div class="roadmap-salary">💰 100–180 тыс. руб/мес</div>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-7">7</div>
+          <div class="roadmap-card rs-7">
+            <div class="roadmap-age">🚀 Через 10 лет</div>
+            <div class="roadmap-title">Вершина карьеры</div>
+            <ul class="roadmap-tags">
+              <li>CISO — директор по информационной безопасности</li>
+              <li>Собственная компания по кибербезопасности</li>
+              <li>Эксперт международного Bug Bounty (доход в USD)</li>
+              <li>Советник по кибербезопасности для госструктур</li>
+            </ul>
+            <div class="roadmap-salary">💰 300–700 тыс. руб/мес</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="career-next-step">
+      <h3>🎯 Что делать дальше?</h3>
+      <p>Защити цифровой мир! Пройди тест и узнай, подходит ли тебе профессия кибер-защитника!</p>
+      <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
+      <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+      <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
+    </div>
+
+    <div class="career-nav">
+      <a href="space-explorer.html" class="btn-glass-dark">Следующая профессия →</a>
+      <a href="quiz.html" class="btn-main">Пройти квиз</a>
+    </div>
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Защищай интернет — будь героем цифрового мира! 🛡️</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
+

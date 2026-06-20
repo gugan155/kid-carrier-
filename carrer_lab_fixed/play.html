@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Симуляции — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="play-page app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link active">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row">
+        <span>📖 Уроков</span>
+        <span id="sb-lessons">0</span>
+      </div>
+      <div class="sidebar-prog-row">
+        <span>🔓 Симуляций</span>
+        <span id="sb-sims">0</span>
+      </div>
+      <div class="sidebar-prog-row">
+        <span>⭐ XP</span>
+        <span id="sb-xp">0</span>
+      </div>
+    </div>
+  </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item active"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <!-- floating bg shapes -->
+    <div class="bg-shapes" aria-hidden="true">
+      <span class="shape s1">🎮</span>
+      <span class="shape s2">🚁</span>
+      <span class="shape s3">🛡️</span>
+      <span class="shape s4">✨</span>
+      <span class="shape s5">🚀</span>
+      <span class="shape s6">⭐</span>
+      <span class="shape s7">🤖</span>
+      <span class="shape s8">💡</span>
+    </div>
+
+    <main>
+
+      <!-- Journey progress indicator -->
+      <div class="journey-steps">
+        <div class="journey-step done">
+          <div class="js-num">✓</div>
+          <div class="js-label">🧠 Тест</div>
+        </div>
+        <div class="journey-line done"></div>
+        <div class="journey-step done">
+          <div class="js-num">✓</div>
+          <div class="js-label">📚 Учёба</div>
+        </div>
+        <div class="journey-line done"></div>
+        <div class="journey-step active">
+          <div class="js-num">3</div>
+          <div class="js-label">🎮 Игра</div>
+        </div>
+      </div>
+
+      <!-- ═══ MISSION CONTROL HEADER ═══ -->
+      <header class="play-header play-mission-header">
+        <!-- Depth orbs -->
+        <div class="pmh-orbs" aria-hidden="true">
+          <span class="pmh-orb pmh-orb-1"></span>
+          <span class="pmh-orb pmh-orb-2"></span>
+          <span class="pmh-orb pmh-orb-3"></span>
+        </div>
+        <!-- Scanline texture -->
+        <div class="pmh-scanlines" aria-hidden="true"></div>
+
+        <div class="play-header-content pmh-content">
+          <span class="hero-badge pmh-badge">
+            <span class="pmh-live-dot"></span>
+            🎮 Центр Симуляций
+          </span>
+          <h1 class="pmh-title">Симуляции профессий</h1>
+          <p class="pmh-sub">Пройди уроки в Центре Обучения — и открывай симуляции!</p>
+
+          <!-- Readiness indicators row -->
+          <div class="pmh-readiness-row" aria-label="Статус миссий">
+            <div class="pmh-readiness-chip pmh-chip--active">
+              <span class="pmh-chip-dot"></span>
+              <span>Система готова</span>
+            </div>
+            <div class="pmh-readiness-chip">
+              <span>🔓</span>
+              <span id="pmh-unlock-count">0 / 5</span>
+              <span>открыто</span>
+            </div>
+            <div class="pmh-readiness-chip">
+              <span>🎯</span>
+              <span>Выбери миссию</span>
+            </div>
+          </div>
+
+          <!-- Mission badges -->
+          <div class="pmh-mission-badges" aria-hidden="true">
+            <span class="pmh-mbadge pmh-mbadge--sky">🚁 Небо</span>
+            <span class="pmh-mbadge pmh-mbadge--cyber">🛡️ Кибер</span>
+            <span class="pmh-mbadge pmh-mbadge--space">🚀 Космос</span>
+            <span class="pmh-mbadge pmh-mbadge--game">🎮 Игра</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ═══ UNLOCK PROGRESS ═══ -->
+      <section class="play-unlock-section play-unlock-section-premium">
+        <div class="learn-container">
+          <div class="play-unlock-bar play-unlock-bar-premium" id="play-unlock-bar">
+            <div class="pub-left">
+              <span class="pub-icon">🔓</span>
+              <span class="play-unlock-text" id="play-unlock-text">Загрузка...</span>
+            </div>
+            <a href="learn.html" class="btn-glass-dark pub-learn-btn" style="font-size:0.85rem;padding:8px 18px">📚 Учиться →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SIMULATION CARDS ═══ -->
+      <section class="play-sims-section play-sims-section-premium">
+        <div class="learn-container">
+          <div class="pss-header">
+            <h2 class="pss-title">🎯 Выбери симуляцию</h2>
+            <p class="pss-sub">Каждая симуляция — реальный опыт профессии</p>
+          </div>
+          <div class="play-sims-grid" id="play-sims-grid">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ MODALS ═══ -->
+      <div class="modal-overlay hidden" id="it-sim-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-it-sim">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">💻</span>
+            <span class="smp-topbar-title">IT Симуляция</span>
+            <span class="smp-topbar-badge smp-badge--blue">Программирование</span>
+          </div>
+          <p class="sim-desc smp-desc">Ты — программист. Реши задачу!</p>
+          <div id="it-sim-content"></div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="pilot-sim-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-pilot-sim">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🚁</span>
+            <span class="smp-topbar-title">Симуляция пилота</span>
+            <span class="smp-topbar-badge smp-badge--indigo">Полёт</span>
+          </div>
+          <p class="sim-desc smp-desc">Управляй дроном! Выполни все этапы полёта.</p>
+          <div id="pilot-sim-content"></div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="drone-sim-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-drone-sim">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🚀</span>
+            <span class="smp-topbar-title">Карьера Дрон-Пилота</span>
+            <span class="smp-topbar-badge smp-badge--pink">Карьера</span>
+          </div>
+          <p class="sim-desc smp-desc">Пройди 4 уровня и стань профессиональным пилотом!</p>
+          <div id="drone-sim-content"></div>
+        </div>
+      </div>
+
+      <!-- Drone Game — full game layout with Ani coach panel -->
+      <div class="modal-overlay hidden" id="drone-game-modal">
+        <div class="modal-box drone-game-modal-box sim-modal-premium sim-modal-game">
+          <button class="modal-close" id="close-drone-game">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🎮</span>
+            <span class="smp-topbar-title">Доставь посылку!</span>
+            <span class="smp-topbar-badge smp-badge--amber">Игра</span>
+          </div>
+          <p class="sim-desc smp-desc">Управляй дроном — избегай препятствий и достигни цели!</p>
+          <div class="drone-game-layout">
+            <div class="drone-game-area">
+              <div class="dg-hud" id="dg-hud">
+                <span class="dg-hud-timer" id="dg-timer">⏱ 30</span>
+                <span class="dg-hud-diff" id="dg-difficulty">🟡 Обычный</span>
+                <span class="dg-hud-score" id="dg-score">⭐ 0</span>
+              </div>
+              <canvas id="drone-game-canvas" width="480" height="320"></canvas>
+              <div class="dg-mission-screen hidden" id="dg-mission-screen">
+                <div class="dg-mission-card" id="dg-mission-card">
+                  <div class="dg-mission-icon" id="dg-mission-icon">🎉</div>
+                  <h3 class="dg-mission-title" id="dg-mission-title">Миссия выполнена!</h3>
+                  <div class="dg-score-summary" id="dg-score-summary"></div>
+                  <button class="btn-main dg-retry-btn" id="dg-retry">🔄 Попробовать снова</button>
+                </div>
+              </div>
+              <div class="drone-game-controls">
+                <button class="dg-ctrl-btn" id="dg-btn-up"    data-key="ArrowUp">▲</button>
+                <div class="dg-ctrl-row">
+                  <button class="dg-ctrl-btn" id="dg-btn-left"  data-key="ArrowLeft">◀</button>
+                  <button class="dg-ctrl-btn" id="dg-btn-down"  data-key="ArrowDown">▼</button>
+                  <button class="dg-ctrl-btn" id="dg-btn-right" data-key="ArrowRight">▶</button>
+                </div>
+              </div>
+            </div>
+            <!-- Ani Coach panel -->
+            <div class="game-coach-panel coach-panel-premium" id="game-coach-panel">
+              <div class="coach-header">
+                <div class="coach-avatar-wrap">
+                  <img src="images/ani.png" alt="Анюша" class="coach-avatar" />
+                  <span class="coach-online-dot"></span>
+                </div>
+                <div>
+                  <div class="coach-name">Анюша</div>
+                  <div class="coach-role">Тренер · онлайн</div>
+                </div>
+              </div>
+              <div class="coach-messages" id="coach-messages">
+                <div class="coach-msg">Давай доставим посылку! Избегай препятствий и достигни цели! 🚁</div>
+              </div>
+              <div class="coach-tips">
+                <div class="coach-tip">⬆️⬇️⬅️➡️ Стрелки или кнопки</div>
+                <div class="coach-tip">🟡 Жёлтая площадка — цель</div>
+                <div class="coach-tip">🌳 Зелёные блоки — препятствия</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="cyber-sim-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-cyber-sim">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🛡️</span>
+            <span class="smp-topbar-title">Кибер Симуляция</span>
+            <span class="smp-topbar-badge smp-badge--green">Безопасность</span>
+          </div>
+          <p class="sim-desc smp-desc">Защити цифровой мир от хакеров!</p>
+          <div id="cyber-sim-content"></div>
+        </div>
+      </div>
+
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<!-- ═══ ANI CHARACTER (fixed bottom-right) ═══ -->
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Привет! Я твой тренер Анюша! 🎮</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+
+<!-- ═══ VOICE TOGGLE ═══ -->
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<!-- ═══ STT MIC BUTTON ═══ -->
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script>
+/* Phase 4C — sync pmh-unlock-count from play-unlock-text */
+document.addEventListener('DOMContentLoaded', function() {
+  var src = document.getElementById('play-unlock-text');
+  var dst = document.getElementById('pmh-unlock-count');
+  if (!src || !dst) return;
+  var obs = new MutationObserver(function() {
+    var t = src.textContent || '';
+    var m = t.match(/(\d+)\s*из\s*(\d+)/);
+    if (m) dst.textContent = m[1] + ' / ' + m[2];
+    else if (t.includes('все')) dst.textContent = '5 / 5';
+  });
+  obs.observe(src, { childList: true, characterData: true, subtree: true });
+});
+</script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
+

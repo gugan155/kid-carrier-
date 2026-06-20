@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Инженер-робототехник — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label">Главная</span>
+      </a>
+      <a href="learn.html" class="sidebar-link">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Обучение</span>
+      </a>
+      <a href="play.html" class="sidebar-link">
+        <span class="sidebar-icon">🎮</span>
+        <span class="sidebar-label">Симуляции</span>
+      </a>
+      <a href="quiz.html" class="sidebar-link">
+        <span class="sidebar-icon">🧠</span>
+        <span class="sidebar-label">Тест</span>
+      </a>
+      <a href="explorer.html" class="sidebar-link active">
+        <span class="sidebar-icon">🔭</span>
+        <span class="sidebar-label">Профессии</span>
+      </a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header robot-bg" data-ani-msg="Роботы — это будущее! 🤖 Ты можешь их создавать!">
+      <span class="career-icon">🤖</span>
+      <h1>Инженер-робототехник</h1>
+      <p>Создатель роботов будущего</p>
+    </header>
+
+    <main class="career-content">
+    <div class="xp-topbar" id="xp-topbar" style="display:none">
+      <div class="xp-level-badge" id="xp-level-badge">Ур. 1</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+      <div class="xp-label" id="xp-label">0 XP</div>
+    </div>
+
+    <!-- CAREER PATH BAR -->
+    <div class="career-path-bar">
+      <span class="path-step active">🌱 Новичок</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">📚 Ученик</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🔍 Знаток</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step">🏆 Эксперт</span>
+    </div>
+
+    <div class="career-story-hook" data-ani-msg="Роботы уже меняют мир! 🤖 Ты можешь их создавать!">
+      <div class="career-story-hook-label">📖 История</div>
+      <p class="career-story-hook-text">Землетрясение. Под завалами — люди. Спасатели не могут пробраться — слишком опасно. Но ты — инженер-робототехник. Твой робот-разведчик проникает в узкие щели, находит выживших и передаёт координаты. Благодаря твоей машине спасены 12 человек. Роботы — это не просто технологии. Это продолжение человеческой заботы и смелости.</p>
+    </div>
+
+    <section class="career-section" data-ani-msg="Инженеры-робототехники создают будущее! 🤖">
+      <h2>Чем занимается инженер-робототехник?</h2>
+      <p>Робототехники проектируют, строят и программируют роботов для медицины, промышленности, сельского хозяйства и даже домашнего использования. Это одна из самых востребованных профессий XXI века!</p>
+      <div class="career-impact-box">
+        <span class="impact-icon">🌍</span>
+        <div><strong>Влияние на мир:</strong> Роботы уже делают операции точнее людей, помогают спасателям и работают на заводах — освобождая людей для творческих задач!</div>
+      </div>
+    </section>
+
+    <section class="career-section" data-ani-msg="Навыки робототехника — это сила и творчество! ⚙️">
+      <h2>🛠️ Навыки</h2>
+      <div class="skills-grid">
+        <div class="skill-card hard">
+          <div class="skill-card-icon">⚙️</div>
+          <div class="skill-card-name">Технические</div>
+          <ul class="skill-list">
+            <li>✅ Проектирование механических систем</li>
+            <li>✅ Программирование (ROS, Python, C++)</li>
+            <li>✅ Электроника и схемотехника</li>
+            <li>✅ 3D-моделирование и печать</li>
+          </ul>
+        </div>
+        <div class="skill-card soft">
+          <div class="skill-card-icon">🧠</div>
+          <div class="skill-card-name">Мягкие навыки</div>
+          <ul class="skill-list">
+            <li>✅ Системное мышление</li>
+            <li>✅ Решение сложных задач</li>
+            <li>✅ Командная работа</li>
+            <li>✅ Творческий подход</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Путь обучения</h2>
+      <div class="learning-path">
+        <div class="lp-step">
+          <div class="lp-num">1</div>
+          <div class="lp-content">
+            <strong>Начинающий</strong>
+            <p>Физика, механика, основы электроники, первые схемы на Arduino</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">2</div>
+          <div class="lp-content">
+            <strong>Средний</strong>
+            <p>Python и C++ для роботов, 3D-моделирование, сборка прототипов</p>
+          </div>
+        </div>
+        <div class="lp-step">
+          <div class="lp-num">3</div>
+          <div class="lp-content">
+            <strong>Продвинутый</strong>
+            <p>ROS (Robot Operating System), ИИ для роботов, участие в соревнованиях FIRST/WRO</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>🌟 Интересные факты</h2>
+      <div class="fact-box">🤖 Роботы уже делают операции в больницах точнее, чем люди!</div>
+      <div class="fact-box">🏭 На заводах Tesla работают тысячи роботов-сборщиков!</div>
+      <div class="fact-box">🐕 Существуют роботы-собаки, которые помогают спасателям!</div>
+      <div class="fact-box">💰 Инженеры-робототехники зарабатывают от 120 000 руб/мес!</div>
+    </section>
+
+    <!-- INTERACTIVE MICRO-EXERCISE -->
+    <section class="career-section career-exercise-section" id="robot-exercise">
+      <h2>🎯 Мини-задание: Проверь себя!</h2>
+      <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+      <div class="career-micro-quiz" id="robot-micro-quiz">
+        <div class="micro-q active" data-q="0">
+          <p class="micro-question">Какой язык программирования чаще всего используют робототехники?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false" data-explain="HTML — язык для веб-страниц, не для роботов. Роботам нужны языки, работающие с железом!">HTML</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Python удобен для быстрой разработки, C++ — для скорости. Оба широко используются в робототехнике! 🤖">Python / C++</button>
+            <button class="micro-opt" data-correct="false" data-explain="Excel — это таблицы. Для программирования роботов нужны настоящие языки программирования!">Excel</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="1">
+          <p class="micro-question">Что такое Arduino?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false" data-explain="Это описание внешности, а не назначения. Сенсор — это электронный компонент с конкретной функцией.">Вид робота</button>
+            <button class="micro-opt" data-correct="false" data-explain="Программы для рисования не помогают роботам. Сенсор — это физический компонент внутри робота.">Программа для рисования</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Arduino — популярная платформа для создания роботов и электронных устройств. Очень удобна для начинающих! ⚡">Платформа для создания электронных устройств</button>
+          </div>
+        </div>
+        <div class="micro-q" data-q="2">
+          <p class="micro-question">Сколько степеней свободы у руки промышленного робота?</p>
+          <div class="micro-options">
+            <button class="micro-opt" data-correct="false" data-explain="Слишком мало! Рука с 1–2 степенями свободы может двигаться только в одной плоскости — это слишком ограниченно для сложных задач.">1–2</button>
+            <button class="micro-opt" data-correct="false" data-explain="Три степени свободы — это уже лучше, но промышленным роботам нужно гораздо больше, чтобы повторять движения человеческой руки.">3</button>
+            <button class="micro-opt" data-correct="true" data-explain="Правильно! Промышленный робот-манипулятор обычно имеет 6 и более степеней свободы — это позволяет ему двигаться как человеческая рука и выполнять сложные задачи! 🤖">6 и более</button>
+          </div>
+        </div>
+        <div class="micro-result hidden" id="robot-micro-result"></div>
+      </div>
+    </section>
+
+    <section class="career-section">
+      <h2>📚 Что нужно изучить?</h2>
+      <div class="study-cards">
+        <span class="study-card">Физика и механика</span>
+        <span class="study-card">Программирование</span>
+        <span class="study-card">Электроника</span>
+        <span class="study-card">Математика</span>
+      </div>
+    </section>
+
+    <!-- ═══ КАРЬЕРНЫЙ ПУТЬ ═══ -->
+    <section class="career-section roadmap-section" id="career-roadmap">
+      <h2>🗺️ Твой путь к профессии инженера-робототехника</h2>
+      <p class="roadmap-intro">📍 Рынок робототехники в России растёт стремительно. Промышленность, медицина и ОПК ищут инженеров, которые умеют строить роботов!</p>
+      <div class="roadmap-timeline">
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-1">1</div>
+          <div class="roadmap-card rs-1">
+            <div class="roadmap-age">🌱 Возраст 10–12 лет</div>
+            <div class="roadmap-title">Начни строить!</div>
+            <ul class="roadmap-tags">
+              <li>Наборы LEGO Mindstorms или EV3</li>
+              <li>Arduino Starter Kit — мигай первым светодиодом!</li>
+              <li>Scratch — анимируй робота</li>
+              <li>Смотри: видео Boston Dynamics на YouTube</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-2">2</div>
+          <div class="roadmap-card rs-2">
+            <div class="roadmap-age">📚 Возраст 12–14 лет</div>
+            <div class="roadmap-title">Практические проекты</div>
+            <ul class="roadmap-tags">
+              <li>Собери робота-следопыта на Arduino</li>
+              <li>Участвуй в Олимпиаде роботов (WRO)</li>
+              <li>Школьная ярмарка науки — проект «роботная рука»</li>
+              <li>Raspberry Pi — собери метеостанцию</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-3">3</div>
+          <div class="roadmap-card rs-3">
+            <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+            <div class="roadmap-title">Школьный фокус</div>
+            <ul class="roadmap-tags">
+              <li>⭐ Физика (механика, электроника — обязательно!)</li>
+              <li>⭐ Математика (математический анализ, линейная алгебра)</li>
+              <li>Информатика (программирование)</li>
+              <li>Электроника — собирай датчики и моторы</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-4">4</div>
+          <div class="roadmap-card rs-4">
+            <div class="roadmap-age">📝 Возраст 16–18 лет</div>
+            <div class="roadmap-title">Подготовка к поступлению</div>
+            <ul class="roadmap-tags">
+              <li>ЕГЭ по физике и математике (профильный)</li>
+              <li>Олимпиады по физике и информатике (ВСОШ)</li>
+              <li>Изучи основы ROS (Robot Operating System)</li>
+              <li>3D-печать — проектируй и печатай детали роботов</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-5">5</div>
+          <div class="roadmap-card rs-5">
+            <div class="roadmap-age">🎓 Университет (4–5 лет)</div>
+            <div class="roadmap-title">Куда поступить?</div>
+            <ul class="roadmap-tags">
+              <li>🏛️ МВТУ им. Баумана — мехатроника и робототехника</li>
+              <li>🏛️ СПбПУ Петра Великого — робототехника и автоматика</li>
+              <li>🏛️ УрФУ Екатеринбург — машиностроение и мехатроника</li>
+              <li>Стажировка в Яндекс Роботикс или Сбербанк Роботикс</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-6">6</div>
+          <div class="roadmap-card rs-6">
+            <div class="roadmap-age">💼 Первая работа</div>
+            <div class="roadmap-title">Старт карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Инженер-робототехник в Яндексе или Сбере</li>
+              <li>Специалист по промышленной автоматизации на заводе</li>
+              <li>Разработчик роботов в стартапе</li>
+              <li>Инженер медицинских роботов</li>
+            </ul>
+            <div class="roadmap-salary">💰 100–180 тыс. руб/мес</div>
+          </div>
+        </div>
+
+        <div class="roadmap-stage">
+          <div class="roadmap-num rn-7">7</div>
+          <div class="roadmap-card rs-7">
+            <div class="roadmap-age">🚀 Через 10 лет</div>
+            <div class="roadmap-title">Вершина карьеры</div>
+            <ul class="roadmap-tags">
+              <li>Ведущий архитектор робототехнических систем</li>
+              <li>Технический директор собственного стартапа</li>
+              <li>Профессор и исследователь в лаборатории робототехники</li>
+              <li>Старший консультант по роботам для ОПК России</li>
+            </ul>
+            <div class="roadmap-salary">💰 250–500 тыс. руб/мес</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="career-next-step">
+      <h3>🎯 Что делать дальше?</h3>
+      <p>Будущее работает на роботах — и ты можешь их строить! Пройди тест и найди свою профессию!</p>
+      <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
+      <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+      <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
+    </div>
+
+    <div class="career-nav">
+      <a href="game-designer.html" class="btn-glass-dark">Следующая профессия →</a>
+      <a href="quiz.html" class="btn-main">Пройти квиз</a>
+    </div>
+    </main>
+  </div><!-- /.app-main -->
+</div><!-- /.app-shell -->
+
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Роботы — это будущее, и ты можешь его создать! 🤖</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="lazy" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,388 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://api.anthropic.com https://api.openai.com https://api.groq.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Врач — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Doctor page extra styles */
+    .doctor-bg { background: linear-gradient(135deg, #B71C2A 0%, #E63946 55%, #FF6B6B 100%); }
+    .facts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .fact-card { background: var(--bg-card, #fff); border-radius: 14px; padding: 18px 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-top: 4px solid #E63946; }
+    .fact-card .fact-emoji { font-size: 1.8rem; margin-bottom: 6px; }
+    .fact-card .fact-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #888; }
+    .fact-card .fact-value { font-size: 0.95rem; font-weight: 700; margin-top: 4px; }
+    .day-list { background: var(--bg-card, #fff); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 24px; }
+    .day-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; }
+    .day-item:last-child { border-bottom: none; }
+    .day-time { font-size: 12px; font-weight: 800; color: #E63946; white-space: nowrap; min-width: 46px; padding-top: 2px; }
+    .day-text { font-size: 0.92rem; }
+    .cool-strip { background: linear-gradient(135deg, #2A9D8F 0%, #21867A 100%); color: #fff; border-radius: 16px; padding: 24px 22px; margin: 24px 0; }
+    .cool-strip h3 { font-size: 1rem; font-weight: 800; margin-bottom: 12px; }
+    .cool-strip ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .cool-strip li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; opacity: 0.95; }
+    .cool-strip li::before { content: '✦'; color: #FFD166; flex-shrink: 0; margin-top: 2px; }
+    @media (max-width: 520px) {
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .day-item { flex-direction: column; gap: 3px; }
+    }
+  </style>
+</head>
+<body class="app-layout">
+
+<!-- ═══ GLOBAL TOP NAVBAR ═══ -->
+<nav class="app-navbar" id="app-navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-icon">🚀</span>
+    <span class="nav-logo-text">КарьераЛаб</span>
+  </a>
+  <div class="nav-xp-bar" id="nav-xp-bar">
+    <div class="nav-level-badge" id="nav-level-badge">🌱 Ур.1</div>
+    <div class="nav-bar-wrap">
+      <div class="nav-bar-fill" id="nav-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="nav-xp-label" id="nav-xp-label">0 XP</div>
+  </div>
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Меню">☰</button>
+</nav>
+
+<!-- ═══ APP SHELL ═══ -->
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span><span class="sidebar-label">Главная</span></a>
+      <a href="learn.html" class="sidebar-link"><span class="sidebar-icon">📚</span><span class="sidebar-label">Обучение</span></a>
+      <a href="play.html"  class="sidebar-link"><span class="sidebar-icon">🎮</span><span class="sidebar-label">Симуляции</span></a>
+      <a href="quiz.html"  class="sidebar-link"><span class="sidebar-icon">🧠</span><span class="sidebar-label">Тест</span></a>
+      <a href="explorer.html" class="sidebar-link active"><span class="sidebar-icon">🔭</span><span class="sidebar-label">Профессии</span></a>
+    </nav>
+    <div class="sidebar-progress" id="sidebar-progress">
+      <div class="sidebar-prog-label">Мой прогресс</div>
+      <div class="sidebar-prog-row"><span>📖 Уроков</span><span id="sb-lessons">0</span></div>
+      <div class="sidebar-prog-row"><span>🔓 Симуляций</span><span id="sb-sims">0</span></div>
+      <div class="sidebar-prog-row"><span>⭐ XP</span><span id="sb-xp">0</span></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="index.html"    class="mbn-item"><span class="mbn-icon">🏠</span><span class="mbn-label">Главная</span></a>
+    <a href="play.html"     class="mbn-item"><span class="mbn-icon">🎮</span><span class="mbn-label">Играть</span></a>
+    <a href="learn.html"    class="mbn-item"><span class="mbn-icon">📚</span><span class="mbn-label">Учёба</span></a>
+    <a href="explorer.html" class="mbn-item active"><span class="mbn-icon">🔍</span><span class="mbn-label">Профессии</span></a>
+    <a href="quiz.html"     class="mbn-item"><span class="mbn-icon">📝</span><span class="mbn-label">Тест</span></a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="app-main">
+
+    <header class="career-header doctor-bg" data-ani-msg="Врачи спасают жизни каждый день! 🩺 Может это твоё призвание?">
+      <span class="career-icon">🩺</span>
+      <h1>Врач</h1>
+      <p>Настоящий супергерой без плаща — только со стетоскопом!</p>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:18px">
+        <span style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);border-radius:100px;padding:5px 14px;font-size:0.8rem;font-weight:600">🎓 Медицинский вуз</span>
+        <span style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);border-radius:100px;padding:5px 14px;font-size:0.8rem;font-weight:600">💰 Стабильная зарплата</span>
+        <span style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);border-radius:100px;padding:5px 14px;font-size:0.8rem;font-weight:600">🌍 Нужен везде в мире</span>
+        <span style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);border-radius:100px;padding:5px 14px;font-size:0.8rem;font-weight:600">❤️ Спасаешь жизни</span>
+      </div>
+    </header>
+
+    <main class="career-content">
+
+      <!-- BREADCRUMB -->
+      <nav class="career-breadcrumb" aria-label="Навигация">
+        <a href="index.html">🏠 Главная</a>
+        <span class="bc-sep">›</span>
+        <a href="explorer.html">🔭 Профессии</a>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">🩺 Врач</span>
+      </nav>
+
+      <div class="career-path-bar">
+        <span class="path-step active">🌱 Новичок</span><span class="path-arrow">→</span>
+        <span class="path-step">📚 Студент</span><span class="path-arrow">→</span>
+        <span class="path-step">🔍 Ординатор</span><span class="path-arrow">→</span>
+        <span class="path-step">🏆 Врач</span>
+      </div>
+
+      <!-- STORY HOOK -->
+      <div class="career-story-hook" data-ani-msg="Слушай эту историю — она может стать твоей! 🩺">
+        <div class="career-story-hook-label">📖 История</div>
+        <p class="career-story-hook-text">Представь: <strong>три утра, скорая мчится по пустому городу</strong>, и только ты знаешь, что нужно сделать, чтобы спасти человека. Сердце колотится, руки уже знают что делать — потому что ты врач. Это не кино. Это может быть твоя жизнь.</p>
+      </div>
+
+      <!-- БЫСТРЫЕ ФАКТЫ -->
+      <section class="career-section">
+        <h2>⚡ Быстрые факты</h2>
+        <div class="facts-grid">
+          <div class="fact-card"><div class="fact-emoji">📚</div><div class="fact-label">Учёба</div><div class="fact-value">6 лет в вузе + ординатура</div></div>
+          <div class="fact-card"><div class="fact-emoji">💵</div><div class="fact-label">Зарплата</div><div class="fact-value">от 60 000 до 300 000 ₽/мес</div></div>
+          <div class="fact-card"><div class="fact-emoji">🏥</div><div class="fact-label">Где работать</div><div class="fact-value">больницы, клиники, скорая, стартапы</div></div>
+          <div class="fact-card"><div class="fact-emoji">🔬</div><div class="fact-label">Специальностей</div><div class="fact-value">более 100 — от хирурга до психиатра</div></div>
+          <div class="fact-card"><div class="fact-emoji">🌐</div><div class="fact-label">Спрос</div><div class="fact-value">врачи нужны в любой стране мира</div></div>
+          <div class="fact-card"><div class="fact-emoji">🤖</div><div class="fact-label">Будущее</div><div class="fact-value">ИИ помогает, но не заменяет врача</div></div>
+        </div>
+      </section>
+
+      <!-- ДЕНЬ ИЗ ЖИЗНИ -->
+      <section class="career-section">
+        <h2>🕐 Один день из жизни педиатра</h2>
+        <div class="day-list">
+          <div class="day-item"><span class="day-time">08:00</span><span class="day-text">☕ Кофе на ходу — и уже первый пациент. Маленький Миша с температурой 39.</span></div>
+          <div class="day-item"><span class="day-time">09:30</span><span class="day-text">📋 Обход в отделении: проверяешь анализы, смотришь как выздоравливают ребята.</span></div>
+          <div class="day-item"><span class="day-time">11:00</span><span class="day-text">🩻 Разбираешь рентген-снимки — настоящий детектив, только вместо преступника — болезнь.</span></div>
+          <div class="day-item"><span class="day-time">13:00</span><span class="day-text">🥗 Обед — 20 минут, если повезёт. Зато потом интересный клинический случай!</span></div>
+          <div class="day-item"><span class="day-time">15:00</span><span class="day-text">💻 Читаешь новую научную статью о лечении. Медицина меняется каждый год!</span></div>
+          <div class="day-item"><span class="day-time">17:00</span><span class="day-text">🎉 Выписываешь пациента домой здоровым. Это лучший момент всего дня!</span></div>
+        </div>
+      </section>
+
+      <!-- НАВЫКИ -->
+      <section class="career-section">
+        <h2>🛠️ Навыки</h2>
+        <div class="skills-grid">
+          <div class="skill-card hard">
+            <div class="skill-card-icon">🧠</div>
+            <div class="skill-card-name">Технические</div>
+            <ul class="skill-list">
+              <li>✅ Анатомия и физиология человека</li>
+              <li>✅ Диагностика и лечение болезней</li>
+              <li>✅ Работа с медицинским оборудованием</li>
+              <li>✅ Чтение анализов и снимков</li>
+            </ul>
+          </div>
+          <div class="skill-card soft">
+            <div class="skill-card-icon">❤️</div>
+            <div class="skill-card-name">Мягкие навыки</div>
+            <ul class="skill-list">
+              <li>✅ Эмпатия и умение слушать</li>
+              <li>✅ Быстрые решения под давлением</li>
+              <li>✅ Внимание к деталям</li>
+              <li>✅ Любовь к постоянному обучению</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ИНТЕРЕСНЫЕ ФАКТЫ -->
+      <section class="career-section">
+        <div class="cool-strip">
+          <h3>🤯 Вот это факты!</h3>
+          <ul>
+            <li>Самая древняя операция произошла около 7000 лет назад — люди делали трепанацию черепа!</li>
+            <li>Человеческое тело содержит около 37 триллионов клеток. Врачи знают как работает каждая.</li>
+            <li>Робот-хирург da Vinci проводит операции через разрезы размером с монету — но управляет им врач!</li>
+            <li>Некоторые врачи работают в Антарктиде и космосе — медицина нужна буквально везде.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ПУТЬ ОБУЧЕНИЯ -->
+      <section class="career-section">
+        <h2>📚 Путь обучения</h2>
+        <div class="learning-path">
+          <div class="lp-step"><div class="lp-num">1</div><div class="lp-content"><strong>Школа</strong><p>Биология, химия, физика — это фундамент. Чем лучше знаешь, тем легче в вузе.</p></div></div>
+          <div class="lp-step"><div class="lp-num">2</div><div class="lp-content"><strong>Медицинский вуз (6 лет)</strong><p>Анатомия, фармакология, хирургия. Первые пациенты, первый опыт.</p></div></div>
+          <div class="lp-step"><div class="lp-num">3</div><div class="lp-content"><strong>Ординатура (2 года)</strong><p>Работаешь с реальными пациентами под наблюдением опытных врачей.</p></div></div>
+        </div>
+      </section>
+
+      <!-- КВИЗ -->
+      <section class="career-section career-exercise-section" id="doctor-exercise">
+        <h2>🎯 Мини-задание: Проверь себя!</h2>
+        <p class="exercise-intro">Анюша подготовила для тебя задание. Ответь правильно — получи XP! 🌟</p>
+        <div class="career-micro-quiz" id="doctor-micro-quiz">
+          <div class="micro-q active" data-q="0">
+            <p class="micro-question">Как называется прибор, которым врач слушает сердце и лёгкие?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false" data-explain="Нет, тонометр измеряет давление крови — тоже важный инструмент, но не для прослушивания!">🩸 Тонометр</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Точно! Стетоскоп изобрёл французский врач Рене Лаэннек в 1816 году. До этого врачи просто прикладывали ухо к груди пациента!">🔊 Стетоскоп</button>
+              <button class="micro-opt" data-correct="false" data-explain="Нет! Флюорограф — это аппарат для рентгена лёгких. Его не держат в кармане халата 😄">📷 Флюорограф</button>
+            </div>
+          </div>
+          <div class="micro-q" data-q="1">
+            <p class="micro-question">Сколько лет нужно учиться в медицинском университете в России?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false" data-explain="4 года — это бакалавриат в других специальностях. Медицина требует дольше — там нужно изучить ОЧЕНЬ много!">📅 4 года</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Верно! 6 лет в вузе, а потом ещё 2 года ординатуры. Итого минимум 8 лет подготовки. Зато ты настоящий профессионал! 🎓">📅 6 лет</button>
+              <button class="micro-opt" data-correct="false" data-explain="3 года — это слишком мало даже чтобы выучить все 206 костей скелета! Врачи учатся намного дольше.">📅 3 года</button>
+            </div>
+          </div>
+          <div class="micro-q" data-q="2">
+            <p class="micro-question">Какой врач специализируется на болезнях детей?</p>
+            <div class="micro-options">
+              <button class="micro-opt" data-correct="false" data-explain="Терапевт лечит взрослых с самыми разными болезнями. Это тоже классная специальность, но не детская!">🧑‍⚕️ Терапевт</button>
+              <button class="micro-opt" data-correct="false" data-explain="Невролог — специалист по нервной системе. Он работает и со взрослыми, и с детьми, но это не его главная специализация.">🧠 Невролог</button>
+              <button class="micro-opt" data-correct="true"  data-explain="Ура! Педиатр — это врач для детей от рождения до 18 лет. Слово от греческого «пайс» — ребёнок. Педиатры — одни из самых терпеливых людей на планете! 👶">👶 Педиатр</button>
+            </div>
+          </div>
+          <div class="micro-result hidden" id="doctor-micro-result"></div>
+        </div>
+      </section>
+
+      <!-- ЧТО ИЗУЧАТЬ -->
+      <section class="career-section">
+        <h2>📚 Что нужно изучить?</h2>
+        <div class="study-cards">
+          <span class="study-card">Биология и химия</span>
+          <span class="study-card">Анатомия человека</span>
+          <span class="study-card">Психология общения</span>
+          <span class="study-card">Латинский язык</span>
+        </div>
+      </section>
+
+      <!-- ═══ CAREER ROADMAP ═══ -->
+      <section class="career-section roadmap-section" id="career-roadmap">
+        <h2>🗺️ Твой путь к профессии врача</h2>
+        <p class="roadmap-intro">📍 Врач — одна из самых уважаемых профессий в мире. Вот как стать им!</p>
+        <div class="roadmap-timeline">
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-1">1</div>
+            <div class="roadmap-card rs-1">
+              <div class="roadmap-age">🌱 Возраст 8–10 лет</div>
+              <div class="roadmap-title">Познакомься с медициной!</div>
+              <ul class="roadmap-tags">
+                <li>Узнай названия костей и органов</li>
+                <li>Книга «Атлас человеческого тела для детей»</li>
+                <li>Курс первой помощи (Red Cross Kids)</li>
+                <li>Волонтёрство в медицинских лагерях</li>
+                <li>Игра Operation или Doctor Panda</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-2">2</div>
+            <div class="roadmap-card rs-2">
+              <div class="roadmap-age">📚 Возраст 11–13 лет</div>
+              <div class="roadmap-title">Строй научную базу!</div>
+              <ul class="roadmap-tags">
+                <li>Кружок биологии и химии</li>
+                <li>Олимпиада по биологии</li>
+                <li>Сертификат первой помощи</li>
+                <li>Посещение больницы с родителями</li>
+                <li>Эксперименты с микроскопом</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-3">3</div>
+            <div class="roadmap-card rs-3">
+              <div class="roadmap-age">🏫 Возраст 14–16 лет</div>
+              <div class="roadmap-title">Ключевые школьные предметы</div>
+              <ul class="roadmap-tags">
+                <li>⭐ Биология (ОБЯЗАТЕЛЬНО для НМЕТ/NEET)</li>
+                <li>⭐ Химия (обязательно!)</li>
+                <li>⭐ Физика (обязательно!)</li>
+                <li>Начни решать тесты NEET/ЕГЭ</li>
+                <li>Изучи строение клетки и ДНК</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-4">4</div>
+            <div class="roadmap-card rs-4">
+              <div class="roadmap-age">📝 Возраст 17–18 лет</div>
+              <div class="roadmap-title">Подготовка к поступлению</div>
+              <ul class="roadmap-tags">
+                <li>ЕГЭ: Биология + Химия + Русский (Россия)</li>
+                <li>NEET: Biology + Chemistry + Physics (Индия)</li>
+                <li>Цель по NEET — 650+ из 720 баллов</li>
+                <li>Выбери специальность (терапевт, хирург…)</li>
+                <li>Курс по анатомии онлайн (Khan Academy)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-5">5</div>
+            <div class="roadmap-card rs-5">
+              <div class="roadmap-age">🎓 Медицинский вуз (5.5–6 лет)</div>
+              <div class="roadmap-title">Куда поступить?</div>
+              <ul class="roadmap-tags">
+                <li>🇷🇺 Первый МГМУ им. Сеченова</li>
+                <li>🇷🇺 СПбГМУ им. Павлова</li>
+                <li>🇮🇳 AIIMS Delhi (топ-1 в Индии!)</li>
+                <li>🇮🇳 CMC Vellore</li>
+                <li>🇮🇳 JIPMER Puducherry</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-6">6</div>
+            <div class="roadmap-card rs-6">
+              <div class="roadmap-age">💼 Первая работа</div>
+              <div class="roadmap-title">Старт карьеры</div>
+              <ul class="roadmap-tags">
+                <li>Врач-интерн или ординатор</li>
+                <li>Терапевт в поликлинике</li>
+                <li>Junior Resident в государственной больнице</li>
+                <li>Медицинский исследователь</li>
+              </ul>
+              <div class="roadmap-salary">💰 80–150 тыс. руб/мес · ₹6–12 lakh/год</div>
+            </div>
+          </div>
+
+          <div class="roadmap-stage">
+            <div class="roadmap-num rn-7">7</div>
+            <div class="roadmap-card rs-7">
+              <div class="roadmap-age">🚀 Через 10 лет</div>
+              <div class="roadmap-title">Вершина карьеры</div>
+              <ul class="roadmap-tags">
+                <li>Врач-специалист (хирург, кардиолог…)</li>
+                <li>Главврач клиники</li>
+                <li>Основатель частной медицинской практики</li>
+                <li>Исследователь в фармацевтике</li>
+              </ul>
+              <div class="roadmap-salary">💰 500–1500 тыс. руб/мес · ₹25–80 lakh/год</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- NEXT STEP CTA -->
+      <div class="career-next-step">
+        <h3>🎯 Что делать дальше?</h3>
+        <p>Ты можешь спасать жизни! Начни свой путь прямо сейчас.</p>
+        <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на подходящую профессию</a>
+        <a href="explorer.html" class="btn-next-step">🔭 Все профессии</a>
+        <a href="play.html" class="btn-next-step">🎮 Центр симуляций</a>
+      </div>
+
+      <div class="career-nav">
+        <a href="drone-pilot.html" class="btn-glass-dark">← Пилот дрона</a>
+        <a href="explorer.html" class="btn-main">🔭 Все профессии</a>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ANI ASSISTANT -->
+<div class="ani-wrapper" id="ani-wrapper">
+  <div class="ani-bubble" id="ani-bubble">
+    <span class="speech-text" id="ani-text">Врачи — настоящие герои! 🩺</span>
+  </div>
+  <img src="images/ani.png" alt="Анюша" class="ani-char" id="ani-char" loading="eager" />
+</div>
+<button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
+<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
+
