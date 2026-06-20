@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP \".{0,600}play-sim-card.{0,600}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/script.js\")",
+      "Bash(grep -oP \".{0,300}play-sim-card.{0,50}|play-sim-\\(icon|info|title|desc|action|btn|lock|progress\\)\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/style.css\")",
+      "Bash(grep -oP \".{0,800}career-paths-grid.{0,800}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/script.js\")",
+      "Bash(grep -oP \".{0,200}career-path-card.{0,500}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/script.js\")",
+      "Bash(grep -oP \".{0,50}drone-game.{0,300}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/style.css\")"
+    ]
+  }
+}

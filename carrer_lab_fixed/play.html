@@ -182,7 +182,73 @@
             <p class="pss-sub">Каждая симуляция — реальный опыт профессии</p>
           </div>
           <div class="play-sims-grid" id="play-sims-grid">
-            <!-- Injected by JS -->
+
+            <a href="drone-pilot.html" class="play-sim-card" style="--sim-color:#3b82f6;text-decoration:none">
+              <div class="play-sim-icon">🚁</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Пилот дрона</h3>
+                <p class="play-sim-desc">Управляй беспилотниками и исследуй мир с высоты</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#3b82f6">▶ Играть</span>
+              </div>
+            </a>
+
+            <a href="cyber-defender.html" class="play-sim-card" style="--sim-color:#10b981;text-decoration:none">
+              <div class="play-sim-icon">🛡️</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Кибер-защитник</h3>
+                <p class="play-sim-desc">Защищай цифровой мир от хакеров и вирусов</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#10b981">▶ Играть</span>
+              </div>
+            </a>
+
+            <a href="space-explorer.html" class="play-sim-card" style="--sim-color:#7c3aed;text-decoration:none">
+              <div class="play-sim-icon">🌌</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Исследователь космоса</h3>
+                <p class="play-sim-desc">Открывай новые планеты, звёзды и тайны вселенной</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#7c3aed">▶ Играть</span>
+              </div>
+            </a>
+
+            <a href="robotics-engineer.html" class="play-sim-card" style="--sim-color:#8b5cf6;text-decoration:none">
+              <div class="play-sim-icon">🤖</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Инженер-робот</h3>
+                <p class="play-sim-desc">Создавай роботов, которые помогают людям</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#8b5cf6">▶ Играть</span>
+              </div>
+            </a>
+
+            <a href="game-designer.html" class="play-sim-card" style="--sim-color:#f59e0b;text-decoration:none">
+              <div class="play-sim-icon">🎮</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Гейм-дизайнер</h3>
+                <p class="play-sim-desc">Придумывай и создавай крутые игры</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#f59e0b">▶ Играть</span>
+              </div>
+            </a>
+
+            <a href="doctor.html" class="play-sim-card" style="--sim-color:#e63946;text-decoration:none">
+              <div class="play-sim-icon">🩺</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Врач</h3>
+                <p class="play-sim-desc">Помогай людям и спасай жизни каждый день</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#e63946">▶ Играть</span>
+              </div>
+            </a>
+
           </div>
         </div>
       </section>
@@ -244,7 +310,7 @@
                 <span class="dg-hud-diff" id="dg-difficulty">🟡 Обычный</span>
                 <span class="dg-hud-score" id="dg-score">⭐ 0</span>
               </div>
-              <canvas id="drone-game-canvas" width="480" height="320"></canvas>
+              <canvas id="drone-game-canvas" width="480" height="320" style="width:100%;max-width:480px;height:auto;display:block;"></canvas>
               <div class="dg-mission-screen hidden" id="dg-mission-screen">
                 <div class="dg-mission-card" id="dg-mission-card">
                   <div class="dg-mission-icon" id="dg-mission-icon">🎉</div>
@@ -314,8 +380,6 @@
 
 <!-- ═══ VOICE TOGGLE ═══ -->
 <button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
-<!-- ═══ STT MIC BUTTON ═══ -->
-<button class="stt-btn" id="stt-btn" title="Голосовая команда" aria-label="Голосовая команда">🎤</button>
 
 <script>
 /* Phase 4C — sync pmh-unlock-count from play-unlock-text */
