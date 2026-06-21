@@ -10,6 +10,7 @@ import {
   deleteDoc,
   query,
   orderBy,
+  onSnapshot,
   serverTimestamp,
   enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -52,5 +53,6 @@ export {
   deleteDoc,
   query,
   orderBy,
+  onSnapshot,
   serverTimestamp as timestamp
 };
