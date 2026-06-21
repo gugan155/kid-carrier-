@@ -273,10 +273,89 @@
 
   <div class="td-toolbar">
     <input class="td-search" id="td-search" type="text" placeholder="🔍 Поиск ученика..." />
-    <a href="leaderboard.html" class="td-btn" target="_blank">🏆 Полный рейтинг</a>
+    <a href="leaderboard.html" class="td-btn" target="_blank">🏆 Рейтинг</a>
+    <button class="td-btn" id="btn-quiz-panel" style="background:rgba(168,85,247,.2);border-color:rgba(168,85,247,.4);color:#c4b5fd">🎮 Викторина</button>
     <a href="index.html" class="td-btn">🏠 Главная</a>
-    <button class="td-btn" onclick="window.print()">🖨️ Распечатать</button>
+    <button class="td-btn" onclick="window.print()">🖨️ Печать</button>
     <span class="td-updated" id="td-updated"></span>
+  </div>
+
+  <!-- ═══ QUIZ PANEL ═══ -->
+  <div id="quiz-panel" style="display:none;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(124,58,237,.06)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+      <div>
+        <div style="font-size:1rem;font-weight:900;color:#fff">🎮 Запустить живую викторину</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:2px">Студенты открывают <strong>live-quiz.html</strong> — видят вопрос в реальном времени</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span id="qz-status" style="font-size:.78rem;color:rgba(255,255,255,.4);align-self:center"></span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px">
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">Вопрос</label>
+        <input id="qz-question" type="text" placeholder="Например: Что такое кибербезопасность?" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;color:#fff;font-family:inherit;font-size:.88rem" />
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">Время (сек)</label>
+        <select id="qz-time" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;color:#fff;font-family:inherit;font-size:.88rem">
+          <option value="10">10с</option>
+          <option value="20" selected>20с</option>
+          <option value="30">30с</option>
+          <option value="60">60с</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">А — Вариант 1</label>
+        <input id="qz-a" type="text" placeholder="Вариант А" style="width:100%;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:8px;padding:8px 10px;color:#fff;font-family:inherit;font-size:.82rem" />
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">Б — Вариант 2</label>
+        <input id="qz-b" type="text" placeholder="Вариант Б" style="width:100%;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.3);border-radius:8px;padding:8px 10px;color:#fff;font-family:inherit;font-size:.82rem" />
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">В — Вариант 3</label>
+        <input id="qz-c" type="text" placeholder="Вариант В" style="width:100%;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.3);border-radius:8px;padding:8px 10px;color:#fff;font-family:inherit;font-size:.82rem" />
+      </div>
+      <div>
+        <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">Г — Вариант 4</label>
+        <input id="qz-d" type="text" placeholder="Вариант Г" style="width:100%;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.3);border-radius:8px;padding:8px 10px;color:#fff;font-family:inherit;font-size:.82rem" />
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label style="font-size:.75rem;color:rgba(255,255,255,.45);display:block;margin-bottom:4px">Правильный ответ</label>
+      <div style="display:flex;gap:8px">
+        <button class="qz-correct-btn" data-idx="0" style="flex:1;padding:8px;border-radius:8px;border:2px solid rgba(124,58,237,.3);background:rgba(124,58,237,.15);color:#a78bfa;font-weight:800;cursor:pointer;font-family:inherit">А</button>
+        <button class="qz-correct-btn" data-idx="1" style="flex:1;padding:8px;border-radius:8px;border:2px solid rgba(37,99,235,.3);background:rgba(37,99,235,.1);color:#93c5fd;font-weight:800;cursor:pointer;font-family:inherit">Б</button>
+        <button class="qz-correct-btn" data-idx="2" style="flex:1;padding:8px;border-radius:8px;border:2px solid rgba(217,119,6,.3);background:rgba(217,119,6,.1);color:#fcd34d;font-weight:800;cursor:pointer;font-family:inherit">В</button>
+        <button class="qz-correct-btn" data-idx="3" style="flex:1;padding:8px;border-radius:8px;border:2px solid rgba(22,163,74,.3);background:rgba(22,163,74,.1);color:#86efac;font-weight:800;cursor:pointer;font-family:inherit">Г</button>
+      </div>
+      <div id="qz-correct-selected" style="font-size:.75rem;color:rgba(255,255,255,.4);margin-top:4px">Выбери правильный ответ выше</div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button id="qz-launch" class="td-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:transparent;color:#fff;font-size:.9rem">🚀 Запустить вопрос!</button>
+      <button id="qz-end" class="td-btn" style="background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.3);color:#fca5a5">⏹ Завершить викторину</button>
+      <button id="qz-prefill" class="td-btn" style="opacity:.7">📋 Готовые вопросы</button>
+    </div>
+
+    <!-- Live answers chart -->
+    <div id="qz-chart" style="display:none;margin-top:16px">
+      <div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:8px">Ответы студентов в реальном времени:</div>
+      <div id="qz-bars" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div id="qz-answered-count" style="font-size:.75rem;color:rgba(255,255,255,.35);margin-top:8px"></div>
+    </div>
+
+    <!-- Preset questions -->
+    <div id="qz-presets" style="display:none;margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px">
+      <div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:8px">Выбери готовый вопрос:</div>
+      <div id="qz-preset-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
   </div>
 
   <div class="td-table-wrap">
@@ -391,6 +470,139 @@
     }, (err) => {
       tbody.innerHTML = '<tr><td colspan="9" class="td-empty">❌ Ошибка подключения к Firebase</td></tr>';
     });
+  </script>
+
+  <!-- ═══ QUIZ PANEL LOGIC ═══ -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore, doc, setDoc, collection, query, onSnapshot, deleteDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { FIREBASE_CONFIG } from "./firebase.config.js";
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    const PRESETS = [
+      { q:'Что такое кибербезопасность?', opts:['Защита данных от атак','Программа для игр','Тип вируса','Язык программирования'], correct:0 },
+      { q:'Сколько планет в Солнечной системе?', opts:['6','7','8','9'], correct:2 },
+      { q:'Что делает дрон?', opts:['Варит суп','Летает и снимает','Лечит людей','Строит дома'], correct:1 },
+      { q:'Кто создал игру Tetris?', opts:['Американец','Японец','Советский программист','Немец'], correct:2 },
+      { q:'Сколько лет учатся в медицинском университете?', opts:['3 года','4 года','6 лет','10 лет'], correct:2 },
+      { q:'Что такое Python?', opts:['Змея','Язык программирования','Марка дрона','Планета'], correct:1 },
+      { q:'Где работает хирург?', opts:['В космосе','В операционной','На заводе','В море'], correct:1 },
+    ];
+
+    let correctIdx = 0, qNum = 0;
+
+    // Toggle panel
+    document.getElementById('btn-quiz-panel').addEventListener('click', () => {
+      const p = document.getElementById('quiz-panel');
+      p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Correct answer buttons
+    document.querySelectorAll('.qz-correct-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        correctIdx = parseInt(btn.dataset.idx);
+        document.querySelectorAll('.qz-correct-btn').forEach(b => b.style.outline = 'none');
+        btn.style.outline = '3px solid #fff';
+        const labels = ['А','Б','В','Г'];
+        document.getElementById('qz-correct-selected').textContent = '✅ Правильный: ' + labels[correctIdx];
+      });
+    });
+
+    // Preset questions
+    document.getElementById('qz-prefill').addEventListener('click', () => {
+      const d = document.getElementById('qz-presets');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+      const list = document.getElementById('qz-preset-list');
+      list.innerHTML = PRESETS.map((p, i) =>
+        `<button onclick="window._qzLoadPreset(${i})" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;text-align:left;cursor:pointer;font-family:inherit;font-size:.82rem;width:100%">${p.q}</button>`
+      ).join('');
+    });
+
+    window._qzLoadPreset = (i) => {
+      const p = PRESETS[i];
+      document.getElementById('qz-question').value = p.q;
+      document.getElementById('qz-a').value = p.opts[0];
+      document.getElementById('qz-b').value = p.opts[1];
+      document.getElementById('qz-c').value = p.opts[2];
+      document.getElementById('qz-d').value = p.opts[3];
+      correctIdx = p.correct;
+      document.querySelectorAll('.qz-correct-btn').forEach((b, i) => b.style.outline = i === correctIdx ? '3px solid #fff' : 'none');
+      const labels = ['А','Б','В','Г'];
+      document.getElementById('qz-correct-selected').textContent = '✅ Правильный: ' + labels[correctIdx];
+      document.getElementById('qz-presets').style.display = 'none';
+    };
+
+    // Launch question
+    document.getElementById('qz-launch').addEventListener('click', async () => {
+      const q    = document.getElementById('qz-question').value.trim();
+      const opts = [
+        document.getElementById('qz-a').value.trim(),
+        document.getElementById('qz-b').value.trim(),
+        document.getElementById('qz-c').value.trim(),
+        document.getElementById('qz-d').value.trim(),
+      ];
+      if (!q || opts.some(o => !o)) {
+        document.getElementById('qz-status').textContent = '⚠️ Заполни вопрос и все варианты!';
+        return;
+      }
+      qNum++;
+      const sessionData = {
+        status:    'active',
+        qid:       'q' + Date.now(),
+        qNum,
+        question:  q,
+        options:   opts,
+        correct:   correctIdx,
+        timeLimit: parseInt(document.getElementById('qz-time').value),
+        ts:        serverTimestamp()
+      };
+      await setDoc(doc(db, 'quiz_session', 'live'), sessionData);
+      document.getElementById('qz-status').textContent = '✅ Вопрос отправлен!';
+      document.getElementById('qz-chart').style.display = 'block';
+      startAnswerListener(sessionData.qid, opts, correctIdx);
+    });
+
+    // End quiz
+    document.getElementById('qz-end').addEventListener('click', async () => {
+      await setDoc(doc(db, 'quiz_session', 'live'), { status: 'ended', ts: serverTimestamp() });
+      document.getElementById('qz-status').textContent = '⏹ Викторина завершена';
+      document.getElementById('qz-chart').style.display = 'none';
+    });
+
+    // Live answer chart
+    let answerUnsub = null;
+    function startAnswerListener(qid, opts, correct) {
+      if (answerUnsub) answerUnsub();
+      const q = query(collection(db, 'quiz_answers'));
+      const counts = [0,0,0,0];
+      answerUnsub = onSnapshot(q, (snap) => {
+        counts.fill(0);
+        snap.forEach(d => {
+          const a = d.data();
+          if (a.qid === qid && a.answer >= 0 && a.answer < 4) counts[a.answer]++;
+        });
+        const total = counts.reduce((s,c) => s+c, 0);
+        const LABELS = ['А','Б','В','Г'];
+        const COLORS = ['#7c3aed','#2563eb','#d97706','#16a34a'];
+        document.getElementById('qz-bars').innerHTML = counts.map((c, i) => {
+          const pct = total ? Math.round(c / total * 100) : 0;
+          const isCorrect = i === correct;
+          return `<div style="display:flex;align-items:center;gap:8px">
+            <span style="width:20px;font-size:.8rem;font-weight:800;color:${COLORS[i]}">${LABELS[i]}</span>
+            <div style="flex:1;height:22px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden">
+              <div style="height:100%;width:${pct}%;background:${isCorrect?'#22c55e':COLORS[i]};border-radius:6px;transition:width .4s ease"></div>
+            </div>
+            <span style="font-size:.78rem;color:rgba(255,255,255,.6);min-width:40px">${c} (${pct}%)</span>
+            ${isCorrect ? '<span style="font-size:.75rem;color:#86efac">✓</span>' : ''}
+          </div>`;
+        }).join('');
+        document.getElementById('qz-answered-count').textContent = total + ' из ' + allRows.length + ' ответили';
+      });
+    }
   </script>
 </body>
 </html>

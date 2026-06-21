@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Живая викторина — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+      font-family: 'Nunito', sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 40px;
+    }
+
+    .lq-header { text-align: center; margin-bottom: 24px; width: 100%; max-width: 520px; }
+    .lq-logo { font-size: 2.5rem; }
+    .lq-title { font-size: 1.4rem; font-weight: 900; margin: 8px 0 4px; }
+    .lq-sub { font-size: .85rem; color: rgba(255,255,255,.55); }
+
+    .lq-card {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 28px 22px;
+      backdrop-filter: blur(12px);
+    }
+
+    /* Waiting screen */
+    .lq-waiting { text-align: center; padding: 20px 0; }
+    .lq-waiting-icon { font-size: 4rem; animation: lqPulse 1.6s ease-in-out infinite; }
+    @keyframes lqPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:.7} }
+    .lq-waiting h2 { font-size: 1.2rem; font-weight: 800; margin: 12px 0 6px; }
+    .lq-waiting p  { font-size: .85rem; color: rgba(255,255,255,.55); }
+
+    /* Question */
+    .lq-q-num   { font-size: .75rem; font-weight: 700; color: #a855f7; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .lq-q-text  { font-size: 1.25rem; font-weight: 800; line-height: 1.35; margin-bottom: 20px; }
+    .lq-timer-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .lq-timer-bar { flex: 1; height: 8px; background: rgba(255,255,255,.15); border-radius: 99px; overflow: hidden; }
+    .lq-timer-fill { height: 100%; background: linear-gradient(90deg,#22c55e,#f59e0b); border-radius: 99px; transition: width 1s linear; }
+    .lq-timer-num  { font-size: .85rem; font-weight: 800; color: #fbbf24; min-width: 28px; text-align: right; }
+
+    .lq-opts { display: flex; flex-direction: column; gap: 10px; }
+    .lq-opt {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,.07);
+      border: 2px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: left;
+      transition: border-color .15s, background .15s, transform .1s;
+      width: 100%;
+    }
+    .lq-opt:hover:not(:disabled) { border-color: rgba(168,85,247,.6); background: rgba(168,85,247,.12); transform: translateX(3px); }
+    .lq-opt.correct  { background: rgba(34,197,94,.25); border-color: #22c55e; }
+    .lq-opt.wrong    { background: rgba(239,68,68,.2);  border-color: #ef4444; opacity: .6; }
+    .lq-opt.selected { transform: scale(1.02); }
+    .lq-opt-letter {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; font-weight: 900; flex-shrink: 0;
+    }
+
+    /* Result */
+    .lq-answer-result { text-align: center; padding: 16px 0 8px; }
+    .lq-answer-result .lq-big-icon { font-size: 3.5rem; }
+    .lq-answer-result h3 { font-size: 1.2rem; font-weight: 800; margin: 8px 0 4px; }
+    .lq-answer-result p  { font-size: .85rem; color: rgba(255,255,255,.6); }
+
+    /* Scores */
+    .lq-scores { margin-top: 12px; }
+    .lq-score-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: .88rem; }
+    .lq-score-row:last-child { border: none; }
+    .lq-my-score { color: #fbbf24; font-weight: 800; }
+
+    /* End screen */
+    .lq-end { text-align: center; padding: 16px 0; }
+    .lq-end .lq-big { font-size: 4rem; }
+    .lq-end h2 { font-size: 1.3rem; font-weight: 900; margin: 10px 0 6px; }
+    .lq-end p  { font-size: .9rem; color: rgba(255,255,255,.6); margin-bottom: 20px; }
+
+    .lq-back { display: inline-block; margin-top: 16px; color: rgba(255,255,255,.5); font-size: .85rem; font-weight: 700; text-decoration: none; transition: color .2s; }
+    .lq-back:hover { color: #fff; }
+
+    @media (max-width: 360px) {
+      .lq-q-text { font-size: 1.05rem; }
+      .lq-opt { padding: 11px 12px; font-size: .88rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lq-header">
+    <div class="lq-logo">🧠</div>
+    <div class="lq-title">Живая викторина</div>
+    <div class="lq-sub" id="lq-player-name">Загрузка...</div>
+  </div>
+
+  <div class="lq-card" id="lq-card">
+    <div class="lq-waiting" id="lq-waiting">
+      <div class="lq-waiting-icon">⏳</div>
+      <h2>Ожидание вопроса...</h2>
+      <p>Учитель скоро запустит викторину!<br>Не закрывай эту страницу.</p>
+    </div>
+  </div>
+
+  <a href="index.html" class="lq-back">← На главную</a>
+
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore, doc, collection, setDoc, onSnapshot, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { FIREBASE_CONFIG } from "./firebase.config.js";
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    function myName() { try { return localStorage.getItem('kl_name') || 'Игрок'; } catch { return 'Игрок'; } }
+    function myUid()  { try { return localStorage.getItem('kl_uid')  || 'anon'; } catch { return 'anon'; } }
+    function esc(s)   { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    const nameEl = document.getElementById('lq-player-name');
+    nameEl.textContent = '👤 ' + myName();
+
+    const card = document.getElementById('lq-card');
+    const LETTERS = ['А','Б','В','Г'];
+    const COLORS  = ['#7c3aed','#2563eb','#d97706','#16a34a'];
+
+    let currentQid = null, answered = false, timerInterval = null, myScore = 0;
+
+    function showWaiting() {
+      card.innerHTML = `
+        <div class="lq-waiting">
+          <div class="lq-waiting-icon">⏳</div>
+          <h2>Ожидание следующего вопроса...</h2>
+          <p>Учитель скоро запустит следующий вопрос!</p>
+          <div class="lq-scores" style="margin-top:20px;text-align:left">
+            <div class="lq-score-row"><span>Мои очки:</span><span class="lq-my-score">${myScore} ⭐</span></div>
+          </div>
+        </div>`;
+    }
+
+    function showQuestion(session) {
+      if (currentQid === session.qid) return;
+      currentQid = session.qid;
+      answered   = false;
+      clearInterval(timerInterval);
+
+      const timeLimit = session.timeLimit || 20;
+      let timeLeft    = timeLimit;
+
+      card.innerHTML = `
+        <div class="lq-q-num">Вопрос ${session.qNum || 1}</div>
+        <div class="lq-q-text">${esc(session.question)}</div>
+        <div class="lq-timer-wrap">
+          <div class="lq-timer-bar"><div class="lq-timer-fill" id="lq-tfill" style="width:100%"></div></div>
+          <div class="lq-timer-num" id="lq-tnum">${timeLimit}</div>
+        </div>
+        <div class="lq-opts" id="lq-opts">
+          ${session.options.map((opt, i) => `
+            <button class="lq-opt" data-idx="${i}" style="--c:${COLORS[i]}">
+              <span class="lq-opt-letter" style="background:${COLORS[i]}">${LETTERS[i]}</span>
+              ${esc(opt)}
+            </button>`).join('')}
+        </div>
+        <div id="lq-feedback" style="min-height:16px;margin-top:8px"></div>`;
+
+      // Timer
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        const pct = (timeLeft / timeLimit * 100).toFixed(1);
+        const tfill = document.getElementById('lq-tfill');
+        const tnum  = document.getElementById('lq-tnum');
+        if (tfill) tfill.style.width = pct + '%';
+        if (tnum)  tnum.textContent  = timeLeft;
+        if (timeLeft <= 5 && tnum) tnum.style.color = '#ef4444';
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          if (!answered) lockOptions(null, session);
+        }
+      }, 1000);
+
+      // Bind option clicks
+      document.querySelectorAll('.lq-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+          clearInterval(timerInterval);
+          const idx = parseInt(btn.dataset.idx);
+          submitAnswer(idx, session);
+        });
+      });
+    }
+
+    function submitAnswer(idx, session) {
+      // Save answer to Firestore
+      const answerRef = doc(db, 'quiz_answers', `${session.qid}_${myUid()}`);
+      setDoc(answerRef, {
+        uid:    myUid(),
+        name:   myName(),
+        qid:    session.qid,
+        answer: idx,
+        ts:     serverTimestamp()
+      }).catch(() => {});
+
+      lockOptions(idx, session);
+    }
+
+    function lockOptions(selectedIdx, session) {
+      document.querySelectorAll('.lq-opt').forEach(btn => {
+        btn.disabled = true;
+        const i = parseInt(btn.dataset.idx);
+        if (i === session.correct) btn.classList.add('correct');
+        else if (i === selectedIdx) btn.classList.add('wrong');
+      });
+
+      const fb = document.getElementById('lq-feedback');
+      if (selectedIdx === null) {
+        if (fb) fb.innerHTML = '<span style="color:#fca5a5;font-size:.85rem">⏰ Время вышло!</span>';
+      } else if (selectedIdx === session.correct) {
+        myScore++;
+        if (fb) fb.innerHTML = '<span style="color:#86efac;font-size:.85rem">✅ Правильно! +1 очко</span>';
+        // Award XP
+        try {
+          const p = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+          p.points = (p.points || 0) + 10;
+          localStorage.setItem('kl_progress', JSON.stringify(p));
+        } catch(e) {}
+      } else {
+        if (fb) fb.innerHTML = `<span style="color:#fca5a5;font-size:.85rem">❌ Правильный ответ: ${esc(session.options[session.correct])}</span>`;
+      }
+    }
+
+    function showEnd(session) {
+      clearInterval(timerInterval);
+      card.innerHTML = `
+        <div class="lq-end">
+          <div class="lq-big">${myScore >= 5 ? '🏆' : myScore >= 3 ? '🌟' : '🎯'}</div>
+          <h2>Викторина окончена!</h2>
+          <p>Твой результат: <strong style="color:#fbbf24">${myScore} очков</strong></p>
+          <p style="margin-top:6px">Молодец, ${esc(myName())}! Ты справился!</p>
+        </div>`;
+    }
+
+    // Listen to live session
+    const sessionRef = doc(db, 'quiz_session', 'live');
+    onSnapshot(sessionRef, (snap) => {
+      if (!snap.exists()) { showWaiting(); return; }
+      const s = snap.data();
+      if (s.status === 'waiting') { showWaiting(); return; }
+      if (s.status === 'active')  { showQuestion(s); return; }
+      if (s.status === 'ended')   { showEnd(s); return; }
+    });
+  </script>
+</body>
+</html>
