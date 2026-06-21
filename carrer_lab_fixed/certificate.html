@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сертификат — Карьерная Лаборатория</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0a1e;
+      --gold: #f59e0b;
+      --gold-light: #fcd34d;
+      --gold-dim: rgba(245,158,11,0.15);
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --text: #f1f5f9;
+      --text-muted: rgba(255,255,255,0.55);
+      --border: rgba(245,158,11,0.3);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', 'Segoe UI', Georgia, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 40px;
+    }
+
+    /* ── TOP NAV ── */
+    .cert-nav {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .cert-nav a {
+      color: var(--purple-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cert-nav a:hover { color: #fff; }
+
+    /* ── CERTIFICATE CARD ── */
+    #cert-card {
+      width: 100%;
+      max-width: 640px;
+      background: linear-gradient(160deg, #1a0f3a 0%, #0f0a1e 50%, #1a1040 100%);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: clamp(28px, 6vw, 52px) clamp(24px, 6vw, 48px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(245,158,11,0.12), 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* corner ornaments */
+    #cert-card::before,
+    #cert-card::after {
+      content: "✦";
+      position: absolute;
+      font-size: 1.4rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    #cert-card::before { top: 14px; left: 18px; }
+    #cert-card::after  { bottom: 14px; right: 18px; }
+
+    /* background star pattern */
+    .cert-bg-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.04;
+      font-size: 2rem;
+      user-select: none;
+    }
+
+    /* ── HEADER BAND ── */
+    .cert-top-band {
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .cert-logo-line {
+      font-size: clamp(0.7rem, 2vw, 0.82rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .cert-main-title {
+      font-size: clamp(1.9rem, 6vw, 2.8rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+    .cert-subtitle {
+      font-size: clamp(0.72rem, 1.8vw, 0.82rem);
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-top: 6px;
+    }
+
+    /* ── BODY ── */
+    .cert-body { text-align: center; }
+
+    .cert-declares {
+      font-size: clamp(0.82rem, 2vw, 0.95rem);
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    .cert-name {
+      font-size: clamp(1.7rem, 6vw, 2.6rem);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.03em;
+      padding: 10px 20px;
+      border-bottom: 2px solid var(--border);
+      border-top: 2px solid var(--border);
+      margin: 6px 0 10px;
+      text-shadow: 0 0 30px rgba(167,139,250,0.4);
+    }
+    .cert-name-placeholder {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .cert-role {
+      font-size: clamp(0.82rem, 2vw, 0.95rem);
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    /* ── STATS ROW ── */
+    .cert-stats {
+      display: flex;
+      justify-content: center;
+      gap: clamp(12px, 4vw, 32px);
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .cert-stat {
+      text-align: center;
+      background: var(--gold-dim);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      min-width: 90px;
+    }
+    .cert-stat-value {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .cert-stat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── CAREERS EXPLORED ── */
+    .cert-careers-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .cert-careers-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .cert-career-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124,58,237,0.2);
+      border: 1px solid rgba(167,139,250,0.35);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: clamp(0.75rem, 2vw, 0.88rem);
+      font-weight: 700;
+      color: #e9d5ff;
+    }
+    .cert-career-pill.full {
+      background: rgba(245,158,11,0.15);
+      border-color: rgba(245,158,11,0.4);
+      color: var(--gold-light);
+    }
+    .cert-no-careers {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    /* ── BADGES ── */
+    .cert-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .cert-badge {
+      font-size: 1.5rem;
+      title-attr: attr(title);
+    }
+
+    /* ── DIVIDER ── */
+    .cert-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    /* ── FOOTER ── */
+    .cert-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cert-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .cert-date strong { color: var(--gold-light); }
+    .cert-url {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .cert-seal {
+      font-size: 2.2rem;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    /* ── ACTIONS ── */
+    .cert-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      width: 100%;
+      max-width: 640px;
+    }
+    .btn-cert {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn-cert:active { transform: scale(0.96); }
+    .btn-cert-primary {
+      background: linear-gradient(135deg, var(--gold), #d97706);
+      color: #1a0f3a;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.35);
+    }
+    .btn-cert-primary:hover { box-shadow: 0 6px 28px rgba(245,158,11,0.5); }
+    .btn-cert-secondary {
+      background: rgba(124,58,237,0.2);
+      color: var(--purple-light);
+      border: 1px solid rgba(167,139,250,0.35);
+    }
+    .btn-cert-secondary:hover { background: rgba(124,58,237,0.35); }
+
+    .cert-screenshot-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .cert-nav, .cert-actions, .cert-screenshot-hint { display: none !important; }
+      #cert-card {
+        border-color: #d97706;
+        box-shadow: none;
+        max-width: 100%;
+        background: linear-gradient(160deg, #f9f5ff 0%, #fff 50%, #fef3c7 100%);
+      }
+      .cert-main-title { -webkit-text-fill-color: #d97706; }
+      .cert-name { color: #1a0f3a; text-shadow: none; }
+      .cert-declares, .cert-role, .cert-date, .cert-url { color: #555; }
+      .cert-stat { background: #fef3c7; border-color: #d97706; }
+      .cert-stat-value { color: #d97706; }
+      .cert-career-pill { background: #ede9fe; border-color: #7c3aed; color: #5b21b6; }
+      .cert-career-pill.full { background: #fef3c7; border-color: #d97706; color: #92400e; }
+    }
+
+    @media (max-width: 400px) {
+      .cert-stats { gap: 8px; }
+      .cert-stat { padding: 10px 14px; min-width: 76px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="cert-nav">
+    <a href="index.html">← На главную</a>
+    <span style="font-size:0.78rem;color:rgba(255,255,255,0.35)">Карьерная Лаборатория</span>
+  </nav>
+
+  <div id="cert-card">
+    <div class="cert-bg-stars" aria-hidden="true">✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧ ★ ✦ ✧</div>
+
+    <div class="cert-top-band">
+      <div class="cert-logo-line">⭐ Карьерная Лаборатория · 2026 ⭐</div>
+      <div class="cert-main-title">🏆 СЕРТИФИКАТ</div>
+      <div class="cert-subtitle">исследователя профессий будущего</div>
+    </div>
+
+    <div class="cert-body">
+      <div class="cert-declares">Настоящим удостоверяется, что</div>
+      <div class="cert-name" id="cert-name">
+        <span class="cert-name-placeholder">Загрузка...</span>
+      </div>
+      <div class="cert-role">успешно исследовал(а) профессии будущего<br>в Карьерной Лаборатории</div>
+
+      <div class="cert-stats" id="cert-stats">
+        <div class="cert-stat">
+          <div class="cert-stat-value" id="stat-xp">—</div>
+          <div class="cert-stat-label">XP заработано</div>
+        </div>
+        <div class="cert-stat">
+          <div class="cert-stat-value" id="stat-level">—</div>
+          <div class="cert-stat-label">Уровень</div>
+        </div>
+        <div class="cert-stat">
+          <div class="cert-stat-value" id="stat-careers">—</div>
+          <div class="cert-stat-label">Профессий изучено</div>
+        </div>
+      </div>
+
+      <div class="cert-careers-title">🗺️ Профессии, которые ты исследовал(а)</div>
+      <div class="cert-careers-grid" id="cert-careers-grid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="cert-badges" id="cert-badges"></div>
+
+      <hr class="cert-divider">
+
+      <div class="cert-footer">
+        <div class="cert-date">📅 <strong id="cert-date">—</strong></div>
+        <div class="cert-url">carrierkidlab.netlify.app</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cert-actions">
+    <button class="btn-cert btn-cert-primary" onclick="window.print()">📄 Распечатать / Скачать</button>
+    <a href="index.html" class="btn-cert btn-cert-secondary">🏠 На главную</a>
+  </div>
+  <div class="cert-screenshot-hint">
+    📱 Или сделай скриншот и поделись с друзьями!<br>
+    <span style="font-size:0.65rem;opacity:0.6">Android: кнопка питания + громкость↓ · iPhone: боковая кнопка + громкость↑</span>
+  </div>
+
+  <script>
+    (function () {
+      var CAREERS_MAP = {
+        'drone-pilot':        { icon: '🚁', name: 'Пилот дрона' },
+        'cyber-defender':     { icon: '🛡️', name: 'Кибер-защитник' },
+        'space-explorer':     { icon: '🌌', name: 'Исследователь космоса' },
+        'robotics-engineer':  { icon: '🤖', name: 'Инженер-робот' },
+        'game-designer':      { icon: '🎮', name: 'Гейм-дизайнер' },
+        'doctor':             { icon: '🩺', name: 'Врач' }
+      };
+
+      var LESSON_TO_CAREER = {
+        drone: 'drone-pilot',
+        cyber: 'cyber-defender',
+        space: 'space-explorer',
+        robot: 'robotics-engineer',
+        game:  'game-designer',
+        doctor:'doctor'
+      };
+
+      var BADGE_DEFS = [
+        {id:'first_quiz',   emoji:'🏅'}, {id:'quiz_master',  emoji:'🥇'},
+        {id:'sim_pilot',    emoji:'✈️'}, {id:'streak_3',     emoji:'🔥'},
+        {id:'streak_7',     emoji:'🌟'}, {id:'pts_100',      emoji:'💯'},
+        {id:'pts_500',      emoji:'🚀'}, {id:'pts_1000',     emoji:'👑'},
+        {id:'career_explorer',emoji:'🔭'},{id:'micro_master', emoji:'🎯'},
+        {id:'drone_expert', emoji:'🚁'}, {id:'lesson_master',emoji:'📚'},
+        {id:'quiz_champion',emoji:'🧠'}, {id:'mission_ready',emoji:'🚀'}
+      ];
+
+      var LEVELS = [
+        {level:1,min:0,  max:50,   label:'Новичок', icon:'🌱'},
+        {level:2,min:50, max:150,  label:'Ученик',  icon:'📚'},
+        {level:3,min:150,max:300,  label:'Знаток',  icon:'🔭'},
+        {level:4,min:300,max:500,  label:'Эксперт', icon:'🏆'},
+        {level:5,min:500,max:1000, label:'Мастер',  icon:'🚀'},
+        {level:6,min:1000,max:9999,label:'Легенда', icon:'👑'}
+      ];
+      function getLvl(pts) {
+        return LEVELS.find(function(l){ return pts >= l.min && pts < l.max; }) || LEVELS[LEVELS.length-1];
+      }
+
+      function safe(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+
+      function formatDate(d) {
+        return d.toLocaleDateString('ru', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+
+      // ── Read data ──
+      var name = '';
+      var progress = {};
+      var visited = [];
+      try { name = localStorage.getItem('kl_name') || ''; } catch(e) {}
+      try { progress = JSON.parse(localStorage.getItem('kl_progress') || '{}'); } catch(e) {}
+      try { visited  = JSON.parse(localStorage.getItem('kl_pages_visited') || '[]'); } catch(e) {}
+
+      var pts     = progress.points  || 0;
+      var badges  = progress.badges  || [];
+      var lessons = progress.lessonsCompleted || {};
+      var quizzes = progress.quizPassed || {};
+
+      // ── Careers explored ──
+      var exploredSet = {};
+
+      // From visited pages
+      visited.forEach(function(p) {
+        if (CAREERS_MAP[p]) exploredSet[p] = 'visited';
+      });
+
+      // From lessons completed
+      Object.keys(lessons).forEach(function(lid) {
+        var prefix = lid.replace(/_\d+$/, '');
+        var key = LESSON_TO_CAREER[prefix];
+        if (key) exploredSet[key] = 'lessons';
+      });
+
+      // From quizzes passed
+      Object.keys(quizzes).forEach(function(qid) {
+        var prefix = qid.replace(/_\d+$/, '');
+        var key = LESSON_TO_CAREER[prefix];
+        if (key) exploredSet[key] = 'lessons';
+      });
+
+      var exploredKeys = Object.keys(exploredSet);
+      var lvl = getLvl(pts);
+
+      // ── Render name ──
+      var nameEl = document.getElementById('cert-name');
+      if (name) {
+        nameEl.textContent = name;
+      } else {
+        nameEl.innerHTML = '<span class="cert-name-placeholder">Имя не указано</span>';
+      }
+
+      // ── Render stats ──
+      document.getElementById('stat-xp').textContent     = pts.toLocaleString('ru');
+      document.getElementById('stat-level').textContent  = lvl.icon + ' ' + lvl.label;
+      document.getElementById('stat-careers').textContent = exploredKeys.length + ' / 6';
+
+      // ── Render careers ──
+      var grid = document.getElementById('cert-careers-grid');
+      if (exploredKeys.length === 0) {
+        grid.innerHTML = '<div class="cert-no-careers">Ещё не изучено ни одной профессии — исследуй и возвращайся! 🚀</div>';
+      } else {
+        grid.innerHTML = exploredKeys.map(function(k) {
+          var c = CAREERS_MAP[k];
+          var isFull = exploredSet[k] === 'lessons';
+          return '<span class="cert-career-pill' + (isFull ? ' full' : '') + '">'
+            + c.icon + ' ' + safe(c.name)
+            + (isFull ? ' ✓' : '')
+            + '</span>';
+        }).join('');
+      }
+
+      // ── Render badges ──
+      var badgesEl = document.getElementById('cert-badges');
+      var earnedBadges = BADGE_DEFS.filter(function(b) { return badges.includes(b.id); });
+      if (earnedBadges.length > 0) {
+        badgesEl.innerHTML = earnedBadges.map(function(b) {
+          return '<span class="cert-badge" title="' + b.id + '">' + b.emoji + '</span>';
+        }).join('');
+      }
+
+      // ── Date ──
+      document.getElementById('cert-date').textContent = formatDate(new Date());
+    })();
+  </script>
+
+</body>
+</html>
