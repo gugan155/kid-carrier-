@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="КарьераЛаб" />
+  <link rel="apple-touch-icon" href="images/ani.png" />
 </head>
 <body class="home app-layout">
 
@@ -351,10 +357,11 @@
       <section class="section-block blue-section" id="quiz-section" data-ani-msg="Попробуй тест! Узнай свою профессию! 🧠">
         <div class="section-inner-flex">
           <div class="section-text">
-            <span class="section-badge">😊 Пройти тест</span>
+            <span class="section-badge">🔭 Кто ты по профессии?</span>
             <h2>Узнай свою профессию!</h2>
-            <p>Ответь на 10 вопросов и получи персональный результат с объяснением.</p>
-            <a href="quiz.html" class="btn-main" style="margin-top:20px">Начать тест →</a>
+            <p>5 коротких вопросов — и ты узнаешь, какая профессия создана именно для тебя!</p>
+            <a href="career-quiz.html" class="btn-main" style="margin-top:20px">Пройти тест личности →</a>
+            <a href="quiz.html" class="btn-glass" style="margin-top:10px;display:inline-block">Тест знаний (10 вопросов)</a>
           </div>
           <div class="section-emoji" aria-hidden="true">🧠</div>
         </div>
@@ -727,6 +734,11 @@
       ge('kl-cel-go').addEventListener('click',function(){cel.style.opacity='0';cel.style.transition='opacity 0.2s';setTimeout(function(){cel.remove();},200);});
     }
   })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(function(){});
+    }
   </script>
 </body>
 </html>

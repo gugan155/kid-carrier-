@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com; font-src 'self' data: https://fonts.gstatic.com;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Кто ты по профессии? — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <style>
+    .pq-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px 40px;
+      font-family: 'Nunito', sans-serif;
+    }
+    .pq-back {
+      align-self: flex-start;
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .2s;
+    }
+    .pq-back:hover { color: #fff; }
+    .pq-header { text-align: center; margin-bottom: 24px; }
+    .pq-header-icon { font-size: 3rem; line-height: 1; }
+    .pq-header h1 { font-size: 1.5rem; font-weight: 900; color: #fff; margin: 8px 0 4px; }
+    .pq-header p { font-size: .9rem; color: rgba(255,255,255,.65); margin: 0; }
+    .pq-progress-wrap { width: 100%; max-width: 480px; margin-bottom: 20px; }
+    .pq-progress-track { height: 8px; background: rgba(255,255,255,.15); border-radius: 99px; overflow: hidden; }
+    .pq-progress-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #7c3aed); border-radius: 99px; transition: width .4s cubic-bezier(.4,0,.2,1); width: 0%; }
+    .pq-progress-label { text-align: right; font-size: .78rem; color: rgba(255,255,255,.5); margin-top: 4px; }
+    .pq-card { width: 100%; max-width: 480px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 24px 20px; backdrop-filter: blur(12px); }
+    .pq-q-num { font-size: .78rem; font-weight: 700; color: #a855f7; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    .pq-q-text { font-size: 1.2rem; font-weight: 800; color: #fff; line-height: 1.35; margin-bottom: 20px; }
+    .pq-options { display: flex; flex-direction: column; gap: 10px; }
+    .pq-opt { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.1); border-radius: 14px; padding: 13px 15px; cursor: pointer; text-align: left; width: 100%; transition: border-color .15s, background .15s, transform .1s; font-family: 'Nunito', sans-serif; }
+    .pq-opt:hover { border-color: rgba(168,85,247,.6); background: rgba(168,85,247,.12); transform: translateX(3px); }
+    .pq-opt-icon { font-size: 1.7rem; flex-shrink: 0; width: 36px; text-align: center; }
+    .pq-opt-text { font-size: .95rem; font-weight: 700; color: rgba(255,255,255,.9); line-height: 1.3; }
+    .pq-opt.selected { border-color: #a855f7; background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(168,85,247,.2)); transform: scale(1.02); }
+    .pq-opt:disabled { cursor: default; transform: none; }
+    .pq-opt.faded { opacity: .35; }
+    .pq-result { display: none; width: 100%; max-width: 480px; text-align: center; animation: pqFadeUp .5s ease both; }
+    .pq-result.show { display: block; }
+    @keyframes pqFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .pq-result-glow { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; margin: 0 auto 20px; position: relative; }
+    .pq-result-glow::before { content: ''; position: absolute; inset: -8px; border-radius: 50%; background: inherit; opacity: .3; filter: blur(16px); }
+    .pq-result-tag { font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #a855f7; margin-bottom: 8px; }
+    .pq-result-headline { font-size: 1.6rem; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+    .pq-result-headline span { display: block; font-size: 2rem; background: linear-gradient(90deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .pq-result-why { font-size: 1rem; color: rgba(255,255,255,.7); margin-bottom: 28px; font-weight: 600; }
+    .pq-xp-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 900; font-size: 1.1rem; padding: 8px 20px; border-radius: 99px; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(245,158,11,.4); animation: pqBounce .6s .3s ease both; }
+    @keyframes pqBounce { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+    .pq-result-cta { display: block; background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 800; font-size: 1rem; padding: 14px 24px; border-radius: 14px; text-decoration: none; margin-bottom: 12px; box-shadow: 0 6px 24px rgba(124,58,237,.4); transition: transform .15s, box-shadow .15s; }
+    .pq-result-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,.5); }
+    .pq-result-home { display: block; color: rgba(255,255,255,.55); font-size: .85rem; font-weight: 700; text-decoration: none; padding: 10px; transition: color .2s; }
+    .pq-result-home:hover { color: rgba(255,255,255,.9); }
+    .pq-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 800; font-size: 1rem; padding: 12px 24px; border-radius: 99px; box-shadow: 0 8px 32px rgba(124,58,237,.5); z-index: 9999; transition: transform .35s cubic-bezier(.34,1.56,.64,1); pointer-events: none; white-space: nowrap; }
+    .pq-toast.show { transform: translateX(-50%) translateY(0); }
+    @media (max-width: 360px) {
+      .pq-header h1 { font-size: 1.25rem; }
+      .pq-q-text { font-size: 1.05rem; }
+      .pq-opt { padding: 10px 12px; }
+      .pq-opt-text { font-size: .88rem; }
+      .pq-result-headline span { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="pq-page" id="pq-page">
+
+  <a href="index.html" class="pq-back">← Назад на главную</a>
+
+  <div class="pq-header" id="pq-header">
+    <div class="pq-header-icon">🔭</div>
+    <h1>Кто ты по профессии?</h1>
+    <p>5 вопросов — 1 минута — результат на всю жизнь!</p>
+  </div>
+
+  <div class="pq-progress-wrap" id="pq-progress-wrap">
+    <div class="pq-progress-track">
+      <div class="pq-progress-fill" id="pq-progress-fill"></div>
+    </div>
+    <div class="pq-progress-label" id="pq-progress-label">Вопрос 1 из 5</div>
+  </div>
+
+  <div class="pq-card" id="pq-card">
+    <div class="pq-q-num" id="pq-q-num">Вопрос 1</div>
+    <div class="pq-q-text" id="pq-q-text">Загрузка...</div>
+    <div class="pq-options" id="pq-options"></div>
+  </div>
+
+  <div class="pq-result" id="pq-result">
+    <div class="pq-result-glow" id="pq-result-glow"></div>
+    <div class="pq-result-tag">Твоя профессия</div>
+    <div class="pq-result-headline">
+      Ты подходишь для профессии<span id="pq-result-name"></span>
+    </div>
+    <div class="pq-result-why" id="pq-result-why"></div>
+    <div class="pq-xp-badge">🌟 +50 XP заработано!</div>
+    <a href="#" class="pq-result-cta" id="pq-result-cta">Узнать больше об этой профессии →</a>
+    <a href="index.html" class="pq-result-home">← Вернуться на главную</a>
+  </div>
+
+</div>
+
+<div class="pq-toast" id="pq-toast">🌟 +50 XP!</div>
+
+<script>
+(function () {
+  var CAREERS = {
+    sky:    { name: 'Пилот дрона',             icon: '🚁', color: '#2563eb', bg: 'linear-gradient(135deg,#1d4ed8,#3b82f6)', link: 'drone-pilot.html',       why: 'Тебе нравится свобода, высота и приключения!' },
+    cyber:  { name: 'Кибер-защитник',          icon: '🛡️', color: '#7c3aed', bg: 'linear-gradient(135deg,#7c3aed,#a855f7)', link: 'cyber-defender.html',    why: 'Ты защитник цифрового мира!' },
+    space:  { name: 'Космонавт-исследователь', icon: '🌌', color: '#0d9488', bg: 'linear-gradient(135deg,#0d9488,#14b8a6)', link: 'space-explorer.html',    why: 'Тебя манят звёзды и великие открытия!' },
+    robot:  { name: 'Инженер-робот',           icon: '🤖', color: '#d97706', bg: 'linear-gradient(135deg,#b45309,#f59e0b)', link: 'robotics-engineer.html', why: 'Ты строитель, изобретатель и создатель!' },
+    create: { name: 'Гейм-дизайнер',           icon: '🎮', color: '#db2777', bg: 'linear-gradient(135deg,#be185d,#ec4899)', link: 'game-designer.html',     why: 'Ты творческий человек, полный идей!' },
+    doctor: { name: 'Врач',                    icon: '🩺', color: '#16a34a', bg: 'linear-gradient(135deg,#15803d,#22c55e)', link: 'doctor.html',            why: 'Ты добрый и хочешь помогать людям!' }
+  };
+
+  var QUESTIONS = [
+    {
+      text: 'Что ты любишь делать в свободное время?',
+      options: [
+        { icon: '🚁', text: 'Запускать дроны или изучать гаджеты',   cat: 'sky' },
+        { icon: '🌌', text: 'Смотреть на звёзды и читать о космосе', cat: 'space' },
+        { icon: '🔧', text: 'Строить из LEGO или чинить вещи',       cat: 'robot' },
+        { icon: '🤝', text: 'Помогать друзьям и заботиться о других',cat: 'doctor' }
+      ]
+    },
+    {
+      text: 'Какая задача тебе нравится больше всего?',
+      options: [
+        { icon: '💻', text: 'Программировать и решать головоломки',  cat: 'cyber' },
+        { icon: '🎮', text: 'Придумывать игровые миры и правила',    cat: 'create' },
+        { icon: '🤖', text: 'Управлять роботами и механизмами',      cat: 'robot' },
+        { icon: '🚁', text: 'Пилотировать дрон или самолёт',         cat: 'sky' }
+      ]
+    },
+    {
+      text: 'Какой тип игр тебе нравится больше?',
+      options: [
+        { icon: '🌌', text: 'Космические симуляторы и стратегии',    cat: 'space' },
+        { icon: '🛡️', text: 'Игры о взломе систем и защите',         cat: 'cyber' },
+        { icon: '🎨', text: 'Создание своих уровней и персонажей',   cat: 'create' },
+        { icon: '🩺', text: 'Игры о помощи и спасении людей',        cat: 'doctor' }
+      ]
+    },
+    {
+      text: 'Кем из учёных ты восхищаешься больше всего?',
+      options: [
+        { icon: '🌌', text: 'Астрономом, открывающим новые планеты', cat: 'space' },
+        { icon: '🛡️', text: 'Хакером, защищающим компании',          cat: 'cyber' },
+        { icon: '🚁', text: 'Инженером, создающим летающие машины',  cat: 'sky' },
+        { icon: '🩺', text: 'Врачом, создающим новые лекарства',     cat: 'doctor' }
+      ]
+    },
+    {
+      text: 'Если бы ты мог стать супергероем, ты бы...',
+      options: [
+        { icon: '🤖', text: 'Создал армию роботов-помощников',       cat: 'robot' },
+        { icon: '🛡️', text: 'Защищал мир от кибератак',              cat: 'cyber' },
+        { icon: '🎮', text: 'Придумал игру, изменившую мир',         cat: 'create' },
+        { icon: '🩺', text: 'Открыл лекарство от всех болезней',     cat: 'doctor' }
+      ]
+    }
+  ];
+
+  var current = 0;
+  var scores = {};
+
+  var qNum      = document.getElementById('pq-q-num');
+  var qText     = document.getElementById('pq-q-text');
+  var qOpts     = document.getElementById('pq-options');
+  var progFill  = document.getElementById('pq-progress-fill');
+  var progLabel = document.getElementById('pq-progress-label');
+  var card      = document.getElementById('pq-card');
+  var progWrap  = document.getElementById('pq-progress-wrap');
+  var header    = document.getElementById('pq-header');
+  var result    = document.getElementById('pq-result');
+
+  function renderQuestion(idx) {
+    var q = QUESTIONS[idx];
+    qNum.textContent  = 'Вопрос ' + (idx + 1);
+    qText.textContent = q.text;
+    progFill.style.width  = (idx / QUESTIONS.length * 100) + '%';
+    progLabel.textContent = 'Вопрос ' + (idx + 1) + ' из ' + QUESTIONS.length;
+    qOpts.innerHTML = '';
+    q.options.forEach(function (opt) {
+      var btn = document.createElement('button');
+      btn.className = 'pq-opt';
+      btn.innerHTML = '<span class="pq-opt-icon">' + opt.icon + '</span><span class="pq-opt-text">' + opt.text + '</span>';
+      btn.setAttribute('data-cat', opt.cat);
+      btn.addEventListener('click', function () { pickAnswer(btn, opt.cat); });
+      qOpts.appendChild(btn);
+    });
+  }
+
+  function pickAnswer(btn, cat) {
+    qOpts.querySelectorAll('.pq-opt').forEach(function (b) { b.disabled = true; });
+    btn.classList.add('selected');
+    qOpts.querySelectorAll('.pq-opt').forEach(function (b) { if (b !== btn) b.classList.add('faded'); });
+    scores[cat] = (scores[cat] || 0) + 1;
+    setTimeout(function () {
+      current++;
+      if (current < QUESTIONS.length) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(40px)';
+        setTimeout(function () {
+          renderQuestion(current);
+          card.style.transition = 'none';
+          card.style.opacity = '0';
+          card.style.transform = 'translateX(-40px)';
+          card.offsetHeight;
+          card.style.transition = 'opacity .3s ease, transform .3s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateX(0)';
+        }, 200);
+      } else {
+        showResult();
+      }
+    }, 500);
+  }
+
+  function showResult() {
+    var best   = Object.entries(scores).sort(function (a, b) { return b[1] - a[1]; })[0];
+    var winner = best ? best[0] : 'sky';
+    var career = CAREERS[winner];
+    var glow   = document.getElementById('pq-result-glow');
+    glow.textContent       = career.icon;
+    glow.style.background  = career.bg;
+    document.getElementById('pq-result-name').textContent = career.name + '!';
+    document.getElementById('pq-result-why').textContent  = career.why;
+    var cta = document.getElementById('pq-result-cta');
+    cta.href           = career.link;
+    cta.style.background = career.bg;
+    awardXP(50, winner, career.name);
+    card.style.display     = 'none';
+    progWrap.style.opacity = '0';
+    header.style.display   = 'none';
+    result.classList.add('show');
+    setTimeout(function () {
+      var toast = document.getElementById('pq-toast');
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 2800);
+    }, 600);
+  }
+
+  function awardXP(pts, careerKey, careerName) {
+    try {
+      var p = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+      p.points   = (p.points  || 0) + pts;
+      p.quizDone = true;
+      localStorage.setItem('kl_progress', JSON.stringify(p));
+    } catch (e) {}
+    try {
+      localStorage.setItem('kl_career_result', JSON.stringify({ key: careerKey, name: careerName, ts: Date.now() }));
+    } catch (e) {}
+  }
+
+  card.style.transition = 'opacity .3s ease, transform .3s ease';
+  renderQuestion(0);
+})();
+</script>
+
+<script src="name-greeting.js"></script>
+</body>
+</html>

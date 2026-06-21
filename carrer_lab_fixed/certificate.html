@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#7c3aed" />
+  <link rel="manifest" href="manifest.json" />
   <title>Сертификат — Карьерная Лаборатория</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -396,12 +398,36 @@
 
   <div class="cert-actions">
     <button class="btn-cert btn-cert-primary" onclick="window.print()">📄 Распечатать / Скачать</button>
+    <button class="btn-cert" id="btn-share-wa"  style="background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:12px 20px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;">📱 WhatsApp</button>
+    <button class="btn-cert" id="btn-share-tg"  style="background:linear-gradient(135deg,#229ed9,#0088cc);color:#fff;border:none;border-radius:12px;padding:12px 20px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;">✈️ Telegram</button>
+    <button class="btn-cert" id="btn-share-vk"  style="background:linear-gradient(135deg,#4c75a3,#2a5885);color:#fff;border:none;border-radius:12px;padding:12px 20px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;">💙 ВКонтакте</button>
     <a href="index.html" class="btn-cert btn-cert-secondary">🏠 На главную</a>
   </div>
   <div class="cert-screenshot-hint">
-    📱 Или сделай скриншот и поделись с друзьями!<br>
+    📱 Сделай скриншот и поделись с друзьями!<br>
     <span style="font-size:0.65rem;opacity:0.6">Android: кнопка питания + громкость↓ · iPhone: боковая кнопка + громкость↑</span>
   </div>
+  <script>
+    (function(){
+      function buildShareText() {
+        try {
+          var name = localStorage.getItem('kl_name') || 'Я';
+          var p = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+          var xp = p.points || 0;
+          return name + ' получил сертификат в КарьераЛаб! 🏆 ' + xp + ' XP заработано. Исследуй профессии будущего → carrierkidlab.netlify.app';
+        } catch(e) { return 'Я получил сертификат в КарьераЛаб! 🏆 Исследуй профессии будущего → carrierkidlab.netlify.app'; }
+      }
+      document.getElementById('btn-share-wa').addEventListener('click', function(){
+        window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(buildShareText()), '_blank');
+      });
+      document.getElementById('btn-share-tg').addEventListener('click', function(){
+        window.open('https://t.me/share/url?url=carrierkidlab.netlify.app&text=' + encodeURIComponent(buildShareText()), '_blank');
+      });
+      document.getElementById('btn-share-vk').addEventListener('click', function(){
+        window.open('https://vk.com/share.php?url=https://carrierkidlab.netlify.app&title=' + encodeURIComponent(buildShareText()), '_blank');
+      });
+    })();
+  </script>
 
   <script>
     (function () {

@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
 </head>
 <body class="play-page app-layout">
 
@@ -253,7 +255,106 @@
         </div>
       </section>
 
+      <!-- ═══ MINI-GAMES SECTION ═══ -->
+      <section class="play-sims-section play-sims-section-premium" style="padding-top:0">
+        <div class="learn-container">
+          <div class="pss-header">
+            <h2 class="pss-title">⚡ Быстрые мини-игры</h2>
+            <p class="pss-sub">Играй прямо здесь — без перехода на другую страницу! +30 XP за каждую</p>
+          </div>
+          <div class="play-sims-grid">
+
+            <button class="play-sim-card" id="open-robot-game" style="--sim-color:#d97706;border:none;cursor:pointer;width:100%;text-align:left;background:none;">
+              <div class="play-sim-icon">🤖</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Собери робота!</h3>
+                <p class="play-sim-desc">Нажимай детали в правильном порядке</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#d97706">⚡ Играть</span>
+              </div>
+            </button>
+
+            <button class="play-sim-card" id="open-doctor-game" style="--sim-color:#16a34a;border:none;cursor:pointer;width:100%;text-align:left;background:none;">
+              <div class="play-sim-icon">🩺</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Поставь диагноз!</h3>
+                <p class="play-sim-desc">Определи болезнь по симптомам пациента</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#16a34a">⚡ Играть</span>
+              </div>
+            </button>
+
+            <button class="play-sim-card" id="open-game-design-game" style="--sim-color:#db2777;border:none;cursor:pointer;width:100%;text-align:left;background:none;">
+              <div class="play-sim-icon">🎮</div>
+              <div class="play-sim-info">
+                <h3 class="play-sim-title">Создай уровень!</h3>
+                <p class="play-sim-desc">Придумай и запусти свою мини-игру</p>
+              </div>
+              <div class="play-sim-action">
+                <span class="btn-main play-sim-btn" style="background:#db2777">⚡ Играть</span>
+              </div>
+            </button>
+
+          </div>
+        </div>
+      </section>
+
       <!-- ═══ MODALS ═══ -->
+
+      <!-- Robot Assembly Game Modal -->
+      <div class="modal-overlay hidden" id="robot-game-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-robot-game">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🤖</span>
+            <span class="smp-topbar-title">Собери робота!</span>
+            <span class="smp-topbar-badge smp-badge--amber">Инженерия</span>
+          </div>
+          <p class="sim-desc smp-desc">Нажимай детали в правильном порядке сборки!</p>
+          <div id="robot-game-content">
+            <div style="text-align:center;padding:12px 0 8px;font-size:.85rem;color:rgba(255,255,255,.6)">Правильный порядок: Корпус → Батарея → Мотор → Контроллер → Камера</div>
+            <div id="robot-parts-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0"></div>
+            <div id="robot-progress" style="text-align:center;font-size:.9rem;color:rgba(255,255,255,.7);min-height:28px"></div>
+            <div id="robot-result" style="display:none;text-align:center;padding:20px 0">
+              <div style="font-size:3rem">🎉</div>
+              <div style="font-size:1.2rem;font-weight:800;color:#fbbf24;margin:8px 0">Робот собран!</div>
+              <div style="font-size:.9rem;color:rgba(255,255,255,.7);margin-bottom:16px">+30 XP заработано!</div>
+              <button class="btn-main" id="robot-game-retry" style="margin-right:8px">🔄 Ещё раз</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Diagnosis Game Modal -->
+      <div class="modal-overlay hidden" id="doctor-game-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-doctor-game">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🩺</span>
+            <span class="smp-topbar-title">Поставь диагноз!</span>
+            <span class="smp-topbar-badge smp-badge--green">Медицина</span>
+          </div>
+          <p class="sim-desc smp-desc">Пациент описывает симптомы. Поставь правильный диагноз!</p>
+          <div id="doctor-game-content"></div>
+        </div>
+      </div>
+
+      <!-- Game Design Level Game Modal -->
+      <div class="modal-overlay hidden" id="game-design-modal">
+        <div class="modal-box sim-modal-premium">
+          <button class="modal-close" id="close-game-design">✕</button>
+          <div class="smp-topbar">
+            <span class="smp-topbar-icon">🎮</span>
+            <span class="smp-topbar-title">Создай уровень!</span>
+            <span class="smp-topbar-badge smp-badge--pink">Гейм-дизайн</span>
+          </div>
+          <p class="sim-desc smp-desc">Расставь элементы на игровом поле и запусти уровень!</p>
+          <div id="game-design-content"></div>
+        </div>
+      </div>
+
       <div class="modal-overlay hidden" id="it-sim-modal">
         <div class="modal-box sim-modal-premium">
           <button class="modal-close" id="close-it-sim">✕</button>
@@ -397,6 +498,261 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script type="module" src="script.js"></script>
+
+<script>
+/* ═══ MINI-GAMES INLINE ═══ */
+(function(){
+
+  /* ── helpers ── */
+  function show(id){ var el=document.getElementById(id); if(el) el.classList.remove('hidden'); }
+  function hide(id){ var el=document.getElementById(id); if(el) el.classList.add('hidden'); }
+  function awardXP(pts){
+    try{
+      var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');
+      p.points=(p.points||0)+pts;
+      p.simDone=(p.simDone||0)+1;
+      localStorage.setItem('kl_progress',JSON.stringify(p));
+    }catch(e){}
+  }
+  function openModal(id){ show(id); document.body.style.overflow='hidden'; }
+  function closeModal(id){ hide(id); document.body.style.overflow=''; }
+
+  /* ────────────────────────────────────────────────
+     ROBOT ASSEMBLY GAME
+  ──────────────────────────────────────────────── */
+  var ROBOT_ORDER = [
+    {id:'body',   label:'Корпус',      icon:'🟫'},
+    {id:'battery',label:'Батарея',     icon:'🔋'},
+    {id:'motor',  label:'Мотор',       icon:'⚙️'},
+    {id:'ctrl',   label:'Контроллер',  icon:'💾'},
+    {id:'camera', label:'Камера',      icon:'📷'}
+  ];
+  var robotStep = 0;
+  var robotDone = false;
+
+  function initRobotGame(){
+    robotStep = 0;
+    robotDone = false;
+    document.getElementById('robot-result').style.display='none';
+    var grid = document.getElementById('robot-parts-grid');
+    var prog = document.getElementById('robot-progress');
+    prog.textContent='';
+    // Shuffle parts
+    var shuffled = ROBOT_ORDER.slice().sort(function(){ return Math.random()-.5; });
+    grid.innerHTML='';
+    shuffled.forEach(function(part){
+      var btn = document.createElement('button');
+      btn.id = 'rpart-'+part.id;
+      btn.style.cssText='background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 18px;cursor:pointer;font-size:1.5rem;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;color:#fff;min-width:80px;transition:all .15s';
+      btn.innerHTML = part.icon+'<span style="font-size:.7rem;font-weight:700;margin-top:4px">'+part.label+'</span>';
+      btn.addEventListener('click', function(){ pickRobotPart(part.id, btn); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function pickRobotPart(partId, btn){
+    if(robotDone) return;
+    var expected = ROBOT_ORDER[robotStep].id;
+    var prog = document.getElementById('robot-progress');
+    if(partId === expected){
+      btn.style.background='linear-gradient(135deg,#d97706,#f59e0b)';
+      btn.style.borderColor='#f59e0b';
+      btn.disabled=true;
+      robotStep++;
+      if(robotStep < ROBOT_ORDER.length){
+        prog.textContent='✅ Правильно! Следующая: '+ROBOT_ORDER[robotStep].label+' '+ROBOT_ORDER[robotStep].icon;
+        prog.style.color='#86efac';
+      } else {
+        robotDone=true;
+        prog.textContent='';
+        document.getElementById('robot-result').style.display='block';
+        awardXP(30);
+      }
+    } else {
+      btn.style.borderColor='#ef4444';
+      prog.textContent='❌ Не то! Сначала нужна: '+ROBOT_ORDER[robotStep].label+' '+ROBOT_ORDER[robotStep].icon;
+      prog.style.color='#fca5a5';
+      setTimeout(function(){ btn.style.borderColor='rgba(255,255,255,.15)'; },800);
+    }
+  }
+
+  document.getElementById('open-robot-game').addEventListener('click', function(){
+    openModal('robot-game-modal');
+    initRobotGame();
+    document.getElementById('robot-progress').textContent='Начни с: '+ROBOT_ORDER[0].label+' '+ROBOT_ORDER[0].icon;
+    document.getElementById('robot-progress').style.color='rgba(255,255,255,.7)';
+  });
+  document.getElementById('close-robot-game').addEventListener('click', function(){ closeModal('robot-game-modal'); });
+  document.getElementById('robot-game-retry').addEventListener('click', function(){
+    initRobotGame();
+    document.getElementById('robot-progress').textContent='Начни с: '+ROBOT_ORDER[0].label+' '+ROBOT_ORDER[0].icon;
+    document.getElementById('robot-progress').style.color='rgba(255,255,255,.7)';
+  });
+
+  /* ────────────────────────────────────────────────
+     DOCTOR DIAGNOSIS GAME
+  ──────────────────────────────────────────────── */
+  var CASES = [
+    {
+      patient:'👦 Мальчик, 10 лет',
+      symptoms:['🌡️ Температура 38.5°C','😮‍💨 Кашель','🤧 Насморк','😴 Слабость'],
+      options:['Грипп','Перелом руки','Аллергия на кошек','Проблемы со зрением'],
+      correct:0,
+      explain:'Высокая температура, кашель и насморк — классические признаки гриппа!'
+    },
+    {
+      patient:'👧 Девочка, 12 лет',
+      symptoms:['😣 Боль в животе','🤢 Тошнота','❌ Отказ от еды','🌡️ Небольшая температура'],
+      options:['Сломанная нога','Аппендицит','Близорукость','Простуда'],
+      correct:1,
+      explain:'Боль в животе с тошнотой и температурой — возможный аппендицит. Срочно к врачу!'
+    },
+    {
+      patient:'👴 Дедушка, 65 лет',
+      symptoms:['💨 Одышка','💔 Боль в груди','😰 Потливость','😵 Головокружение'],
+      options:['Грипп','Сломанная рука','Проблемы с сердцем','Аллергия'],
+      correct:2,
+      explain:'Боль в груди и одышка — признаки проблем с сердцем. Надо срочно вызвать скорую!'
+    }
+  ];
+  var doctorCase = 0;
+  var doctorScore = 0;
+
+  function renderDoctorGame(){
+    var c = CASES[doctorCase];
+    var html='<div style="background:rgba(255,255,255,.06);border-radius:14px;padding:16px;margin-bottom:14px">';
+    html+='<div style="font-weight:800;font-size:1rem;color:#fff;margin-bottom:10px">🏥 Пациент: '+c.patient+'</div>';
+    html+='<div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Симптомы:</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    c.symptoms.forEach(function(s){ html+='<span style="background:rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;font-size:.82rem;color:#fff">'+s+'</span>'; });
+    html+='</div></div>';
+    html+='<div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:10px">Твой диагноз:</div>';
+    html+='<div style="display:flex;flex-direction:column;gap:8px">';
+    c.options.forEach(function(opt, i){
+      html+='<button onclick="(function(){window._dg_pick('+i+');})()" style="background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;color:#fff;font-size:.9rem;font-weight:700;text-align:left;cursor:pointer;font-family:inherit;transition:border-color .15s" onmouseover="this.style.borderColor=\'rgba(22,163,74,.6)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.12)\'">'+opt+'</button>';
+    });
+    html+='</div>';
+    html+='<div id="doc-feedback" style="min-height:40px;margin-top:12px;text-align:center"></div>';
+    document.getElementById('doctor-game-content').innerHTML=html;
+  }
+
+  window._dg_pick = function(idx){
+    var c = CASES[doctorCase];
+    var feedback = document.getElementById('doc-feedback');
+    // Disable all buttons
+    document.querySelectorAll('#doctor-game-content button').forEach(function(b){ b.disabled=true; });
+    if(idx === c.correct){
+      doctorScore++;
+      feedback.innerHTML='<span style="color:#86efac;font-weight:800">✅ Правильно! '+c.explain+'</span>';
+    } else {
+      feedback.innerHTML='<span style="color:#fca5a5;font-weight:800">❌ Не совсем. '+c.explain+'</span>';
+    }
+    setTimeout(function(){
+      doctorCase++;
+      if(doctorCase < CASES.length){
+        renderDoctorGame();
+      } else {
+        // End screen
+        awardXP(30);
+        var html='<div style="text-align:center;padding:20px 0">';
+        html+='<div style="font-size:3rem">'+( doctorScore===CASES.length ? '🏆' : '🩺' )+'</div>';
+        html+='<div style="font-size:1.2rem;font-weight:800;color:#fbbf24;margin:8px 0">Результат: '+doctorScore+'/'+CASES.length+'</div>';
+        html+='<div style="font-size:.9rem;color:rgba(255,255,255,.7);margin-bottom:16px">+30 XP заработано!</div>';
+        html+='<button class="btn-main" onclick="window._dg_restart()" style="margin-right:8px">🔄 Сыграть снова</button>';
+        html+='</div>';
+        document.getElementById('doctor-game-content').innerHTML=html;
+      }
+    }, 1800);
+  };
+
+  window._dg_restart = function(){
+    doctorCase=0; doctorScore=0; renderDoctorGame();
+  };
+
+  document.getElementById('open-doctor-game').addEventListener('click', function(){
+    doctorCase=0; doctorScore=0;
+    openModal('doctor-game-modal');
+    renderDoctorGame();
+  });
+  document.getElementById('close-doctor-game').addEventListener('click', function(){ closeModal('doctor-game-modal'); });
+
+  /* ────────────────────────────────────────────────
+     GAME DESIGN LEVEL GAME
+  ──────────────────────────────────────────────── */
+  var GD_TILES = ['⬜','🏃','💎','🌵','👾'];
+  var GD_NAMES = ['Пусто','Герой','Сокровище','Препятствие','Враг'];
+  var gdGrid = [];
+  var gdSelected = 1; // default: hero
+  var GD_COLS = 6, GD_ROWS = 4;
+  var gdPlayed = false;
+
+  function initGDGame(){
+    gdPlayed=false;
+    gdGrid=[];
+    for(var r=0;r<GD_ROWS;r++){ gdGrid.push([]); for(var c=0;c<GD_COLS;c++){ gdGrid[r].push(0); } }
+    renderGDGame();
+  }
+
+  function renderGDGame(){
+    var required = {hero:false, treasure:false};
+    var html='';
+    // Palette
+    html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">';
+    GD_TILES.forEach(function(t,i){
+      var sel=gdSelected===i;
+      html+='<button onclick="window._gd_sel('+i+')" style="background:'+(sel?'rgba(219,39,119,.4)':'rgba(255,255,255,.07)')+';border:2px solid '+(sel?'#db2777':'rgba(255,255,255,.12)')+';border-radius:10px;padding:6px 10px;color:#fff;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:700;transition:all .15s">'+t+' '+GD_NAMES[i]+'</button>';
+    });
+    html+='</div>';
+    // Grid
+    html+='<div style="display:grid;grid-template-columns:repeat('+GD_COLS+',1fr);gap:4px;margin-bottom:14px">';
+    for(var r=0;r<GD_ROWS;r++){
+      for(var c=0;c<GD_COLS;c++){
+        var v=gdGrid[r][c];
+        html+='<button onclick="window._gd_place('+r+','+c+')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;aspect-ratio:1;font-size:1.2rem;cursor:pointer;transition:transform .1s" onmouseover="this.style.transform=\'scale(1.1)\'" onmouseout="this.style.transform=\'scale(1)\'">'+GD_TILES[v]+'</button>';
+      }
+    }
+    html+='</div>';
+    // Check requirements
+    var heroCount=0,treasureCount=0;
+    gdGrid.forEach(function(row){ row.forEach(function(v){ if(v===1)heroCount++; if(v===2)treasureCount++; }); });
+    var readyMsg='';
+    if(!heroCount) readyMsg+='⚠️ Добавь Героя 🏃  ';
+    if(!treasureCount) readyMsg+='⚠️ Добавь Сокровище 💎  ';
+    html+='<div style="font-size:.82rem;color:#fbbf24;min-height:20px;margin-bottom:10px">'+readyMsg+'</div>';
+    html+='<button '+((!heroCount||!treasureCount)?'disabled':'')+' onclick="window._gd_launch()" class="btn-main" style="width:100%;opacity:'+( (!heroCount||!treasureCount) ? '.45':'1' )+'">🚀 Запустить уровень!</button>';
+    html+='<div id="gd-result" style="min-height:20px;margin-top:10px"></div>';
+    document.getElementById('game-design-content').innerHTML=html;
+  }
+
+  window._gd_sel = function(i){ gdSelected=i; renderGDGame(); };
+  window._gd_place = function(r,c){ gdGrid[r][c]=gdSelected; renderGDGame(); };
+  window._gd_launch = function(){
+    if(gdPlayed) return;
+    gdPlayed=true;
+    awardXP(30);
+    var enemies=0,obstacles=0;
+    gdGrid.forEach(function(row){ row.forEach(function(v){ if(v===4)enemies++; if(v===3)obstacles++; }); });
+    var msg = enemies>2 ? '😱 Ого! Очень сложный уровень — враги повсюду!' : obstacles>4 ? '🌵 Запутанный лабиринт! Герою придётся постараться!' : '🎉 Отличный уровень! Герой нашёл все сокровища!';
+    document.getElementById('gd-result').innerHTML='<div style="background:rgba(219,39,119,.2);border:1px solid rgba(219,39,119,.4);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#f9a8d4">'+msg+'</div><div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-top:4px">+30 XP заработано! 🌟</div><button onclick="window._gd_reset()" class="btn-main" style="margin-top:10px">🔄 Новый уровень</button></div>';
+  };
+  window._gd_reset = function(){ gdPlayed=false; initGDGame(); };
+
+  document.getElementById('open-game-design-game').addEventListener('click', function(){
+    openModal('game-design-modal');
+    initGDGame();
+  });
+  document.getElementById('close-game-design').addEventListener('click', function(){ closeModal('game-design-modal'); });
+
+  /* ── Close on overlay click ── */
+  ['robot-game-modal','doctor-game-modal','game-design-modal'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(e){
+      if(e.target===this) closeModal(id);
+    });
+  });
+
+})();
+</script>
+
 </body>
 </html>
 

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Панель учителя — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0a1e;
+      color: #f1f5f9;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .td-header {
+      background: linear-gradient(135deg, #1e1340 0%, #2d1b69 100%);
+      border-bottom: 1px solid rgba(167,139,250,.2);
+      padding: 20px 24px;
+    }
+    .td-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .td-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .td-title small {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.5);
+      margin-top: 2px;
+    }
+    .td-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,.15);
+      border: 1px solid rgba(16,185,129,.3);
+      color: #34d399;
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .td-live-dot {
+      width: 7px; height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: tdPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes tdPulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(1.3); }
+    }
+
+    /* ── Summary cards ── */
+    .td-stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .td-stat {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 12px 18px;
+      min-width: 110px;
+      flex: 1;
+    }
+    .td-stat-val {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #a78bfa;
+      line-height: 1;
+    }
+    .td-stat-label {
+      font-size: .72rem;
+      color: rgba(255,255,255,.5);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* ── Toolbar ── */
+    .td-toolbar {
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+    }
+    .td-search {
+      flex: 1;
+      min-width: 160px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: .88rem;
+    }
+    .td-search::placeholder { color: rgba(255,255,255,.35); }
+    .td-search:focus { outline: none; border-color: rgba(167,139,250,.5); }
+    .td-btn {
+      background: rgba(124,58,237,.3);
+      border: 1px solid rgba(167,139,250,.3);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: #a78bfa;
+      font-family: 'Nunito', sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .td-btn:hover { background: rgba(124,58,237,.5); }
+    .td-updated {
+      font-size: .75rem;
+      color: rgba(255,255,255,.35);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    /* ── Table ── */
+    .td-table-wrap {
+      overflow-x: auto;
+      padding: 0 24px 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: .88rem;
+    }
+    thead tr {
+      background: rgba(255,255,255,.04);
+    }
+    th {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: rgba(255,255,255,.45);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      white-space: nowrap;
+    }
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255,255,255,.03); }
+    .td-rank-cell {
+      font-size: 1.1rem;
+      text-align: center;
+      width: 44px;
+    }
+    .td-name-cell {
+      font-weight: 800;
+      color: #fff;
+    }
+    .td-xp-cell {
+      font-weight: 800;
+      color: #fbbf24;
+    }
+    .td-level-cell {
+      color: #a78bfa;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .td-lessons-cell, .td-sims-cell {
+      text-align: center;
+      color: rgba(255,255,255,.7);
+    }
+    .td-badges-cell {
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
+    .td-streak-cell {
+      color: #f97316;
+      font-weight: 700;
+      text-align: center;
+    }
+    .td-quiz-cell {
+      text-align: center;
+    }
+    .badge-yes { font-size: .7rem; background: rgba(16,185,129,.2); color: #34d399; border-radius: 6px; padding: 2px 7px; }
+    .badge-no  { font-size: .7rem; background: rgba(255,255,255,.06); color: rgba(255,255,255,.3); border-radius: 6px; padding: 2px 7px; }
+
+    /* empty + loading */
+    .td-empty { text-align: center; padding: 40px; color: rgba(255,255,255,.4); }
+
+    /* top row highlight */
+    .row-1 td:first-child { font-size: 1.4rem; }
+    .row-1 .td-name-cell { color: #fbbf24; }
+    .row-2 .td-name-cell { color: #94a3b8; }
+    .row-3 .td-name-cell { color: #b45309; }
+
+    /* ── Print styles ── */
+    @media print {
+      body { background: #fff; color: #000; }
+      .td-toolbar, .td-btn, .td-search { display: none; }
+      .td-header { background: #f5f5f5; color: #000; border-bottom: 2px solid #ccc; }
+      .td-title, .td-stat-val { color: #000; }
+      td, th { color: #000; border-color: #ccc; }
+    }
+
+    @media (max-width: 600px) {
+      .td-header { padding: 16px; }
+      .td-table-wrap { padding: 0 12px 24px; }
+      .th-badges, .th-streak, .th-quiz, .th-sims { display: none; }
+      .td-badges-cell, .td-streak-cell, .td-quiz-cell, .td-sims-cell { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="td-header">
+    <div class="td-header-top">
+      <div class="td-title">
+        📊 Панель учителя
+        <small>Карьерная Лаборатория · Лагерь</small>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div class="td-live-badge">
+          <span class="td-live-dot"></span>
+          ПРЯМОЙ ЭФИР
+        </div>
+        <span id="td-count" style="font-size:.85rem;color:rgba(255,255,255,.5)">— участников</span>
+      </div>
+    </div>
+
+    <div class="td-stats" id="td-stats">
+      <div class="td-stat">
+        <div class="td-stat-val" id="stat-students">0</div>
+        <div class="td-stat-label">Учеников</div>
+      </div>
+      <div class="td-stat">
+        <div class="td-stat-val" id="stat-avg">0</div>
+        <div class="td-stat-label">Среднее XP</div>
+      </div>
+      <div class="td-stat">
+        <div class="td-stat-val" id="stat-total">0</div>
+        <div class="td-stat-label">Всего XP</div>
+      </div>
+      <div class="td-stat">
+        <div class="td-stat-val" id="stat-quizzes">0</div>
+        <div class="td-stat-label">Тестов сдано</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="td-toolbar">
+    <input class="td-search" id="td-search" type="text" placeholder="🔍 Поиск ученика..." />
+    <a href="leaderboard.html" class="td-btn" target="_blank">🏆 Полный рейтинг</a>
+    <a href="index.html" class="td-btn">🏠 Главная</a>
+    <button class="td-btn" onclick="window.print()">🖨️ Распечатать</button>
+    <span class="td-updated" id="td-updated"></span>
+  </div>
+
+  <div class="td-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:44px">#</th>
+          <th>Имя</th>
+          <th>XP</th>
+          <th>Уровень</th>
+          <th style="text-align:center">Уроки</th>
+          <th class="th-sims" style="text-align:center">Сим.</th>
+          <th class="th-streak" style="text-align:center">🔥</th>
+          <th class="th-quiz" style="text-align:center">Тест</th>
+          <th class="th-badges">Значки</th>
+        </tr>
+      </thead>
+      <tbody id="td-body">
+        <tr><td colspan="9" class="td-empty">⏳ Подключение к Firebase...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore, collection, query, orderBy, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { FIREBASE_CONFIG } from "./firebase.config.js";
+
+    const LEVELS = [
+      { level:1, min:0,    max:50,   label:"Новичок",  icon:"🌱" },
+      { level:2, min:50,   max:150,  label:"Ученик",   icon:"📚" },
+      { level:3, min:150,  max:300,  label:"Знаток",   icon:"🔭" },
+      { level:4, min:300,  max:500,  label:"Эксперт",  icon:"🏆" },
+      { level:5, min:500,  max:1000, label:"Мастер",   icon:"🚀" },
+      { level:6, min:1000, max:9999, label:"Легенда",  icon:"👑" }
+    ];
+    function getLvl(pts) {
+      return LEVELS.find(l => pts >= l.min && pts < l.max) || LEVELS[LEVELS.length - 1];
+    }
+
+    const RANK_ICONS = ["🥇","🥈","🥉"];
+
+    function esc(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function badgesStr(badges) {
+      if (!badges || !badges.length) return '<span style="color:rgba(255,255,255,.2)">—</span>';
+      const ICONS = { first_lesson:"🎓", streak3:"🔥", quiz_done:"🧠", explorer:"🔭", speed_learner:"⚡", all_careers:"🌟" };
+      return badges.map(b => ICONS[b] || '🏅').join(' ');
+    }
+
+    let allRows = [];
+    const searchEl  = document.getElementById('td-search');
+    const tbody     = document.getElementById('td-body');
+    const countEl   = document.getElementById('td-count');
+    const updatedEl = document.getElementById('td-updated');
+
+    function render(rows) {
+      const q = searchEl.value.trim().toLowerCase();
+      const filtered = q ? rows.filter(r => r.name.toLowerCase().includes(q)) : rows;
+
+      // Stats (always from full rows, not filtered)
+      const total   = rows.reduce((s,r) => s + (r.points||0), 0);
+      const quizzes = rows.filter(r => r.quizDone).length;
+      document.getElementById('stat-students').textContent = rows.length;
+      document.getElementById('stat-avg').textContent      = rows.length ? Math.round(total / rows.length) : 0;
+      document.getElementById('stat-total').textContent    = total.toLocaleString('ru');
+      document.getElementById('stat-quizzes').textContent  = quizzes;
+      countEl.textContent = rows.length + ' участников';
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="9" class="td-empty">Нет участников :(</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((d, i) => {
+        const lvl    = getLvl(d.points || 0);
+        const rank   = i < 3 ? RANK_ICONS[i] : (i + 1);
+        const rowCls = i < 3 ? `row-${i+1}` : '';
+        return `<tr class="${rowCls}">
+          <td class="td-rank-cell">${rank}</td>
+          <td class="td-name-cell">${esc(d.name)}</td>
+          <td class="td-xp-cell">${(d.points||0).toLocaleString('ru')} XP</td>
+          <td class="td-level-cell">${lvl.icon} ${lvl.label}</td>
+          <td class="td-lessons-cell">${d.lessonsCompleted || 0}</td>
+          <td class="td-sims-cell">${d.simDone || 0}</td>
+          <td class="td-streak-cell">${d.streak ? d.streak + '🔥' : '—'}</td>
+          <td class="td-quiz-cell">${d.quizDone ? '<span class="badge-yes">✓ Сдал</span>' : '<span class="badge-no">нет</span>'}</td>
+          <td class="td-badges-cell">${badgesStr(d.badges)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    searchEl.addEventListener('input', () => render(allRows));
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+    const q   = query(collection(db, "users"), orderBy("points", "desc"));
+
+    onSnapshot(q, (snap) => {
+      allRows = [];
+      snap.forEach(doc => {
+        const d = doc.data();
+        if (d.name) allRows.push(d);
+      });
+      render(allRows);
+      const now = new Date();
+      updatedEl.textContent = 'Обновлено: ' + now.toLocaleTimeString('ru', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    }, (err) => {
+      tbody.innerHTML = '<tr><td colspan="9" class="td-empty">❌ Ошибка подключения к Firebase</td></tr>';
+    });
+  </script>
+</body>
+</html>
