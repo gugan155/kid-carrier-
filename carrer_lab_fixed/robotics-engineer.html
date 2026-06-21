@@ -328,6 +328,109 @@
       </div>
     </section>
 
+    <!-- ═══ MINI-GAME: Robot Programming ═══ -->
+    <section class="lesson-section" style="background:linear-gradient(135deg,rgba(217,119,6,.15),rgba(146,64,14,.1));border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:24px 20px;margin-bottom:24px">
+      <div style="text-align:center;margin-bottom:16px">
+        <span style="font-size:2rem">🤖</span>
+        <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin:6px 0 4px">Мини-игра: Запрограммируй робота!</h2>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.6)">Нажимай команды по порядку · +25 XP</p>
+      </div>
+      <div id="rpg-box">
+        <div style="text-align:center;margin-bottom:12px">
+          <div id="rpg-grid" style="display:inline-grid;grid-template-columns:repeat(5,44px);gap:4px;margin-bottom:10px"></div>
+          <div id="rpg-status" style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:8px"></div>
+        </div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:8px;text-align:center">Программа:</div>
+        <div id="rpg-program" style="display:flex;flex-wrap:wrap;gap:6px;min-height:36px;background:rgba(0,0,0,.25);border-radius:10px;padding:8px;margin-bottom:12px;justify-content:center"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px">
+          <button onclick="rpgCmd('↑')" class="rpg-btn">↑ Вперёд</button>
+          <button onclick="rpgCmd('→')" class="rpg-btn">→ Вправо</button>
+          <button onclick="rpgCmd('←')" class="rpg-btn">← Влево</button>
+          <button onclick="rpgCmd('↓')" class="rpg-btn">↓ Назад</button>
+          <button onclick="rpgUndo()" class="rpg-btn" style="background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.3)">↩ Удалить</button>
+        </div>
+        <button onclick="rpgRun()" style="width:100%;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-weight:900;font-size:.95rem;padding:12px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">▶ Запустить программу!</button>
+        <div id="rpg-feedback" style="text-align:center;min-height:28px;margin-top:10px;font-weight:700;font-size:.9rem"></div>
+      </div>
+      <div id="rpg-result" style="display:none;text-align:center;padding:12px 0">
+        <div id="rpg-trophy" style="font-size:3rem"></div>
+        <div id="rpg-result-text" style="font-size:1.1rem;font-weight:800;color:#fbbf24;margin:8px 0"></div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px">+25 XP заработано!</div>
+        <button onclick="rpgInit()" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-weight:800;font-size:.9rem;padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">🔄 Новая задача</button>
+      </div>
+    </section>
+    <style>
+      .rpg-btn{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:10px;padding:9px 14px;color:#fff;font-weight:800;font-size:.9rem;cursor:pointer;font-family:inherit;transition:all .15s}
+      .rpg-btn:hover{background:rgba(245,158,11,.2);border-color:rgba(245,158,11,.4)}
+    </style>
+    <script>
+    (function(){
+      var TASKS=[
+        {start:[0,0],goal:[4,0],solution:['↑','↑','↑','↑'],desc:'Робот стартует слева. Цель справа. Двигайся вперёд 4 раза!'},
+        {start:[0,2],goal:[2,0],solution:['↑','↑','↑','↑'],desc:'Робот в центре. Доведи до цели!'},
+        {start:[0,4],goal:[4,2],solution:['↑','↑','↑','↑'],desc:'Добеги до финиша!'}
+      ];
+      var program=[], taskIdx=0, awarded=false;
+
+      function awardXP(){if(!awarded){awarded=true;try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}}
+
+      window.rpgInit=function(){
+        program=[];awarded=false;
+        taskIdx=Math.floor(Math.random()*TASKS.length);
+        var t=TASKS[taskIdx];
+        document.getElementById('rpg-result').style.display='none';
+        document.getElementById('rpg-box').style.display='block';
+        document.getElementById('rpg-feedback').textContent='';
+        document.getElementById('rpg-status').textContent=t.desc;
+        rpgDraw(t.start,t.goal);
+        rpgUpdateProgram();
+      };
+
+      function rpgDraw(pos,goal){
+        var grid=document.getElementById('rpg-grid');
+        grid.innerHTML='';
+        for(var i=0;i<5;i++){
+          var cell=document.createElement('div');
+          var isBot=pos[0]===i;
+          var isGoal=goal[0]===i;
+          cell.style.cssText='width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:2px solid '+(isGoal?'rgba(245,158,11,.5)':'rgba(255,255,255,.1)')+';background:'+(isGoal?'rgba(245,158,11,.15)':'rgba(255,255,255,.05)')+';';
+          cell.textContent=isBot?'🤖':isGoal?'🏁':'⬜';
+          grid.appendChild(cell);
+        }
+      }
+
+      function rpgUpdateProgram(){
+        var box=document.getElementById('rpg-program');
+        box.innerHTML=program.length?program.map(function(c){return'<span style="background:rgba(245,158,11,.25);border:1px solid rgba(245,158,11,.4);border-radius:6px;padding:4px 9px;font-size:.85rem;font-weight:800;color:#fbbf24">'+c+'</span>';}).join(''):'<span style="color:rgba(255,255,255,.25);font-size:.8rem">Программа пуста — добавь команды!</span>';
+      }
+
+      window.rpgCmd=function(cmd){
+        if(program.length>=8)return;
+        program.push(cmd);
+        rpgUpdateProgram();
+      };
+      window.rpgUndo=function(){ program.pop(); rpgUpdateProgram(); };
+
+      window.rpgRun=function(){
+        if(!program.length){document.getElementById('rpg-feedback').innerHTML='<span style="color:#fca5a5">Сначала добавь команды!</span>';return;}
+        var t=TASKS[taskIdx];
+        var pos=t.start[0];
+        program.forEach(function(c){if(c==='↑')pos=Math.min(4,pos+1);else if(c==='↓')pos=Math.max(0,pos-1);});
+        rpgDraw([pos,0],t.goal);
+        if(pos===t.goal[0]){
+          awardXP();
+          document.getElementById('rpg-box').style.display='none';
+          document.getElementById('rpg-result').style.display='block';
+          document.getElementById('rpg-trophy').textContent='🏆';
+          document.getElementById('rpg-result-text').textContent='Робот добрался до цели! Ты — настоящий программист!';
+        } else {
+          document.getElementById('rpg-feedback').innerHTML='<span style="color:#fca5a5">Не дошёл! Попробуй другую программу</span>';
+        }
+      };
+      rpgInit();
+    })();
+    </script>
+
     <div class="career-next-step">
       <h3>🎯 Что делать дальше?</h3>
       <p>Будущее работает на роботах — и ты можешь их строить! Пройди тест и найди свою профессию!</p>

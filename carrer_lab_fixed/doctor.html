@@ -356,6 +356,77 @@
         </div>
       </section>
 
+      <!-- ═══ MINI-GAME: First Aid ═══ -->
+      <section class="lesson-section" style="background:linear-gradient(135deg,rgba(22,163,74,.15),rgba(20,83,45,.1));border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:24px 20px;margin-bottom:24px">
+        <div style="text-align:center;margin-bottom:16px">
+          <span style="font-size:2rem">🩺</span>
+          <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin:6px 0 4px">Мини-игра: Скорая помощь!</h2>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.6)">5 ситуаций · Выбери правильное действие · +25 XP</p>
+        </div>
+        <div id="doc2-box">
+          <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:16px;margin-bottom:12px">
+            <div id="doc2-case" style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:8px"></div>
+            <div id="doc2-desc" style="font-size:.85rem;color:rgba(255,255,255,.65)"></div>
+          </div>
+          <div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:8px">Твои действия:</div>
+          <div id="doc2-opts" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="doc2-feedback" style="text-align:center;min-height:36px;margin-top:10px;font-weight:700;font-size:.88rem"></div>
+          <div id="doc2-progress" style="text-align:right;font-size:.75rem;color:rgba(255,255,255,.35);margin-top:6px"></div>
+        </div>
+        <div id="doc2-result" style="display:none;text-align:center;padding:12px 0">
+          <div id="doc2-trophy" style="font-size:3rem"></div>
+          <div id="doc2-result-text" style="font-size:1.1rem;font-weight:800;color:#fbbf24;margin:8px 0"></div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px">+25 XP заработано!</div>
+          <button onclick="doc2Init()" style="background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;font-weight:800;font-size:.9rem;padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
+        </div>
+      </section>
+      <script>
+      (function(){
+        var CASES=[
+          {icon:'🤕',title:'Человек упал и порезал руку',desc:'Рана кровоточит, человек в сознании.',opts:['Промой рану водой и перевяжи','Дай ему горячего чая','Оставь рану открытой','Сразу делай операцию'],correct:0,explain:'Промыть и перевязать рану — первое действие при порезе.'},
+          {icon:'🚨',title:'Человек потерял сознание',desc:'Не реагирует на голос и прикосновения.',opts:['Проверь дыхание и вызови скорую','Облей холодной водой','Дай нашатырь и уйди','Положи на живот и уйди'],correct:0,explain:'При потере сознания — проверь дыхание и сразу вызывай 112!'},
+          {icon:'🔥',title:'Ребёнок обжёг руку горячим чаем',desc:'Кожа покраснела, ребёнок плачет.',opts:['Подставь под прохладную воду 10-15 мин','Намажь маслом или сметаной','Проколи волдырь иголкой','Завяжи тёплым платком'],correct:0,explain:'Охлаждение прохладной водой снимает боль и уменьшает ожог. Масло — опасно!'},
+          {icon:'😵',title:'Другу стало плохо на жаре',desc:'Головокружение, слабость, кожа бледная.',opts:['Перенеси в тень и дай воды','Заставь бегать','Дай горячий чай','Не трогай — само пройдёт'],correct:0,explain:'При тепловом ударе — в тень, прохладное питьё, холодный компресс на лоб.'},
+          {icon:'🦷',title:'У одноклассника сильная боль в зубе',desc:'Щека опухла, температура 38°C.',opts:['Посоветуй срочно идти к врачу','Дай больше сахара','Привяжи тёплый шарф','Скажи что само пройдёт'],correct:0,explain:'Опухоль и температура — признаки воспаления. Нужен срочный визит к стоматологу!'}
+        ];
+        var q=0,score=0;
+        function awardXP(){try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
+        window.doc2Init=function(){q=0;score=0;document.getElementById('doc2-result').style.display='none';document.getElementById('doc2-box').style.display='block';doc2Render();};
+        function doc2Render(){
+          if(q>=CASES.length){doc2End();return;}
+          var c=CASES[q];
+          document.getElementById('doc2-case').textContent=c.icon+' '+c.title;
+          document.getElementById('doc2-desc').textContent=c.desc;
+          document.getElementById('doc2-feedback').textContent='';
+          document.getElementById('doc2-progress').textContent='Ситуация '+(q+1)+' / '+CASES.length+' · ⭐ '+score;
+          var box=document.getElementById('doc2-opts');
+          box.innerHTML='';
+          c.opts.forEach(function(opt,i){
+            var b=document.createElement('button');
+            b.textContent=opt;
+            b.style.cssText='background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;color:#fff;font-weight:700;font-size:.85rem;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s;width:100%';
+            b.addEventListener('click',(function(idx){return function(){
+              box.querySelectorAll('button').forEach(function(x){x.disabled=true;});
+              if(idx===c.correct){score++;b.style.background='rgba(22,163,74,.3)';b.style.borderColor='#22c55e';document.getElementById('doc2-feedback').innerHTML='<span style="color:#86efac">✅ '+c.explain+'</span>';}
+              else{b.style.background='rgba(239,68,68,.25)';b.style.borderColor='#ef4444';document.getElementById('doc2-feedback').innerHTML='<span style="color:#fca5a5">❌ '+c.explain+'</span>';}
+              setTimeout(function(){q++;doc2Render();},1600);
+            };})(i));
+            box.appendChild(b);
+          });
+        }
+        function doc2End(){
+          awardXP();
+          document.getElementById('doc2-box').style.display='none';
+          document.getElementById('doc2-result').style.display='block';
+          var trophy=score>=4?'🏆':score>=3?'🌟':'🩺';
+          var msg=score===5?'Идеально! Ты прирождённый врач!':score>=4?'Отлично! Ты спасаешь жизни!':score>=3?'Хорошо! Ещё немного практики!':'Учись — и ты станешь лучшим врачом!';
+          document.getElementById('doc2-trophy').textContent=trophy;
+          document.getElementById('doc2-result-text').textContent=score+' / '+CASES.length+' — '+msg;
+        }
+        doc2Init();
+      })();
+      </script>
+
       <!-- NEXT STEP CTA -->
       <div class="career-next-step">
         <h3>🎯 Что делать дальше?</h3>

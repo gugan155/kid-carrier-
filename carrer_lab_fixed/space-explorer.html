@@ -327,6 +327,102 @@
       </div>
     </section>
 
+    <!-- ═══ MINI-GAME: Planet Quiz ═══ -->
+    <section class="lesson-section" style="background:linear-gradient(135deg,rgba(13,148,136,.15),rgba(6,95,70,.1));border:1px solid rgba(20,184,166,.25);border-radius:20px;padding:24px 20px;margin-bottom:24px">
+      <div style="text-align:center;margin-bottom:16px">
+        <span style="font-size:2rem">🌌</span>
+        <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin:6px 0 4px">Мини-игра: Угадай планету!</h2>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.6)">5 вопросов · +25 XP за победу</p>
+      </div>
+      <div id="spg-box">
+        <div style="text-align:center;margin-bottom:20px">
+          <div id="spg-planet" style="font-size:5rem;line-height:1;margin-bottom:8px"></div>
+          <div id="spg-hint" style="font-size:.85rem;color:rgba(255,255,255,.55);min-height:20px"></div>
+        </div>
+        <div id="spg-score-row" style="display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:12px">
+          <span id="spg-q-num">Вопрос 1 / 5</span>
+          <span>⭐ <span id="spg-score">0</span></span>
+        </div>
+        <div id="spg-opts" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+        <div id="spg-feedback" style="text-align:center;min-height:32px;margin-top:10px;font-weight:700;font-size:.9rem"></div>
+      </div>
+      <div id="spg-result" style="display:none;text-align:center;padding:12px 0">
+        <div id="spg-trophy" style="font-size:3rem"></div>
+        <div id="spg-result-text" style="font-size:1.1rem;font-weight:800;color:#fbbf24;margin:8px 0"></div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px">+25 XP заработано!</div>
+        <button onclick="spgInit()" style="background:linear-gradient(135deg,#0d9488,#14b8a6);color:#fff;font-weight:800;font-size:.9rem;padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
+      </div>
+    </section>
+    <script>
+    (function(){
+      var PLANETS=[
+        {e:'☿',name:'Меркурий',hint:'Самая близкая к Солнцу планета'},
+        {e:'♀️',name:'Венера',hint:'Самая горячая планета'},
+        {e:'🌍',name:'Земля',hint:'Наш дом — единственная планета с жизнью'},
+        {e:'🔴',name:'Марс',hint:'Красная планета — цель Mars миссии'},
+        {e:'🟠',name:'Юпитер',hint:'Самая большая планета'},
+        {e:'💛',name:'Сатурн',hint:'Планета с красивыми кольцами'},
+        {e:'🔵',name:'Уран',hint:'Ледяной гигант, вращается на боку'},
+        {e:'🌀',name:'Нептун',hint:'Самая далёкая от Солнца планета'}
+      ];
+      var q=0, score=0, answered=false;
+      var questions=[];
+      function shuffle(a){return a.slice().sort(function(){return Math.random()-.5;});}
+      function awardXP(){try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
+      window.spgInit=function(){
+        q=0;score=0;answered=false;
+        questions=shuffle(PLANETS).slice(0,5);
+        document.getElementById('spg-result').style.display='none';
+        document.getElementById('spg-box').style.display='block';
+        spgRender();
+      };
+      function spgRender(){
+        if(q>=questions.length){spgEnd();return;}
+        answered=false;
+        var cur=questions[q];
+        document.getElementById('spg-planet').textContent=cur.e;
+        document.getElementById('spg-hint').textContent=cur.hint;
+        document.getElementById('spg-q-num').textContent='Вопрос '+(q+1)+' / '+questions.length;
+        document.getElementById('spg-score').textContent=score;
+        document.getElementById('spg-feedback').textContent='';
+        var wrong=shuffle(PLANETS.filter(function(p){return p.name!==cur.name;})).slice(0,3);
+        var opts=shuffle([cur].concat(wrong));
+        var box=document.getElementById('spg-opts');
+        box.innerHTML='';
+        opts.forEach(function(opt){
+          var b=document.createElement('button');
+          b.textContent=opt.name;
+          b.style.cssText='background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 8px;color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;transition:all .15s;';
+          b.addEventListener('click',function(){
+            if(answered)return;
+            answered=true;
+            box.querySelectorAll('button').forEach(function(x){x.disabled=true;});
+            if(opt.name===cur.name){
+              score++;
+              b.style.background='linear-gradient(135deg,#0d9488,#14b8a6)';b.style.borderColor='#14b8a6';
+              document.getElementById('spg-feedback').innerHTML='<span style="color:#6ee7b7">✅ Правильно!</span>';
+            } else {
+              b.style.background='rgba(239,68,68,.3)';b.style.borderColor='#ef4444';
+              document.getElementById('spg-feedback').innerHTML='<span style="color:#fca5a5">❌ Это '+cur.name+'!</span>';
+            }
+            setTimeout(function(){q++;spgRender();},1200);
+          });
+          box.appendChild(b);
+        });
+      }
+      function spgEnd(){
+        awardXP();
+        document.getElementById('spg-box').style.display='none';
+        document.getElementById('spg-result').style.display='block';
+        var trophy=score>=4?'🏆':score>=2?'🌟':'🌌';
+        var msg=score===5?'Идеально! Ты настоящий астроном!':score>=4?'Отлично! Звёзды знакомы тебе!':score>=2?'Хорошо! Продолжай изучать космос!':'Не сдавайся — космос ждёт!';
+        document.getElementById('spg-trophy').textContent=trophy;
+        document.getElementById('spg-result-text').textContent=score+' / '+questions.length+' — '+msg;
+      }
+      spgInit();
+    })();
+    </script>
+
     <div class="career-next-step">
       <h3>🎯 Что делать дальше?</h3>
       <p>Звёзды ждут тебя! Пройди тест и узнай, подходит ли тебе профессия исследователя космоса!</p>
