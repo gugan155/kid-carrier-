@@ -56,6 +56,14 @@
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
+      <a href="live-quiz.html" class="sidebar-link" style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px">
+        <span class="sidebar-icon">🔴</span>
+        <span class="sidebar-label">Живая викторина</span>
+      </a>
+      <a href="teacher-dashboard.html" class="sidebar-link">
+        <span class="sidebar-icon">👩‍🏫</span>
+        <span class="sidebar-label">Учителю</span>
+      </a>
     </nav>
     <div class="sidebar-progress" id="sidebar-progress">
       <div class="sidebar-prog-label">Мой прогресс</div>
@@ -340,6 +348,67 @@
 <button class="voice-toggle" id="voice-toggle" title="Включить/выключить голос">🔇</button>
 
 <script type="module" src="script.js"></script>
+<script>
+/* Live progress injection — reads localStorage and updates career path cards */
+(function () {
+  var CAREER_LESSONS = {
+    'drone-pilot.html':       ['drone_1','drone_2','drone_3'],
+    'cyber-defender.html':    ['cyber_1','cyber_2','cyber_3'],
+    'space-explorer.html':    ['space_1','space_2','space_3'],
+    'robotics-engineer.html': ['robot_1','robot_2','robot_3'],
+    'game-designer.html':     ['game_1','game_2','game_3'],
+    'doctor.html':            ['doctor_1','doctor_2','doctor_3']
+  };
+
+  function updateLearnProgress() {
+    var prog = {};
+    try { prog = JSON.parse(localStorage.getItem('kl_progress') || '{}'); } catch(e) {}
+    var done = prog.lessonsCompleted || {};
+    var totalDone = 0;
+
+    document.querySelectorAll('.career-path-card').forEach(function (card) {
+      var href = (card.getAttribute('href') || '').replace(/.*\//, '');
+      var lessons = CAREER_LESSONS[href];
+      if (!lessons) return;
+
+      var count = lessons.filter(function (id) { return done[id]; }).length;
+      totalDone += count;
+      var pct = Math.round(count / lessons.length * 100);
+
+      var fill = card.querySelector('.career-progress-fill');
+      var text = card.querySelector('.career-progress-text');
+      if (fill) fill.style.width = pct + '%';
+      if (text) text.textContent = count + ' / ' + lessons.length;
+
+      var badge = card.querySelector('.readiness-badge');
+      if (badge) {
+        if (count === lessons.length) {
+          badge.textContent = '✅ Завершено!';
+          badge.style.cssText = 'background:rgba(34,197,94,.2);color:#86efac;border-color:rgba(34,197,94,.4);border-radius:999px;padding:2px 10px;font-size:.7rem;font-weight:800';
+          card.style.borderColor = 'rgba(34,197,94,.35)';
+          card.style.boxShadow  = '0 0 24px rgba(34,197,94,.12)';
+        } else if (count > 0) {
+          badge.textContent = '📖 В процессе';
+          badge.style.cssText = 'background:rgba(251,191,36,.15);color:#fde68a;border-color:rgba(251,191,36,.4);border-radius:999px;padding:2px 10px;font-size:.7rem;font-weight:800';
+        }
+      }
+    });
+
+    var lcEl = document.getElementById('lessons-completed');
+    var xpEl = document.getElementById('total-xp');
+    var simEl = document.getElementById('unlocked-sims');
+    if (lcEl) lcEl.textContent = totalDone;
+    if (xpEl) xpEl.textContent = prog.points || 0;
+    if (simEl) simEl.textContent = prog.simDone || 0;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateLearnProgress);
+  } else {
+    updateLearnProgress();
+  }
+})();
+</script>
 </body>
 </html>
 
