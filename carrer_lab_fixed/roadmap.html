@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Мой маршрут — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"/>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#7c3aed"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);
+      min-height:100vh;font-family:'Nunito',sans-serif;color:#fff;
+      padding:16px 16px 80px;
+    }
+
+    .rm-topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      max-width:640px;margin:0 auto 24px;
+    }
+    .rm-back{color:rgba(255,255,255,.45);font-size:.82rem;font-weight:700;text-decoration:none;transition:color .2s}
+    .rm-back:hover{color:#fff}
+    .rm-title{font-size:1rem;font-weight:900;color:#a78bfa}
+
+    .rm-hero{
+      max-width:640px;margin:0 auto 24px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;padding:24px 20px;
+      display:flex;align-items:center;gap:16px;
+    }
+    .rm-hero-emoji{font-size:3rem;flex-shrink:0}
+    .rm-hero-info{}
+    .rm-hero-label{font-size:.68rem;font-weight:700;color:#a855f7;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+    .rm-hero-career{font-size:1.4rem;font-weight:900;margin-bottom:4px}
+    .rm-hero-sub{font-size:.82rem;color:rgba(255,255,255,.55)}
+
+    /* Week tabs */
+    .rm-week-tabs{
+      max-width:640px;margin:0 auto 16px;
+      display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;
+    }
+    .rm-week-tab{
+      flex-shrink:0;padding:8px 16px;border-radius:99px;
+      font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.06);color:rgba(255,255,255,.55);
+      cursor:pointer;transition:all .2s;
+    }
+    .rm-week-tab.active{background:rgba(124,58,237,.3);border-color:#a855f7;color:#fff}
+
+    /* Days */
+    .rm-days{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+
+    .rm-day{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:18px;overflow:hidden;
+      transition:border-color .2s;
+    }
+    .rm-day.today{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.07)}
+    .rm-day.done-day{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05)}
+
+    .rm-day-header{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 16px;cursor:pointer;
+    }
+    .rm-day-num{
+      width:36px;height:36px;border-radius:10px;flex-shrink:0;
+      background:rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;
+      font-size:.8rem;font-weight:900;color:rgba(255,255,255,.6);
+    }
+    .rm-day.today .rm-day-num{background:rgba(124,58,237,.4);color:#c4b5fd}
+    .rm-day.done-day .rm-day-num{background:rgba(34,197,94,.25);color:#86efac}
+    .rm-day-label{flex:1}
+    .rm-day-title{font-size:.92rem;font-weight:800;margin-bottom:1px}
+    .rm-day-subtitle{font-size:.72rem;color:rgba(255,255,255,.4)}
+    .rm-day-badge{
+      font-size:.68rem;font-weight:800;padding:3px 8px;
+      border-radius:99px;flex-shrink:0;
+    }
+    .rm-badge-today{background:rgba(168,85,247,.2);color:#c4b5fd;border:1px solid rgba(168,85,247,.4)}
+    .rm-badge-done{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+    .rm-badge-locked{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.1)}
+
+    .rm-day-body{padding:0 16px 16px;display:none}
+    .rm-day-body.open{display:block}
+
+    /* Tasks */
+    .rm-tasks{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+    .rm-task{
+      display:flex;align-items:flex-start;gap:12px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:12px;padding:12px;
+      cursor:pointer;transition:all .15s;
+    }
+    .rm-task:hover{background:rgba(255,255,255,.07)}
+    .rm-task.checked{
+      background:rgba(34,197,94,.08);
+      border-color:rgba(34,197,94,.25);
+    }
+    .rm-task-check{
+      width:22px;height:22px;border-radius:6px;flex-shrink:0;
+      border:2px solid rgba(255,255,255,.2);
+      display:flex;align-items:center;justify-content:center;
+      margin-top:1px;transition:all .2s;
+      font-size:.85rem;
+    }
+    .rm-task.checked .rm-task-check{
+      background:#22c55e;border-color:#22c55e;
+    }
+    .rm-task-content{flex:1}
+    .rm-task-type{
+      font-size:.62rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:.08em;color:#a855f7;margin-bottom:3px;
+    }
+    .rm-task-text{font-size:.88rem;font-weight:700;color:rgba(255,255,255,.88);line-height:1.4;margin-bottom:3px}
+    .rm-task-detail{font-size:.76rem;color:rgba(255,255,255,.45);line-height:1.4}
+    .rm-task-xp{
+      font-size:.7rem;font-weight:800;color:#fde68a;flex-shrink:0;margin-top:2px;
+    }
+
+    /* Day complete button */
+    .rm-day-complete-btn{
+      width:100%;padding:11px;border-radius:12px;
+      background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(16,185,129,.2));
+      border:1px solid rgba(34,197,94,.3);
+      color:#86efac;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;
+      cursor:pointer;transition:all .2s;
+    }
+    .rm-day-complete-btn:hover{background:linear-gradient(135deg,rgba(34,197,94,.3),rgba(16,185,129,.3))}
+    .rm-day-complete-btn:disabled{opacity:.5;cursor:default}
+
+    /* Bottom streak bar */
+    .rm-streak-bar{
+      max-width:640px;margin:20px auto 0;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:16px;padding:16px;
+      display:flex;align-items:center;gap:14px;
+    }
+    .rm-streak-icon{font-size:1.8rem}
+    .rm-streak-info{flex:1}
+    .rm-streak-val{font-size:1.1rem;font-weight:900;color:#fbbf24}
+    .rm-streak-label{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:1px}
+    .rm-xp-total{text-align:right}
+    .rm-xp-val{font-size:1.1rem;font-weight:900;color:#a78bfa}
+    .rm-xp-label{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:1px}
+
+    /* No career screen */
+    .rm-no-career{
+      max-width:480px;margin:60px auto;text-align:center;
+    }
+    .rm-no-icon{font-size:3.5rem;margin-bottom:16px}
+    .rm-no-title{font-size:1.3rem;font-weight:900;margin-bottom:10px}
+    .rm-no-sub{font-size:.9rem;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
+
+    .rm-btn{
+      display:inline-block;padding:14px 28px;border-radius:14px;
+      background:linear-gradient(135deg,#7c3aed,#a855f7);
+      color:#fff;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;
+      text-decoration:none;margin:4px;transition:opacity .2s;
+    }
+    .rm-btn:hover{opacity:.9}
+    .rm-btn-ghost{
+      display:inline-block;padding:14px 28px;border-radius:14px;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+      color:rgba(255,255,255,.7);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;
+      text-decoration:none;margin:4px;transition:all .2s;
+    }
+    .rm-btn-ghost:hover{background:rgba(255,255,255,.12);color:#fff}
+  </style>
+</head>
+<body>
+
+  <div class="rm-topbar">
+    <a href="index.html" class="rm-back">← Главная</a>
+    <div class="rm-title">🗓️ Мой маршрут</div>
+    <div style="width:60px"></div>
+  </div>
+
+  <div id="rm-main"></div>
+
+<script>
+var ROADMAPS = {
+  drone: {
+    name:"Пилот дрона", emoji:"🚁", color:"#06b6d4",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Понять суть профессии", tasks:[
+          {type:"📺 Видео", text:"Посмотри: «Как работает дрон» на YouTube", detail:"Поищи: 'как работает квадрокоптер' — 10 минут", xp:5},
+          {type:"📖 Читай", text:"Узнай: 4 причины почему дроны важны", detail:"Доставка, спасение, съёмка, мониторинг", xp:5},
+          {type:"✏️ Пиши", text:"Запиши: где бы ты использовал дрон?", detail:"1–3 своих идеи в заметках телефона", xp:10}
+        ]},
+        {title:"День 2", sub:"Физика полёта", tasks:[
+          {type:"📖 Читай", text:"Узнай как работает подъёмная сила", detail:"Почему самолёт не падает? Закон Бернулли", xp:5},
+          {type:"🎮 Играй", text:"Открой симулятор бумажного самолёта", detail:"Сложи 3 разных самолёта, проверь какой летит дальше", xp:10},
+          {type:"✏️ Пиши", text:"Запиши: что влияет на полёт?", detail:"Вес, форма, скорость — запиши наблюдения", xp:5}
+        ]},
+        {title:"День 3", sub:"Правила воздуха", tasks:[
+          {type:"📖 Читай", text:"Правила полётов дронов в России", detail:"Нельзя выше 120м без разрешения, нельзя у аэропортов", xp:5},
+          {type:"🧠 Тест", text:"Пройди мини-тест на сайте", detail:"Урок Пилот дрона → Урок 1", xp:15},
+          {type:"💭 Думай", text:"Придумай: где в твоём городе дрон был бы полезен?", detail:"Спасение, доставка, съёмка?", xp:5}
+        ]},
+        {title:"День 4", sub:"GPS и навигация", tasks:[
+          {type:"📺 Видео", text:"Посмотри: как работает GPS", detail:"Поищи: 'как работает GPS просто' — 7 минут", xp:5},
+          {type:"📖 Читай", text:"Узнай: что такое автопилот дрона", detail:"Как дрон летит сам без человека", xp:5},
+          {type:"🎮 Делай", text:"Открой Google Maps, найди свой дом с высоты", detail:"Представь что ты пилотируешь дрон над своим районом", xp:10}
+        ]},
+        {title:"День 5", sub:"Камера и съёмка", tasks:[
+          {type:"📺 Видео", text:"Посмотри аэросъёмку своего города", detail:"YouTube: аэросъёмка + название твоего города", xp:5},
+          {type:"📖 Читай", text:"Узнай основы аэрофотографии", detail:"Угол, высота, свет — что делает снимок красивым", xp:5},
+          {type:"✏️ Пиши", text:"Составь план: 5 мест которые хочешь снять с дрона", detail:"Запиши с объяснением почему каждое место интересно", xp:10}
+        ]},
+        {title:"День 6", sub:"Миссия спасения", tasks:[
+          {type:"💭 Думай", text:"Спланируй спасательную миссию на бумаге", detail:"Человек потерялся в лесу 5км² — как искать дроном?", xp:10},
+          {type:"📖 Читай", text:"Узнай: как дроны ищут людей в реальности", detail:"Тепловые камеры, ночные поиски, координация", xp:5},
+          {type:"✏️ Пиши", text:"Опиши свою миссию: маршрут, время, оборудование", detail:"Представь что ты командир поиска", xp:10}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🎮 Играй", text:"Пройди все уроки Пилота дрона на сайте", detail:"learn.html → Пилот дрона → все 3 урока", xp:20},
+          {type:"🏆 Результат", text:"Запиши: что ты узнал за эту неделю?", detail:"3 главных открытия о профессии пилота дрона", xp:10},
+          {type:"🚀 Следующий шаг", text:"Скачай приложение симулятора дрона", detail:"Bushnell Drone Simulator или DJI Flight Simulator (бесплатно)", xp:15}
+        ]}
+      ]}
+    ]
+  },
+  robot: {
+    name:"Инженер-робот", emoji:"🤖", color:"#f59e0b",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Что такое робот", tasks:[
+          {type:"📺 Видео", text:"Посмотри: лучшие роботы 2024 года", detail:"YouTube: 'amazing robots 2024' — 10 минут вдохновения", xp:5},
+          {type:"📖 Читай", text:"Узнай: из чего состоит любой робот", detail:"Датчики + процессор + привод = робот", xp:5},
+          {type:"✏️ Пиши", text:"Придумай своего робота: что он умеет делать?", detail:"Нарисуй или опиши словами", xp:10}
+        ]},
+        {title:"День 2", sub:"Программирование", tasks:[
+          {type:"💻 Делай", text:"Открой Scratch (scratch.mit.edu) и создай аккаунт", detail:"Полностью бесплатно, работает в браузере", xp:5},
+          {type:"🎮 Делай", text:"Сделай первую программу: персонаж двигается", detail:"Используй блоки «Движение» — заставь кота ходить", xp:15},
+          {type:"✏️ Пиши", text:"Запиши: что такое алгоритм?", detail:"Последовательность шагов для решения задачи", xp:5}
+        ]},
+        {title:"День 3", sub:"Датчики и реакция", tasks:[
+          {type:"📖 Читай", text:"Узнай: как робот «видит» и «чувствует»", detail:"Ультразвук, камера, касание, температура", xp:5},
+          {type:"🎮 Играй", text:"В Scratch добавь реакцию на нажатие клавиш", detail:"Персонаж двигается влево/вправо/вверх/вниз", xp:10},
+          {type:"🧠 Тест", text:"Пройди урок Инженер-робот на сайте", detail:"learn.html → Инженер-робот → Урок 1", xp:15}
+        ]},
+        {title:"День 4", sub:"Механика", tasks:[
+          {type:"📺 Видео", text:"Посмотри: как работают шестерёнки и рычаги", detail:"YouTube: 'simple machines for kids' — 8 минут", xp:5},
+          {type:"🛠️ Делай", text:"Собери простую конструкцию дома", detail:"Катапульта из карандашей и резинки, или рычаг из линейки", xp:15},
+          {type:"✏️ Пиши", text:"Опиши: как механика помогает роботу двигаться", detail:"Что нужно чтобы рука робота подняла стакан", xp:5}
+        ]},
+        {title:"День 5", sub:"Роботы в жизни", tasks:[
+          {type:"📖 Читай", text:"Найди 5 профессий где роботы уже помогают людям", detail:"Медицина, строительство, космос, сельское хозяйство...", xp:5},
+          {type:"💭 Думай", text:"Какую проблему в твоей жизни мог бы решить робот?", detail:"Дома, в школе, на улице — конкретная задача", xp:10},
+          {type:"✏️ Пиши", text:"Напиши техническое задание для своего робота", detail:"Что умеет, как выглядит, чем питается", xp:10}
+        ]},
+        {title:"День 6", sub:"Собери что-нибудь", tasks:[
+          {type:"🛠️ Делай", text:"Сделай робота из картона и батарейки", detail:"Маленький мотор + картон + батарейка = движущийся робот", xp:20},
+          {type:"📺 Видео", text:"Посмотри как собрать простого робота дома", detail:"YouTube: 'DIY robot cardboard'", xp:5},
+          {type:"✏️ Пиши", text:"Сфотографируй или опиши что получилось", detail:"Что работало, что нет, что улучшишь", xp:5}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🎮 Играй", text:"Пройди игру «Собери робота» на сайте", detail:"play.html → Робот", xp:20},
+          {type:"🏆 Результат", text:"Что ты умеешь теперь что не умел 7 дней назад?", detail:"Запиши 3 новых знания и 1 навык", xp:10},
+          {type:"🚀 Следующий шаг", text:"Закажи Arduino Starter Kit (≈ 600 руб)", detail:"Это первый настоящий шаг инженера-робота", xp:15}
+        ]}
+      ]}
+    ]
+  },
+  cyber: {
+    name:"Кибер-защитник", emoji:"🛡️", color:"#a855f7",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Что такое кибербезопасность", tasks:[
+          {type:"📺 Видео", text:"Посмотри: «Как хакеры взламывают сайты»", detail:"YouTube: 'как взламывают сайты объяснение' — не для взлома, для понимания!", xp:5},
+          {type:"📖 Читай", text:"Узнай: разница между хакером и кибер-защитником", detail:"Белые и чёрные хакеры — кто они?", xp:5},
+          {type:"✏️ Пиши", text:"Запиши: 3 устройства вокруг тебя которые можно взломать", detail:"Телефон, Wi-Fi роутер, умная колонка...", xp:10}
+        ]},
+        {title:"День 2", sub:"Пароли и защита", tasks:[
+          {type:"💻 Делай", text:"Проверь силу своих паролей на haveibeenpwned.com", detail:"Только email — проверь утёкли ли твои данные (безопасно)", xp:5},
+          {type:"📖 Читай", text:"Узнай: что делает пароль надёжным", detail:"Длина + символы + уникальность = защита", xp:5},
+          {type:"🛠️ Делай", text:"Придумай систему паролей для себя", detail:"Как запоминать разные пароли без записывания", xp:15}
+        ]},
+        {title:"День 3", sub:"Сети и интернет", tasks:[
+          {type:"📺 Видео", text:"Посмотри: как работает интернет за 5 минут", detail:"YouTube: 'как работает интернет простым языком'", xp:5},
+          {type:"📖 Читай", text:"Узнай: что такое IP-адрес и зачем он нужен", detail:"Каждое устройство в интернете имеет адрес", xp:5},
+          {type:"🧠 Тест", text:"Пройди Урок 1 Кибер-защитника на сайте", detail:"learn.html → Кибер-защитник", xp:15}
+        ]},
+        {title:"День 4", sub:"Вирусы и атаки", tasks:[
+          {type:"📖 Читай", text:"Узнай 5 видов кибератак", detail:"Вирус, фишинг, DDoS, ransomware, социальная инженерия", xp:5},
+          {type:"💭 Думай", text:"Найди фишинговое письмо в интернете как пример", detail:"Google: 'пример фишингового письма' — научись их узнавать", xp:10},
+          {type:"✏️ Пиши", text:"Напиши правила кибербезопасности для своей семьи", detail:"5 простых правил которые защитят родителей", xp:10}
+        ]},
+        {title:"День 5", sub:"Шифрование", tasks:[
+          {type:"📖 Читай", text:"Узнай: как работает шифрование", detail:"Цезарь шифр → современный SSL — история защиты данных", xp:5},
+          {type:"🎮 Делай", text:"Зашифруй сообщение шифром Цезаря вручную", detail:"Сдвинь каждую букву на 3 позиции. Попроси друга расшифровать", xp:15},
+          {type:"📺 Видео", text:"Посмотри: как HTTPS защищает твои данные", detail:"YouTube: 'как работает https' — 5 минут", xp:5}
+        ]},
+        {title:"День 6", sub:"Этичный хакинг", tasks:[
+          {type:"📖 Читай", text:"Узнай: что такое пентестинг (тестирование на проникновение)", detail:"Компании платят хакерам чтобы найти уязвимости", xp:5},
+          {type:"💻 Делай", text:"Попробуй CTF-задачу для начинающих", detail:"picoctf.org — бесплатные головоломки по безопасности", xp:20},
+          {type:"✏️ Пиши", text:"Составь отчёт об уязвимостях своего домашнего Wi-Fi", detail:"Слабый пароль? Старый роутер? Открытые порты?", xp:5}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🎮 Играй", text:"Пройди все уроки Кибер-защитника на сайте", detail:"learn.html → Кибер-защитник → все уроки", xp:20},
+          {type:"🏆 Результат", text:"Ты теперь в безопасности?", detail:"Проверь: сильные пароли, обновлён телефон, антивирус есть", xp:10},
+          {type:"🚀 Следующий шаг", text:"Зарегистрируйся на TryHackMe.com", detail:"Лучшая бесплатная платформа для обучения кибербезопасности", xp:15}
+        ]}
+      ]}
+    ]
+  },
+  doctor: {
+    name:"Врач", emoji:"🩺", color:"#34d399",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Зачем нужны врачи", tasks:[
+          {type:"📺 Видео", text:"Посмотри: день из жизни врача скорой помощи", detail:"YouTube: 'день врача скорой' — реальная работа", xp:5},
+          {type:"📖 Читай", text:"Узнай: 5 специализаций врача", detail:"Хирург, терапевт, педиатр, кардиолог, нейрохирург", xp:5},
+          {type:"✏️ Пиши", text:"Какой врач ты бы хотел стать и почему?", detail:"Опиши конкретно: какие болезни лечить, с кем работать", xp:10}
+        ]},
+        {title:"День 2", sub:"Тело человека", tasks:[
+          {type:"📖 Читай", text:"Узнай как работает сердце", detail:"4 камеры, 100 000 ударов в день, 5 литров крови", xp:5},
+          {type:"🎮 Делай", text:"Посчитай свой пульс за 1 минуту", detail:"Два пальца на запястье. После бега и в покое — сравни", xp:10},
+          {type:"📺 Видео", text:"Посмотри: кровеносная система анимация", detail:"YouTube: 'circulatory system animation' — 5 минут", xp:5}
+        ]},
+        {title:"День 3", sub:"Диагноз", tasks:[
+          {type:"📖 Читай", text:"Узнай: как врач ставит диагноз", detail:"Симптомы → анализы → диагноз → лечение", xp:5},
+          {type:"🎮 Играй", text:"Пройди игру «Скорая помощь» на сайте", detail:"doctor.html → игра внизу страницы", xp:15},
+          {type:"✏️ Пиши", text:"Опиши симптомы простуды и что нужно делать", detail:"Температура, кашель, насморк — порядок действий врача", xp:5}
+        ]},
+        {title:"День 4", sub:"Первая помощь", tasks:[
+          {type:"📖 Читай", text:"Выучи алгоритм первой помощи при порезе", detail:"Промыть → обработать → перевязать → наблюдать", xp:5},
+          {type:"🎮 Делай", text:"Практически перевяжи палец бинтом", detail:"Найди аптечку дома — попрактикуйся", xp:15},
+          {type:"📺 Видео", text:"Посмотри: как делать искусственное дыхание", detail:"YouTube: 'CPR for beginners' — важный навык", xp:10}
+        ]},
+        {title:"День 5", sub:"Медицина будущего", tasks:[
+          {type:"📺 Видео", text:"Посмотри: роботы в хирургии", detail:"YouTube: 'da vinci robot surgery' — невероятно!", xp:5},
+          {type:"📖 Читай", text:"Узнай: как ИИ помогает врачам", detail:"Диагностика рака по снимкам, предсказание болезней", xp:5},
+          {type:"✏️ Пиши", text:"Какой будет медицина через 20 лет?", detail:"Твои 3 предсказания с объяснением", xp:10}
+        ]},
+        {title:"День 6", sub:"Эмпатия врача", tasks:[
+          {type:"💭 Думай", text:"Как ты объяснишь 8-летнему ребёнку что ему нужен укол?", detail:"Врач должен уметь говорить с пациентом на его языке", xp:10},
+          {type:"🎮 Делай", text:"Разыграй сцену: ты врач, родственник — пациент", detail:"Объясни диагноз простыми словами", xp:15},
+          {type:"📖 Читай", text:"Клятва Гиппократа — прочитай и подумай", detail:"'Не навреди' — главный принцип медицины", xp:5}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🧠 Тест", text:"Пройди все уроки Врача на сайте", detail:"learn.html → Врач → все уроки", xp:20},
+          {type:"🏆 Результат", text:"Что изменилось в твоём взгляде на медицину?", detail:"Запиши честно: стало ли интереснее, появились ли сомнения", xp:10},
+          {type:"🚀 Следующий шаг", text:"Запишись на курс первой помощи", detail:"Многие школы и больницы проводят бесплатно", xp:15}
+        ]}
+      ]}
+    ]
+  },
+  space: {
+    name:"Исследователь космоса", emoji:"🌌", color:"#818cf8",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Наша солнечная система", tasks:[
+          {type:"📺 Видео", text:"Посмотри: тур по солнечной системе", detail:"YouTube: 'solar system tour 4K' — 10 минут красоты", xp:5},
+          {type:"📖 Читай", text:"Узнай: 3 самых необычных факта о каждой планете", detail:"Почему Венера горячее Меркурия? Почему кольца у Сатурна?", xp:5},
+          {type:"✏️ Пиши", text:"Нарисуй или опиши: какая планета тебя привлекает и почему?", detail:"Конкретно: что хочешь там исследовать", xp:10}
+        ]},
+        {title:"День 2", sub:"Звёзды и галактики", tasks:[
+          {type:"💻 Делай", text:"Скачай приложение Star Walk или Sky Map (бесплатно)", detail:"Направь на небо — узнай названия звёзд вокруг тебя", xp:10},
+          {type:"📖 Читай", text:"Узнай: чем звезда отличается от планеты", detail:"Звезда светит сама, планета отражает свет", xp:5},
+          {type:"✏️ Пиши", text:"Найди созвездие Ориона и опиши его", detail:"Три звезды пояса — самый узнаваемый рисунок на небе", xp:10}
+        ]},
+        {title:"День 3", sub:"Ракеты и космос", tasks:[
+          {type:"📺 Видео", text:"Посмотри: запуск ракеты SpaceX вживую", detail:"YouTube: SpaceX launch — ощути мощь!", xp:5},
+          {type:"📖 Читай", text:"Узнай: как работает ракетный двигатель", detail:"Действие и противодействие — третий закон Ньютона", xp:5},
+          {type:"🎮 Делай", text:"Сделай водяную ракету из бутылки", detail:"YouTube: 'water bottle rocket' — простой эксперимент", xp:15}
+        ]},
+        {title:"День 4", sub:"Жизнь в космосе", tasks:[
+          {type:"📺 Видео", text:"Посмотри: как едят и спят на МКС", detail:"YouTube: 'life on ISS' — как живут астронавты", xp:5},
+          {type:"📖 Читай", text:"Узнай: что происходит с телом в невесомости", detail:"Мышцы атрофируются, кости слабеют, рост увеличивается", xp:5},
+          {type:"✏️ Пиши", text:"Составь меню для 7 дней на МКС", detail:"Без холодильника, без свежего воздуха, без гравитации", xp:10}
+        ]},
+        {title:"День 5", sub:"Марс — следующая цель", tasks:[
+          {type:"📖 Читай", text:"Узнай план полёта на Марс", detail:"Когда, кто, как долго лететь, какие проблемы", xp:5},
+          {type:"💭 Думай", text:"Ты бы полетел на Марс без возврата на Землю?", detail:"Проект Mars One предлагал именно это. Почему да или нет?", xp:10},
+          {type:"📺 Видео", text:"Посмотри: Perseverance Rover на Марсе", detail:"YouTube: 'NASA Mars rover' — реальные снимки с Марса", xp:5}
+        ]},
+        {title:"День 6", sub:"Стать астронавтом", tasks:[
+          {type:"📖 Читай", text:"Узнай требования к астронавтам NASA и Роскосмос", detail:"Образование, здоровье, языки, опыт — что нужно", xp:5},
+          {type:"💭 Думай", text:"Составь свой план стать астронавтом", detail:"Что изучать в школе, университете, потом", xp:15},
+          {type:"🎮 Играй", text:"Пройди игру «Угадай планету» на сайте", detail:"space-explorer.html → игра внизу страницы", xp:10}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🧠 Тест", text:"Пройди все уроки Исследователя космоса", detail:"learn.html → Исследователь космоса → все уроки", xp:20},
+          {type:"🏆 Результат", text:"Напиши письмо себе через 10 лет", detail:"Что ты хочешь открыть? Где хочешь быть?", xp:10},
+          {type:"🚀 Следующий шаг", text:"Вступи в астрономический кружок или клуб", detail:"Или найди ближайший планетарий и сходи туда", xp:15}
+        ]}
+      ]}
+    ]
+  },
+  game: {
+    name:"Гейм-дизайнер", emoji:"🎮", color:"#f472b6",
+    weeks:[
+      {label:"Неделя 1 — Основы", days:[
+        {title:"День 1", sub:"Анатомия хорошей игры", tasks:[
+          {type:"🎮 Делай", text:"Поиграй в любую игру и запиши: что делает её интересной?", detail:"Механики, сложность, награды, история — что цепляет?", xp:5},
+          {type:"📖 Читай", text:"Узнай: 4 элемента любой игры", detail:"Цель, правила, вызов, обратная связь", xp:5},
+          {type:"✏️ Пиши", text:"Опиши игру мечты в 5 предложениях", detail:"Жанр, главный герой, главная цель, что делает игрок", xp:10}
+        ]},
+        {title:"День 2", sub:"Первая игра в Scratch", tasks:[
+          {type:"💻 Делай", text:"Открой scratch.mit.edu и создай аккаунт", detail:"Бесплатно, работает в браузере, можно на телефоне", xp:5},
+          {type:"🎮 Делай", text:"Сделай игру: поймай падающие звёзды", detail:"Персонаж движется влево/вправо, звёзды падают сверху", xp:20},
+          {type:"✏️ Пиши", text:"Как сделать эту игру интереснее?", detail:"Скорость, уровни, звуки, рекорды — твои идеи", xp:5}
+        ]},
+        {title:"День 3", sub:"Дизайн персонажа", tasks:[
+          {type:"📖 Читай", text:"Узнай: что делает игрового персонажа запоминающимся", detail:"Марио, Соник, Мастер Чиф — почему мы их помним?", xp:5},
+          {type:"✏️ Делай", text:"Нарисуй своего игрового персонажа", detail:"Имя, способности, слабости, внешность", xp:15},
+          {type:"💭 Думай", text:"Какова история твоего персонажа?", detail:"Откуда он, чего хочет, от чего бежит", xp:5}
+        ]},
+        {title:"День 4", sub:"Уровни и сложность", tasks:[
+          {type:"📖 Читай", text:"Узнай: принцип «лёгкое начало, сложный конец»", detail:"Кривая сложности — почему игры не начинаются с финального босса", xp:5},
+          {type:"🎮 Делай", text:"Добавь в свою Scratch игру 2 уровня", detail:"Уровень 2 быстрее/сложнее чем уровень 1", xp:15},
+          {type:"✏️ Пиши", text:"Нарисуй схему 5 уровней своей будущей игры", detail:"Что меняется на каждом уровне?", xp:5}
+        ]},
+        {title:"День 5", sub:"Звук и атмосфера", tasks:[
+          {type:"📺 Видео", text:"Посмотри: как создают музыку для игр", detail:"YouTube: 'video game music composition' — 8 минут", xp:5},
+          {type:"🎮 Делай", text:"Добавь звуки в свою Scratch игру", detail:"Прыжок, сбор предмета, проигрыш — 3 звука", xp:15},
+          {type:"💭 Думай", text:"Как атмосфера меняет ощущение от игры?", detail:"Сравни Minecraft и Silent Hill — один движок, разная атмосфера", xp:5}
+        ]},
+        {title:"День 6", sub:"Тестирование игры", tasks:[
+          {type:"🎮 Делай", text:"Дай кому-то поиграть в твою Scratch игру", detail:"Наблюдай молча: где они застревают, что непонятно?", xp:15},
+          {type:"📖 Читай", text:"Узнай: что такое playtest и зачем он нужен", detail:"Все топовые игры тестируются сотнями игроков до выпуска", xp:5},
+          {type:"✏️ Пиши", text:"Запиши 3 изменения на основе обратной связи", detail:"Что сделает игру понятнее и интереснее?", xp:5}
+        ]},
+        {title:"День 7", sub:"Итог недели", tasks:[
+          {type:"🎮 Играй", text:"Пройди игру «Создай уровень» на сайте", detail:"play.html → Гейм-дизайнер", xp:20},
+          {type:"🏆 Результат", text:"Опубликуй свою Scratch игру и поделись ссылкой", detail:"На Scratch можно показать игру всему миру бесплатно", xp:10},
+          {type:"🚀 Следующий шаг", text:"Попробуй GDevelop — движок без кода", detail:"gdevelop.io — бесплатный, для настоящих 2D игр", xp:15}
+        ]}
+      ]}
+    ]
+  }
+};
+
+// ─── State ───
+function getProg(){ try{ return JSON.parse(localStorage.getItem('kl_progress')||'{}'); }catch(e){ return {}; } }
+function saveProg(p){ try{ localStorage.setItem('kl_progress', JSON.stringify(p)); }catch(e){} }
+
+function getCareer(){
+  // Priority: my-path result > problems result > career-quiz result
+  try{
+    var myPath = JSON.parse(localStorage.getItem('kl_my_path')||'null');
+    if(myPath && myPath.profile){
+      var map = {explorer:'space', builder:'robot', guardian:'doctor', creator:'game', innovator:'cyber'};
+      return map[myPath.profile] || null;
+    }
+  }catch(e){}
+  try{
+    var result = localStorage.getItem('kl_career_result');
+    if(result){ var r = JSON.parse(result); return r.key || null; }
+  }catch(e){}
+  return null;
+}
+
+function getTaskDoneKey(dayIdx, taskIdx){ return 'rm_d'+dayIdx+'_t'+taskIdx; }
+function getDayDoneKey(dayIdx){ return 'rm_day'+dayIdx+'_done'; }
+
+function isTaskDone(dayIdx, taskIdx){
+  try{ return localStorage.getItem(getTaskDoneKey(dayIdx,taskIdx)) === '1'; }catch(e){ return false; }
+}
+function setTaskDone(dayIdx, taskIdx, val){
+  try{ localStorage.setItem(getTaskDoneKey(dayIdx,taskIdx), val?'1':'0'); }catch(e){}
+}
+function isDayDone(dayIdx){
+  try{ return localStorage.getItem(getDayDoneKey(dayIdx)) === '1'; }catch(e){ return false; }
+}
+function setDayDone(dayIdx){
+  try{ localStorage.setItem(getDayDoneKey(dayIdx),'1'); }catch(e){}
+}
+
+function getTodayIdx(){
+  // First uncompleted day, max 6
+  for(var i=0;i<7;i++){ if(!isDayDone(i)) return i; }
+  return 6;
+}
+
+function render(){
+  var careerKey = getCareer();
+  var container = document.getElementById('rm-main');
+
+  if(!careerKey || !ROADMAPS[careerKey]){
+    container.innerHTML =
+      '<div class="rm-no-career">'+
+        '<div class="rm-no-icon">🗺️</div>'+
+        '<div class="rm-no-title">Сначала найди свой путь!</div>'+
+        '<p class="rm-no-sub">Чтобы получить персональный маршрут, сначала пройди одно из открытий:</p>'+
+        '<a href="problems.html" class="rm-btn">🌍 Реальные проблемы</a>'+
+        '<a href="my-path.html" class="rm-btn-ghost">🗺️ Мой путь</a>'+
+      '</div>';
+    return;
+  }
+
+  var data = ROADMAPS[careerKey];
+  var week = data.weeks[0];
+  var todayIdx = getTodayIdx();
+  var prog = getProg();
+  var totalXP = prog.points || 0;
+  var streak = prog.streak || 0;
+  var name = '';
+  try{ name = localStorage.getItem('kl_name') || ''; }catch(e){}
+
+  var html =
+    // Hero
+    '<div class="rm-hero">'+
+      '<span class="rm-hero-emoji">'+data.emoji+'</span>'+
+      '<div class="rm-hero-info">'+
+        '<div class="rm-hero-label">Твой маршрут</div>'+
+        '<div class="rm-hero-career">'+data.name+'</div>'+
+        '<div class="rm-hero-sub">'+(name?'Привет, '+name+'! ':'')+week.label+'</div>'+
+      '</div>'+
+    '</div>'+
+    // Days
+    '<div class="rm-days">';
+
+  week.days.forEach(function(day, di){
+    var isToday = (di === todayIdx);
+    var done = isDayDone(di);
+    var locked = (di > todayIdx) && !done;
+
+    var badgeHtml = done
+      ? '<span class="rm-day-badge rm-badge-done">✅ Готово</span>'
+      : isToday
+        ? '<span class="rm-day-badge rm-badge-today">📍 Сегодня</span>'
+        : locked
+          ? '<span class="rm-day-badge rm-badge-locked">🔒</span>'
+          : '<span class="rm-day-badge rm-badge-locked">—</span>';
+
+    var dayClass = 'rm-day' + (isToday?' today':'') + (done?' done-day':'');
+    var bodyOpen = (isToday || done) ? ' open' : '';
+
+    html +=
+      '<div class="'+dayClass+'" id="day-'+di+'">'+
+        '<div class="rm-day-header" data-di="'+di+'">'+
+          '<div class="rm-day-num">'+(di+1)+'</div>'+
+          '<div class="rm-day-label">'+
+            '<div class="rm-day-title">'+day.title+' — '+day.sub+'</div>'+
+            '<div class="rm-day-subtitle">'+day.tasks.length+' задания · '+(day.tasks.reduce(function(s,t){return s+(t.xp||0);},0))+' XP</div>'+
+          '</div>'+
+          badgeHtml+
+        '</div>'+
+        '<div class="rm-day-body'+bodyOpen+'" id="body-'+di+'">'+
+          '<div class="rm-tasks">';
+
+    day.tasks.forEach(function(task, ti){
+      var checked = isTaskDone(di, ti);
+      html +=
+        '<div class="rm-task'+(checked?' checked':'')+'" data-di="'+di+'" data-ti="'+ti+'">'+
+          '<div class="rm-task-check">'+(checked?'✓':'')+'</div>'+
+          '<div class="rm-task-content">'+
+            '<div class="rm-task-type">'+task.type+'</div>'+
+            '<div class="rm-task-text">'+task.text+'</div>'+
+            '<div class="rm-task-detail">'+task.detail+'</div>'+
+          '</div>'+
+          '<div class="rm-task-xp">+'+task.xp+'XP</div>'+
+        '</div>';
+    });
+
+    html +=
+          '</div>'+
+          (!done && !locked
+            ? '<button class="rm-day-complete-btn" data-di="'+di+'" id="complete-'+di+'">✅ День завершён! Получить XP</button>'
+            : '')+
+        '</div>'+
+      '</div>';
+  });
+
+  html += '</div>';
+
+  // Streak bar
+  html +=
+    '<div class="rm-streak-bar">'+
+      '<span class="rm-streak-icon">🔥</span>'+
+      '<div class="rm-streak-info">'+
+        '<div class="rm-streak-val">'+streak+' дней подряд</div>'+
+        '<div class="rm-streak-label">Приходи каждый день!</div>'+
+      '</div>'+
+      '<div class="rm-xp-total">'+
+        '<div class="rm-xp-val">'+totalXP+' XP</div>'+
+        '<div class="rm-xp-label">Всего очков</div>'+
+      '</div>'+
+    '</div>';
+
+  container.innerHTML = html;
+
+  // Bind day header toggles
+  document.querySelectorAll('.rm-day-header').forEach(function(hdr){
+    hdr.addEventListener('click', function(){
+      var di = parseInt(this.dataset.di);
+      var body = document.getElementById('body-'+di);
+      body.classList.toggle('open');
+    });
+  });
+
+  // Bind task checkboxes
+  document.querySelectorAll('.rm-task').forEach(function(task){
+    task.addEventListener('click', function(){
+      var di = parseInt(this.dataset.di);
+      var ti = parseInt(this.dataset.ti);
+      var now = !isTaskDone(di, ti);
+      setTaskDone(di, ti, now);
+      this.classList.toggle('checked', now);
+      var check = this.querySelector('.rm-task-check');
+      check.textContent = now ? '✓' : '';
+
+      if(now){
+        var xp = parseInt(this.querySelector('.rm-task-xp').textContent.replace(/\D/g,'')) || 5;
+        var p = getProg();
+        p.points = (p.points||0) + xp;
+        saveProg(p);
+        document.querySelector('.rm-xp-val') && (document.querySelector('.rm-xp-val').textContent = p.points + ' XP');
+      }
+    });
+  });
+
+  // Bind complete day buttons
+  document.querySelectorAll('.rm-day-complete-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var di = parseInt(this.dataset.di);
+      var day = week.days[di];
+      setDayDone(di);
+
+      // Award remaining XP
+      var earnedXP = 0;
+      day.tasks.forEach(function(task, ti){
+        if(!isTaskDone(di,ti)){
+          setTaskDone(di,ti,true);
+          earnedXP += (task.xp||5);
+        }
+      });
+      if(earnedXP > 0){
+        var p = getProg();
+        p.points = (p.points||0) + earnedXP;
+        p.streak = (p.streak||0) + 1;
+        saveProg(p);
+      }
+
+      // Re-render
+      render();
+      // Scroll to next day
+      setTimeout(function(){
+        var next = document.getElementById('day-'+(di+1));
+        if(next) next.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 300);
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
