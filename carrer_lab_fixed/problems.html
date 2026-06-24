@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Реальные проблемы — Карьерная Лаборатория</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"/>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#7c3aed"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:#0a0a1a;
+      min-height:100vh;
+      font-family:'Nunito',sans-serif;
+      color:#fff;
+      display:flex;flex-direction:column;align-items:center;
+      padding:16px 16px 60px;
+    }
+
+    /* ── Top bar ── */
+    .rp-topbar{
+      width:100%;max-width:600px;
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:20px;
+    }
+    .rp-back{
+      color:rgba(255,255,255,.4);font-size:.82rem;font-weight:700;
+      text-decoration:none;transition:color .2s;
+    }
+    .rp-back:hover{color:#fff}
+    .rp-prog-wrap{flex:1;margin:0 16px}
+    .rp-prog-track{
+      height:5px;background:rgba(255,255,255,.1);
+      border-radius:99px;overflow:hidden;
+    }
+    .rp-prog-fill{
+      height:100%;border-radius:99px;
+      background:linear-gradient(90deg,#7c3aed,#ec4899);
+      transition:width .5s ease;
+    }
+    .rp-prog-label{
+      font-size:.68rem;font-weight:700;color:rgba(255,255,255,.35);
+      text-align:right;margin-top:4px;
+    }
+    .rp-xp-chip{
+      background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);
+      border-radius:99px;padding:4px 10px;
+      font-size:.75rem;font-weight:800;color:#fde68a;
+      white-space:nowrap;
+    }
+
+    /* ── Intro screen ── */
+    .rp-intro{
+      width:100%;max-width:560px;text-align:center;
+      animation:rpFade .5s ease;
+    }
+    .rp-intro-icon{font-size:4rem;margin-bottom:16px;display:block}
+    .rp-intro-title{font-size:1.8rem;font-weight:900;margin-bottom:10px}
+    .rp-intro-sub{
+      font-size:.95rem;color:rgba(255,255,255,.65);
+      line-height:1.65;max-width:420px;margin:0 auto 28px;
+    }
+    .rp-rules{
+      display:flex;flex-direction:column;gap:12px;
+      max-width:400px;margin:0 auto 28px;text-align:left;
+    }
+    .rp-rule{
+      display:flex;align-items:flex-start;gap:12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;padding:14px;
+    }
+    .rp-rule-icon{font-size:1.4rem;flex-shrink:0}
+    .rp-rule-text{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.45}
+    .rp-rule-text strong{color:#fff}
+
+    /* ── Problem screen ── */
+    .rp-problem{
+      width:100%;max-width:600px;
+      display:none;animation:rpFade .4s ease;
+    }
+    .rp-problem.show{display:block}
+
+    .rp-tag{
+      display:inline-flex;align-items:center;gap:6px;
+      border-radius:99px;padding:5px 14px;
+      font-size:.72rem;font-weight:800;letter-spacing:.04em;
+      margin-bottom:14px;border:1px solid;
+    }
+    .rp-tag-dot{width:6px;height:6px;border-radius:50%}
+
+    .rp-case-file{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      border-left:4px solid;
+      border-radius:0 16px 16px 0;
+      padding:20px;margin-bottom:20px;
+      position:relative;overflow:hidden;
+    }
+    .rp-case-label{
+      font-size:.65rem;font-weight:800;letter-spacing:.12em;
+      text-transform:uppercase;opacity:.4;margin-bottom:8px;
+    }
+    .rp-scenario{
+      font-size:1.08rem;font-weight:700;line-height:1.6;
+      color:rgba(255,255,255,.9);
+    }
+
+    .rp-question{
+      font-size:1.05rem;font-weight:800;
+      color:#a78bfa;margin-bottom:16px;text-align:center;
+    }
+
+    /* Choices grid */
+    .rp-choices{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:10px;margin-bottom:8px;
+    }
+    @media(max-width:420px){.rp-choices{grid-template-columns:1fr}}
+    .rp-choice{
+      display:flex;flex-direction:column;align-items:flex-start;
+      gap:8px;
+      background:rgba(255,255,255,.05);
+      border:2px solid rgba(255,255,255,.1);
+      border-radius:16px;padding:16px;
+      cursor:pointer;font-family:'Nunito',sans-serif;
+      color:#fff;text-align:left;
+      transition:all .18s;width:100%;
+    }
+    .rp-choice:hover{
+      border-color:rgba(168,85,247,.6);
+      background:rgba(168,85,247,.12);
+      transform:translateY(-3px);
+    }
+    .rp-choice.selected{
+      border-color:#a855f7;
+      background:rgba(168,85,247,.2);
+    }
+    .rp-choice:disabled{cursor:default}
+    .rp-choice-emoji{font-size:1.8rem}
+    .rp-choice-text{font-size:.85rem;font-weight:700;line-height:1.4;color:rgba(255,255,255,.85)}
+
+    /* ── Reveal screen ── */
+    .rp-reveal{
+      width:100%;max-width:560px;
+      display:none;animation:rpPopIn .5s cubic-bezier(.22,1,.36,1);
+    }
+    .rp-reveal.show{display:block}
+
+    @keyframes rpPopIn{
+      from{opacity:0;transform:scale(.88) translateY(20px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+
+    .rp-reveal-top{
+      border-radius:20px 20px 0 0;
+      padding:32px 22px 24px;text-align:center;
+      border:1px solid;border-bottom:none;
+    }
+    .rp-reveal-emoji{font-size:4.5rem;display:block;margin-bottom:12px;animation:rpBounce .6s ease .1s both}
+    @keyframes rpBounce{
+      0%{transform:scale(.5);opacity:0}
+      60%{transform:scale(1.15)}
+      100%{transform:scale(1);opacity:1}
+    }
+    .rp-reveal-label{
+      font-size:.7rem;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;opacity:.6;margin-bottom:6px;
+    }
+    .rp-reveal-name{font-size:2rem;font-weight:900;margin-bottom:14px}
+    .rp-reveal-why{
+      font-size:.9rem;color:rgba(255,255,255,.75);
+      line-height:1.65;max-width:380px;margin:0 auto;
+    }
+
+    .rp-reveal-body{
+      background:rgba(255,255,255,.04);
+      border:1px solid;border-top:none;
+      border-radius:0 0 20px 20px;
+      padding:20px 22px 24px;
+    }
+
+    .rp-fact-box{
+      display:flex;align-items:flex-start;gap:10px;
+      background:rgba(255,255,255,.06);
+      border-radius:12px;padding:14px;
+      margin-bottom:18px;
+    }
+    .rp-fact-icon{font-size:1.3rem;flex-shrink:0}
+    .rp-fact-text{font-size:.84rem;color:rgba(255,255,255,.75);line-height:1.45}
+
+    .rp-reveal-actions{display:flex;flex-direction:column;gap:10px}
+    .rp-btn-career{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      padding:14px;border-radius:14px;
+      font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;
+      color:#fff;text-decoration:none;border:none;cursor:pointer;
+      transition:opacity .2s,transform .1s;
+    }
+    .rp-btn-career:hover{opacity:.9;transform:scale(1.01)}
+    .rp-btn-next{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:14px;padding:14px;
+      font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;
+      color:rgba(255,255,255,.7);cursor:pointer;
+      transition:all .2s;width:100%;
+    }
+    .rp-btn-next:hover{background:rgba(255,255,255,.12);color:#fff}
+
+    /* ── Final screen ── */
+    .rp-final{
+      width:100%;max-width:560px;
+      display:none;animation:rpFade .5s ease;
+    }
+    .rp-final.show{display:block}
+    .rp-final-header{text-align:center;margin-bottom:24px}
+    .rp-final-icon{font-size:3.5rem;display:block;margin-bottom:12px}
+    .rp-final-title{font-size:1.5rem;font-weight:900;margin-bottom:8px}
+    .rp-final-sub{font-size:.9rem;color:rgba(255,255,255,.55)}
+
+    .rp-final-matches{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+    .rp-final-match{
+      display:flex;align-items:center;gap:12px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:14px;padding:14px;
+      animation:rpFade .5s ease;
+    }
+    .rp-match-emoji{font-size:1.8rem;flex-shrink:0}
+    .rp-match-info{flex:1}
+    .rp-match-name{font-size:.9rem;font-weight:800;margin-bottom:2px}
+    .rp-match-count{font-size:.75rem;color:rgba(255,255,255,.45)}
+    .rp-match-bar-wrap{width:80px;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;flex-shrink:0}
+    .rp-match-bar{height:100%;border-radius:99px;transition:width 1s ease .3s}
+
+    .rp-xp-earned{
+      text-align:center;
+      background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(236,72,153,.2));
+      border:1px solid rgba(167,139,250,.3);
+      border-radius:16px;padding:20px;margin-bottom:16px;
+    }
+    .rp-xp-big{font-size:2.2rem;font-weight:900;color:#fde68a}
+    .rp-xp-label{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:4px}
+
+    .rp-btn-main{
+      display:block;width:100%;
+      padding:16px;border-radius:16px;
+      background:linear-gradient(135deg,#7c3aed,#a855f7);
+      color:#fff;font-family:'Nunito',sans-serif;
+      font-size:1rem;font-weight:800;
+      text-decoration:none;text-align:center;
+      border:none;cursor:pointer;
+      margin-bottom:10px;
+      transition:opacity .2s,transform .1s;
+    }
+    .rp-btn-main:hover{opacity:.9;transform:scale(1.01)}
+    .rp-btn-ghost{
+      display:block;text-align:center;
+      color:rgba(255,255,255,.35);font-size:.82rem;font-weight:700;
+      text-decoration:none;cursor:pointer;
+      background:none;border:none;font-family:'Nunito',sans-serif;
+      transition:color .2s;width:100%;
+    }
+    .rp-btn-ghost:hover{color:rgba(255,255,255,.7)}
+
+    /* Animations */
+    @keyframes rpFade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Confetti burst (CSS only) */
+    .rp-confetti{
+      position:fixed;top:30%;left:50%;
+      pointer-events:none;
+    }
+    .rp-confetti span{
+      position:absolute;width:8px;height:8px;border-radius:2px;
+      animation:rpConf 1s ease forwards;
+      opacity:0;
+    }
+    @keyframes rpConf{
+      0%{transform:translate(0,0) rotate(0deg);opacity:1}
+      100%{transform:translate(var(--tx),var(--ty)) rotate(var(--tr));opacity:0}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="rp-topbar">
+    <a href="index.html" class="rp-back">← Главная</a>
+    <div class="rp-prog-wrap">
+      <div class="rp-prog-track"><div class="rp-prog-fill" id="rp-prog" style="width:0%"></div></div>
+      <div class="rp-prog-label" id="rp-prog-label">0 / 5 проблем</div>
+    </div>
+    <div class="rp-xp-chip" id="rp-xp-chip">⭐ 0 XP</div>
+  </div>
+
+  <!-- Intro -->
+  <div class="rp-intro" id="rp-intro">
+    <span class="rp-intro-icon">🌍</span>
+    <h1 class="rp-intro-title">Реальные проблемы</h1>
+    <p class="rp-intro-sub">Мир полон проблем, которые ждут решения. Твоя задача — не угадать правильный ответ, а выбрать КАК бы ты решил проблему. Из твоего выбора мы узнаем кто ты.</p>
+    <div class="rp-rules">
+      <div class="rp-rule">
+        <span class="rp-rule-icon">🔍</span>
+        <div class="rp-rule-text"><strong>Читай внимательно.</strong> Каждая ситуация — реальная. Такие проблемы есть прямо сейчас.</div>
+      </div>
+      <div class="rp-rule">
+        <span class="rp-rule-icon">💭</span>
+        <div class="rp-rule-text"><strong>Выбирай сердцем.</strong> Нет правильных или неправильных ответов — только твой способ думать.</div>
+      </div>
+      <div class="rp-rule">
+        <span class="rp-rule-icon">🎯</span>
+        <div class="rp-rule-text"><strong>Открой себя.</strong> В конце ты узнаешь, какую профессию создала именно твоя голова.</div>
+      </div>
+    </div>
+    <button class="rp-btn-main" id="rp-start-btn">🚀 Начать решать проблемы</button>
+    <a href="my-path.html" class="rp-btn-ghost" style="margin-top:6px">или найди свой путь через психологию →</a>
+  </div>
+
+  <!-- Problem -->
+  <div class="rp-problem" id="rp-problem">
+    <div class="rp-tag" id="rp-tag"></div>
+    <div class="rp-case-file" id="rp-case-file">
+      <div class="rp-case-label">📂 Ситуация</div>
+      <div class="rp-scenario" id="rp-scenario"></div>
+    </div>
+    <div class="rp-question" id="rp-question"></div>
+    <div class="rp-choices" id="rp-choices"></div>
+  </div>
+
+  <!-- Reveal -->
+  <div class="rp-reveal" id="rp-reveal">
+    <div class="rp-reveal-top" id="rp-reveal-top">
+      <span class="rp-reveal-emoji" id="rp-rev-emoji"></span>
+      <div class="rp-reveal-label">Ты думаешь как</div>
+      <div class="rp-reveal-name" id="rp-rev-name"></div>
+      <p class="rp-reveal-why" id="rp-rev-why"></p>
+    </div>
+    <div class="rp-reveal-body" id="rp-reveal-body">
+      <div class="rp-fact-box">
+        <span class="rp-fact-icon">💡</span>
+        <span class="rp-fact-text" id="rp-rev-fact"></span>
+      </div>
+      <div class="rp-reveal-actions">
+        <a class="rp-btn-career" id="rp-rev-link" href="#" target="_blank">👀 Узнать о профессии →</a>
+        <button class="rp-btn-next" id="rp-next-btn">Следующая проблема →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final -->
+  <div class="rp-final" id="rp-final">
+    <div class="rp-final-header">
+      <span class="rp-final-icon">🏆</span>
+      <div class="rp-final-title">Твой профиль решателя!</div>
+      <div class="rp-final-sub">Вот как ты думаешь — по всем 5 проблемам</div>
+    </div>
+    <div class="rp-xp-earned">
+      <div class="rp-xp-big" id="rp-final-xp">+50 XP</div>
+      <div class="rp-xp-label">заработано за решение реальных проблем</div>
+    </div>
+    <div class="rp-final-matches" id="rp-final-matches"></div>
+    <a href="learn.html" class="rp-btn-main">📚 Начать изучать свою профессию →</a>
+    <button class="rp-btn-ghost" id="rp-replay-btn">🔄 Попробовать снова</button>
+  </div>
+
+<script>
+var PROBLEMS = [
+  {
+    tag:"🏥 Кризис здоровья",
+    tagColor:"#ef4444",
+    borderColor:"#ef4444",
+    scenario:"В горной деревне нет больницы. 8-летний ребёнок тяжело заболел. До ближайшего врача — 4 часа езды по опасной дороге. Каждая минута на счету.",
+    question:"Как ты решишь эту проблему?",
+    choices:[
+      {icon:"🚁", text:"Доставлю лекарства дроном — 20 минут, и они там", career:"drone"},
+      {icon:"🤖", text:"Создам робота-фельдшера для диагностики на месте", career:"robot"},
+      {icon:"💻", text:"Разработаю видеосвязь с врачом через обычный телефон", career:"cyber"},
+      {icon:"🩺", text:"Стану врачом и организую мобильные медбригады", career:"doctor"}
+    ]
+  },
+  {
+    tag:"🔒 Кибератака",
+    tagColor:"#a855f7",
+    borderColor:"#a855f7",
+    scenario:"Хакеры взломали серверы больницы. Все данные пациентов зашифрованы. Операции остановлены. Врачи не знают истории болезней. Люди в опасности.",
+    question:"Как ты защитишь людей?",
+    choices:[
+      {icon:"🛡️", text:"Создам систему защиты, которую невозможно взломать", career:"cyber"},
+      {icon:"🤖", text:"Разработаю ИИ, который сам обнаруживает и блокирует атаки", career:"robot"},
+      {icon:"🚁", text:"Доставлю резервные серверы дроном в течение часа", career:"drone"},
+      {icon:"🎮", text:"Создам обучающую игру — пусть все знают правила безопасности", career:"game"}
+    ]
+  },
+  {
+    tag:"🌌 Открытие века",
+    tagColor:"#818cf8",
+    borderColor:"#818cf8",
+    scenario:"Телескоп обнаружил планету с водой в 40 световых годах. Это может быть жизнь. У нас есть 15 лет и огромный бюджет. Что делать?",
+    question:"Твой план действий?",
+    choices:[
+      {icon:"🌌", text:"Запущу автоматический зонд с научными инструментами", career:"space"},
+      {icon:"🤖", text:"Создам самообучающегося робота для межзвёздного полёта", career:"robot"},
+      {icon:"🚁", text:"Разработаю флот малых дронов-разведчиков для атмосферы планеты", career:"drone"},
+      {icon:"🎮", text:"Создам симуляцию планеты чтобы тысячи учёных изучали её вместе", career:"game"}
+    ]
+  },
+  {
+    tag:"👴 Одиночество",
+    tagColor:"#34d399",
+    borderColor:"#34d399",
+    scenario:"85-летний дедушка живёт один в квартире. Он уже дважды падал и не мог позвать помощь. Его дети в другом городе и не могут переехать.",
+    question:"Как ты поможешь?",
+    choices:[
+      {icon:"🤖", text:"Создам умного робота-компаньона — следит, помогает, общается", career:"robot"},
+      {icon:"💻", text:"Разработаю умный браслет с автоматическим вызовом скорой", career:"cyber"},
+      {icon:"🩺", text:"Организую систему регулярных домашних визитов медсестёр", career:"doctor"},
+      {icon:"🎮", text:"Создам простую игру-общение чтобы он не чувствовал одиночество", career:"game"}
+    ]
+  },
+  {
+    tag:"🔥 Лесной пожар",
+    tagColor:"#f97316",
+    borderColor:"#f97316",
+    scenario:"Огромный пожар в тайге. Пожарные не могут войти — слишком опасно. Огонь движется к деревне. 500 человек нужно спасти за 2 часа.",
+    question:"Что ты предпримешь прямо сейчас?",
+    choices:[
+      {icon:"🚁", text:"Запущу флот дронов — карта огня, тушение с воздуха, эвакуация", career:"drone"},
+      {icon:"🤖", text:"Отправлю роботов-пожарных туда, куда люди зайти не могут", career:"robot"},
+      {icon:"💻", text:"Включу систему раннего предупреждения которая предскажет путь огня", career:"cyber"},
+      {icon:"🌌", text:"Использую спутниковые данные для точной карты распространения огня", career:"space"}
+    ]
+  }
+];
+
+var CAREERS = {
+  drone:  {name:"Пилот дрона",          emoji:"🚁", color:"#06b6d4",
+    reveal:"Ты мыслишь как Пилот дрона!",
+    why:"Ты сразу видишь — скорость и воздух снимают любой барьер. Не ждать пока дорога станет лучше, а лететь над ней. Именно так думают пилоты дронов.",
+    fact:"Дроны уже доставляют кровь в Руанде за 30 минут вместо 4 часов по дороге. Каждый день они спасают реальные жизни.",
+    href:"drone-pilot.html"},
+  robot:  {name:"Инженер-робот",         emoji:"🤖", color:"#f59e0b",
+    reveal:"Ты мыслишь как Инженер-робот!",
+    why:"Ты ищешь постоянное решение — машину, которая будет работать всегда, без усталости, без страха, без ограничений человека.",
+    fact:"Роботы уже делают хирургические операции точнее человека и работают в зонах радиации там, где людям нельзя.",
+    href:"robotics-engineer.html"},
+  cyber:  {name:"Кибер-защитник",        emoji:"🛡️", color:"#a855f7",
+    reveal:"Ты мыслишь как Кибер-защитник!",
+    why:"Ты понимаешь главное — информация и связь это основа всего. Защитить данные или создать умную систему значит защитить людей.",
+    fact:"Кибератаки происходят каждые 39 секунд. Кибер-защитники — это невидимые супергерои современности.",
+    href:"cyber-defender.html"},
+  doctor: {name:"Врач",                  emoji:"🩺", color:"#34d399",
+    reveal:"Ты мыслишь как Врач!",
+    why:"Ты ставишь человека в центр. Не систему, не технологию — а живого человека. Это и есть суть медицины.",
+    fact:"Современные врачи используют ИИ и роботов, но решение всегда за человеком с эмпатией и мудростью.",
+    href:"doctor.html"},
+  space:  {name:"Исследователь космоса", emoji:"🌌", color:"#818cf8",
+    reveal:"Ты мыслишь как Исследователь космоса!",
+    why:"Ты смотришь на проблему с высоты. Не вширь а вверх. Спутники, орбиты, глобальные данные — ты видишь картину целиком.",
+    fact:"Спутники уже предсказывают лесные пожары за 48 часов до начала и отслеживают изменения климата по всей Земле.",
+    href:"space-explorer.html"},
+  game:   {name:"Гейм-дизайнер",         emoji:"🎮", color:"#f472b6",
+    reveal:"Ты мыслишь как Гейм-дизайнер!",
+    why:"Ты понимаешь: главная проблема это поведение людей. Обучение, вовлечение, мотивация — игровые механики меняют мир.",
+    fact:"Игры уже используются для обучения хирургов, подготовки пилотов и реабилитации после инсультов.",
+    href:"game-designer.html"}
+};
+
+// ── State ──
+var currentP = 0;
+var sessionXP = 0;
+var careerCount = {};
+var answers = [];
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function setProgress(done){
+  var pct = done / PROBLEMS.length * 100;
+  document.getElementById('rp-prog').style.width = pct + '%';
+  document.getElementById('rp-prog-label').textContent = done + ' / ' + PROBLEMS.length + ' проблем';
+}
+
+function setXP(xp){
+  document.getElementById('rp-xp-chip').textContent = '⭐ ' + xp + ' XP';
+}
+
+function showSection(id){
+  ['rp-intro','rp-problem','rp-reveal','rp-final'].forEach(function(s){
+    var el = document.getElementById(s);
+    el.style.display = 'none';
+    el.classList.remove('show');
+  });
+  var target = document.getElementById(id);
+  target.style.display = 'block';
+  setTimeout(function(){ target.classList.add('show'); }, 10);
+}
+
+function renderProblem(idx){
+  var p = PROBLEMS[idx];
+  setProgress(idx);
+
+  // Tag
+  var tagEl = document.getElementById('rp-tag');
+  tagEl.textContent = p.tag;
+  tagEl.style.background = 'rgba(' + hexToRgb(p.tagColor) + ',.12)';
+  tagEl.style.color = p.tagColor;
+  tagEl.style.borderColor = 'rgba(' + hexToRgb(p.tagColor) + ',.35)';
+
+  // Case file
+  document.getElementById('rp-case-file').style.borderLeftColor = p.borderColor;
+  document.getElementById('rp-scenario').textContent = p.scenario;
+  document.getElementById('rp-question').textContent = p.question;
+
+  // Choices
+  var choicesEl = document.getElementById('rp-choices');
+  choicesEl.innerHTML = p.choices.map(function(c, i){
+    return '<button class="rp-choice" data-ci="' + i + '">' +
+      '<span class="rp-choice-emoji">' + c.icon + '</span>' +
+      '<span class="rp-choice-text">' + esc(c.text) + '</span>' +
+      '</button>';
+  }).join('');
+
+  choicesEl.querySelectorAll('.rp-choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(this.disabled) return;
+      var ci = parseInt(this.dataset.ci);
+      choicesEl.querySelectorAll('.rp-choice').forEach(function(b){ b.disabled = true; });
+      this.classList.add('selected');
+      var career = PROBLEMS[idx].choices[ci].career;
+      answers.push(career);
+      setTimeout(function(){ revealCareer(career, idx); }, 400);
+    });
+  });
+
+  showSection('rp-problem');
+}
+
+function revealCareer(careerKey, problemIdx){
+  var c = CAREERS[careerKey];
+  careerCount[careerKey] = (careerCount[careerKey] || 0) + 1;
+
+  // Award XP
+  sessionXP += 10;
+  setXP(sessionXP);
+
+  // Confetti
+  spawnConfetti(c.color);
+
+  // Fill reveal
+  var top = document.getElementById('rp-reveal-top');
+  top.style.background = 'linear-gradient(135deg, rgba(' + hexToRgb(c.color) + ',.15), rgba(' + hexToRgb(c.color) + ',.05))';
+  top.style.borderColor = 'rgba(' + hexToRgb(c.color) + ',.3)';
+
+  document.getElementById('rp-rev-emoji').textContent = c.emoji;
+  document.getElementById('rp-rev-name').textContent = c.name;
+  document.getElementById('rp-rev-name').style.color = c.color;
+  document.getElementById('rp-rev-why').textContent = c.why;
+  document.getElementById('rp-rev-fact').textContent = c.fact;
+
+  var body = document.getElementById('rp-reveal-body');
+  body.style.borderColor = 'rgba(' + hexToRgb(c.color) + ',.3)';
+
+  var link = document.getElementById('rp-rev-link');
+  link.href = c.href;
+  link.style.background = 'linear-gradient(135deg,' + c.color + ', ' + adjustColor(c.color) + ')';
+
+  var nextBtn = document.getElementById('rp-next-btn');
+  var isLast = (problemIdx + 1 >= PROBLEMS.length);
+  nextBtn.textContent = isLast ? '🏆 Посмотреть мой профиль' : 'Следующая проблема →';
+  nextBtn.onclick = function(){
+    if(isLast){ showFinal(); }
+    else { currentP++; renderProblem(currentP); }
+  };
+
+  showSection('rp-reveal');
+}
+
+function showFinal(){
+  setProgress(PROBLEMS.length);
+
+  // Save XP
+  try{
+    var prog = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+    prog.points = (prog.points || 0) + sessionXP;
+    localStorage.setItem('kl_progress', JSON.stringify(prog));
+  } catch(e){}
+
+  document.getElementById('rp-final-xp').textContent = '+' + sessionXP + ' XP';
+
+  // Build matches sorted by count
+  var sorted = Object.keys(careerCount).sort(function(a,b){ return careerCount[b] - careerCount[a]; });
+  var maxCount = careerCount[sorted[0]] || 1;
+
+  document.getElementById('rp-final-matches').innerHTML = sorted.map(function(key){
+    var c = CAREERS[key];
+    var count = careerCount[key];
+    var pct = Math.round(count / PROBLEMS.length * 100);
+    return '<div class="rp-final-match">' +
+      '<span class="rp-match-emoji">' + c.emoji + '</span>' +
+      '<div class="rp-match-info">' +
+        '<div class="rp-match-name">' + esc(c.name) + '</div>' +
+        '<div class="rp-match-count">выбрано ' + count + ' раз' + (count > 1 ? 'а' : '') + '</div>' +
+      '</div>' +
+      '<div class="rp-match-bar-wrap">' +
+        '<div class="rp-match-bar" data-pct="' + pct + '" style="background:' + c.color + '"></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  showSection('rp-final');
+
+  setTimeout(function(){
+    document.querySelectorAll('.rp-match-bar').forEach(function(bar){
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 200);
+
+  document.getElementById('rp-replay-btn').onclick = function(){
+    currentP = 0; sessionXP = 0; careerCount = {}; answers = [];
+    setXP(0); setProgress(0);
+    renderProblem(0);
+  };
+}
+
+function spawnConfetti(color){
+  var el = document.createElement('div');
+  el.className = 'rp-confetti';
+  var colors = [color,'#fff','#fbbf24','#a855f7','#f472b6'];
+  var html = '';
+  for(var i = 0; i < 20; i++){
+    var tx = (Math.random()-0.5)*300;
+    var ty = -(Math.random()*250+80);
+    var tr = (Math.random()-0.5)*720;
+    var c2 = colors[Math.floor(Math.random()*colors.length)];
+    var delay = (Math.random()*0.3).toFixed(2);
+    html += '<span style="background:'+c2+';left:'+((Math.random()-0.5)*60)+'px;--tx:'+tx+'px;--ty:'+ty+'px;--tr:'+tr+'deg;animation-delay:'+delay+'s"></span>';
+  }
+  el.innerHTML = html;
+  document.body.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 1500);
+}
+
+function hexToRgb(hex){
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  var r = parseInt(hex.substr(0,2),16);
+  var g = parseInt(hex.substr(2,2),16);
+  var b = parseInt(hex.substr(4,2),16);
+  return r+','+g+','+b;
+}
+
+function adjustColor(hex){
+  // darken slightly for gradient end
+  return hex;
+}
+
+// ── Boot ──
+document.getElementById('rp-intro').style.display = 'block';
+document.getElementById('rp-problem').style.display = 'none';
+document.getElementById('rp-reveal').style.display = 'none';
+document.getElementById('rp-final').style.display = 'none';
+
+document.getElementById('rp-start-btn').addEventListener('click', function(){
+  renderProblem(0);
+});
+</script>
+</body>
+</html>
