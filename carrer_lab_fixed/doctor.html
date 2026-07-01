@@ -357,7 +357,7 @@
       </section>
 
       <!-- ═══ MINI-GAME: First Aid ═══ -->
-      <section class="lesson-section" style="background:linear-gradient(135deg,rgba(22,163,74,.15),rgba(20,83,45,.1));border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:24px 20px;margin-bottom:24px">
+      <section class="lesson-section" style="background:linear-gradient(135deg,#14532d,#166534);border:1px solid rgba(34,197,94,.35);border-radius:20px;padding:24px 20px;margin-bottom:24px">
         <div style="text-align:center;margin-bottom:16px">
           <span style="font-size:2rem">🩺</span>
           <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin:6px 0 4px">Мини-игра: Скорая помощь!</h2>
@@ -376,6 +376,11 @@
         <div id="doc2-result" style="display:none;text-align:center;padding:12px 0">
           <div id="doc2-trophy" style="font-size:3rem"></div>
           <div id="doc2-result-text" style="font-size:1.1rem;font-weight:800;color:#fbbf24;margin:8px 0"></div>
+          <p style="color:rgba(255,255,255,.6);font-size:.88rem;margin:6px 0 14px">+25 XP получено!</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+            <a href="roadmap.html" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:12px;padding:11px 22px;font-weight:800;font-size:.9rem;text-decoration:none;display:inline-block">🗓️ Мой маршрут →</a>
+            <button onclick="doc2Init()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:11px 22px;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
+          </div>
           <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px">+25 XP заработано!</div>
           <button onclick="doc2Init()" style="background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;font-weight:800;font-size:.9rem;padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
         </div>
@@ -389,9 +394,9 @@
           {icon:'😵',title:'Другу стало плохо на жаре',desc:'Головокружение, слабость, кожа бледная.',opts:['Перенеси в тень и дай воды','Заставь бегать','Дай горячий чай','Не трогай — само пройдёт'],correct:0,explain:'При тепловом ударе — в тень, прохладное питьё, холодный компресс на лоб.'},
           {icon:'🦷',title:'У одноклассника сильная боль в зубе',desc:'Щека опухла, температура 38°C.',opts:['Посоветуй срочно идти к врачу','Дай больше сахара','Привяжи тёплый шарф','Скажи что само пройдёт'],correct:0,explain:'Опухоль и температура — признаки воспаления. Нужен срочный визит к стоматологу!'}
         ];
-        var q=0,score=0;
-        function awardXP(){try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
-        window.doc2Init=function(){q=0;score=0;document.getElementById('doc2-result').style.display='none';document.getElementById('doc2-box').style.display='block';doc2Render();};
+        var q=0,score=0,awarded=false;
+        function awardXP(){if(awarded)return;awarded=true;try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;p.simDone=(p.simDone||0)+1;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
+        window.doc2Init=function(){q=0;score=0;awarded=false;document.getElementById('doc2-result').style.display='none';document.getElementById('doc2-box').style.display='block';doc2Render();};
         function doc2Render(){
           if(q>=CASES.length){doc2End();return;}
           var c=CASES[q];
@@ -429,11 +434,11 @@
 
       <!-- NEXT STEP CTA -->
       <div class="career-next-step">
-        <h3>🎯 Что делать дальше?</h3>
-        <p>Ты можешь спасать жизни! Начни свой путь прямо сейчас.</p>
-        <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на подходящую профессию</a>
-        <a href="explorer.html" class="btn-next-step">🔭 Все профессии</a>
-        <a href="play.html" class="btn-next-step">🎮 Центр симуляций</a>
+        <h3>🎯 Что дальше?</h3>
+        <p>Ты прошёл симуляцию врача! Следующий шаг — твой личный маршрут на 7 дней.</p>
+        <a href="roadmap.html" class="btn-next-step primary">🗓️ Получить мой 7-дневный план</a>
+        <a href="my-path.html" class="btn-next-step">🌟 Узнать свой профиль</a>
+        <a href="index.html" class="btn-next-step">🏠 На главную</a>
       </div>
 
       <div class="career-nav">

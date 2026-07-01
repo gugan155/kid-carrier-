@@ -275,6 +275,8 @@
     <input class="td-search" id="td-search" type="text" placeholder="🔍 Поиск ученика..." />
     <a href="leaderboard.html" class="td-btn" target="_blank">🏆 Рейтинг</a>
     <button class="td-btn" id="btn-quiz-panel" style="background:rgba(168,85,247,.2);border-color:rgba(168,85,247,.4);color:#c4b5fd">🎮 Викторина</button>
+    <button class="td-btn" id="btn-dreams-panel" onclick="toggleDreamsPanel()" style="background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#34d399">✨ Мечты</button>
+    <button class="td-btn" id="btn-activity-panel" onclick="toggleActivityPanel()" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:#fbbf24">📊 Активность</button>
     <a href="index.html" class="td-btn">🏠 Главная</a>
     <button class="td-btn" onclick="window.print()">🖨️ Печать</button>
     <span class="td-updated" id="td-updated"></span>
@@ -355,6 +357,46 @@
     <div id="qz-presets" style="display:none;margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px">
       <div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:8px">Выбери готовый вопрос:</div>
       <div id="qz-preset-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+
+  <!-- ═══ DREAMS PANEL ═══ -->
+  <div id="dreams-panel" style="display:none;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(16,185,129,.04)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <div>
+        <div style="font-size:1rem;font-weight:900;color:#fff">✨ Стена мечты класса</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:2px">Все мечты учеников · обновляется в реальном времени</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span id="dreams-count-badge" style="font-size:.8rem;font-weight:800;color:#34d399">⏳ Загружаем...</span>
+        <select id="dreams-career-filter" onchange="filterDreams()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:6px 10px;color:#fff;font-family:inherit;font-size:.8rem">
+          <option value="all">Все профессии</option>
+          <option value="space">🚀 Космос</option>
+          <option value="robot">🤖 Роботы</option>
+          <option value="cyber">🛡️ Кибербез.</option>
+          <option value="doctor">🏥 Медицина</option>
+          <option value="game">🎮 Игры</option>
+          <option value="drone">✈️ Дроны</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
+    </div>
+    <div id="dreams-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="grid-column:1/-1;text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.88rem;font-weight:700">⏳ Загружаем мечты...</div>
+    </div>
+  </div>
+
+  <!-- ═══ ACTIVITY PANEL ═══ -->
+  <div id="activity-panel" style="display:none;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(251,191,36,.04)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <div>
+        <div style="font-size:1rem;font-weight:900;color:#fff">📊 Активность класса</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:2px">Последние посещения страниц · обновляется в реальном времени</div>
+      </div>
+      <span id="activity-count-badge" style="font-size:.8rem;font-weight:800;color:#fbbf24">⏳ Загружаем...</span>
+    </div>
+    <div id="activity-list" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto">
+      <div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.88rem;font-weight:700">⏳ Загружаем активность...</div>
     </div>
   </div>
 
@@ -604,5 +646,138 @@
       });
     }
   </script>
+
+  <!-- ═══ DREAMS PANEL LOGIC ═══ -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore, collection, query, orderBy, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { FIREBASE_CONFIG } from "./firebase.config.js";
+
+    const CAREER_LABELS = {
+      space:'🚀 Космос', robot:'🤖 Роботы', cyber:'🛡️ Кибербез.',
+      doctor:'🏥 Медицина', game:'🎮 Игры', drone:'✈️ Дроны', other:'✨ Другое'
+    };
+    const CAREER_COLORS = {
+      space:'#6366f1', robot:'#f59e0b', cyber:'#10b981',
+      doctor:'#ef4444', game:'#8b5cf6', drone:'#0ea5e9', other:'#a78bfa'
+    };
+
+    let allDreams = [];
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    window.filterDreams = function() {
+      const career = document.getElementById('dreams-career-filter').value;
+      const filtered = career === 'all' ? allDreams : allDreams.filter(d => d.career === career);
+      renderDreamsGrid(filtered);
+    };
+
+    function renderDreamsGrid(dreams) {
+      const grid = document.getElementById('dreams-grid');
+      if (!dreams.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.88rem;font-weight:700">😶 Нет мечт в этой категории</div>';
+        return;
+      }
+      grid.innerHTML = dreams.map(d => {
+        const color = CAREER_COLORS[d.career] || '#a78bfa';
+        return `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-top:3px solid ${color};border-radius:12px;padding:14px">
+          <div style="font-size:1.8rem;line-height:1;margin-bottom:8px">${d.emoji || '✨'}</div>
+          <div style="font-size:.85rem;font-weight:700;color:#f1f5f9;line-height:1.4;margin-bottom:10px">${esc(d.text)}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+            <span style="font-size:.72rem;font-weight:800;color:rgba(255,255,255,.4)">${d.anon ? 'Аноним' : esc(d.name)}</span>
+            <span style="font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5)">${CAREER_LABELS[d.career] || '✨'}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    const q = query(collection(db, 'dreams'), orderBy('ts', 'desc'));
+    onSnapshot(q, snap => {
+      allDreams = [];
+      snap.forEach(doc => allDreams.push({ id: doc.id, ...doc.data() }));
+      document.getElementById('dreams-count-badge').textContent = '✨ ' + allDreams.length + ' мечт';
+      window.filterDreams();
+    }, () => {
+      document.getElementById('dreams-count-badge').textContent = '❌ Ошибка';
+    });
+  </script>
+
+  <script>
+    function toggleDreamsPanel() {
+      const p = document.getElementById('dreams-panel');
+      p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+    function toggleActivityPanel() {
+      const p = document.getElementById('activity-panel');
+      p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+
+  <!-- ═══ ACTIVITY PANEL LOGIC ═══ -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore, collection, query, orderBy, limit, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { FIREBASE_CONFIG } from "./firebase.config.js";
+
+    const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+    const db  = getFirestore(app);
+
+    const PAGE_ICONS = {
+      'index.html':'🏠','learn.html':'📚','play.html':'🎮','quiz.html':'🧠',
+      'explorer.html':'🔭','books.html':'📖','career-path.html':'🎯',
+      'my-path.html':'🌟','dream-wall.html':'✨','problems.html':'⚡',
+      'roadmap.html':'🗓️','stories.html':'🎬','leaderboard.html':'🏆',
+      'live-quiz.html':'🔴'
+    };
+
+    function timeAgo(ts) {
+      if (!ts) return '';
+      const diff = Math.floor((Date.now() - ts.toMillis()) / 1000);
+      if (diff < 60)  return diff + ' сек. назад';
+      if (diff < 3600) return Math.floor(diff / 60) + ' мин. назад';
+      return Math.floor(diff / 3600) + ' ч. назад';
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    const q = query(collection(db, 'activity'), orderBy('ts', 'desc'), limit(60));
+    onSnapshot(q, snap => {
+      const list = document.getElementById('activity-list');
+      const badge = document.getElementById('activity-count-badge');
+      if (!snap.size) {
+        list.innerHTML = '<div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.88rem;font-weight:700">Пока нет данных — откройте несколько страниц!</div>';
+        badge.textContent = '0 событий';
+        return;
+      }
+      badge.textContent = '📊 ' + snap.size + ' событий';
+      const rows = [];
+      snap.forEach(doc => rows.push({ id: doc.id, ...doc.data() }));
+      list.innerHTML = rows.map(r => {
+        const icon = PAGE_ICONS[r.page] || '📄';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+          <span style="font-size:1.3rem;flex-shrink:0">${icon}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.85rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.name)}</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.5)">${esc(r.label || r.page)}</div>
+          </div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.35);flex-shrink:0;text-align:right">${timeAgo(r.ts)}</div>
+        </div>`;
+      }).join('');
+    }, () => {
+      document.getElementById('activity-count-badge').textContent = '❌ Ошибка';
+    });
+  </script>
+
 </body>
 </html>

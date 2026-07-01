@@ -56,9 +56,33 @@
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
-      <a href="live-quiz.html" class="sidebar-link" style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px">
+      <a href="career-path.html" class="sidebar-link" style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px">
+        <span class="sidebar-icon">🎯</span>
+        <span class="sidebar-label">Найди путь</span>
+      </a>
+      <a href="my-path.html" class="sidebar-link">
+        <span class="sidebar-icon">🗺️</span>
+        <span class="sidebar-label">Мой путь</span>
+      </a>
+      <a href="dream-wall.html" class="sidebar-link">
+        <span class="sidebar-icon">✨</span>
+        <span class="sidebar-label">Стена мечты</span>
+      </a>
+      <a href="roadmap.html" class="sidebar-link">
+        <span class="sidebar-icon">🗓️</span>
+        <span class="sidebar-label">Мой маршрут</span>
+      </a>
+      <a href="stories.html" class="sidebar-link">
+        <span class="sidebar-icon">🎬</span>
+        <span class="sidebar-label">Истории</span>
+      </a>
+      <a href="live-quiz.html" class="sidebar-link">
         <span class="sidebar-icon">🔴</span>
         <span class="sidebar-label">Живая викторина</span>
+      </a>
+      <a href="parent-view.html" class="sidebar-link">
+        <span class="sidebar-icon">👨‍👩‍👧</span>
+        <span class="sidebar-label">Родителям</span>
       </a>
       <a href="teacher-dashboard.html" class="sidebar-link">
         <span class="sidebar-icon">👩‍🏫</span>
@@ -408,6 +432,10 @@
     updateLearnProgress();
   }
 })();
+</script>
+<script type="module">
+  import { trackPageVisit } from './js/activity-tracker.js';
+  trackPageVisit();
 </script>
 </body>
 </html>

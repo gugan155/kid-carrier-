@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль ученика · Карьерная Лаборатория</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      min-height: 100vh;
+      color: #f1f5f9;
+      padding: 24px 16px 48px;
+    }
+
+    .pv-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .pv-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .pv-logo a {
+      font-size: .85rem;
+      color: rgba(255,255,255,.4);
+      text-decoration: none;
+      letter-spacing: .04em;
+    }
+    .pv-logo a:hover { color: rgba(255,255,255,.7); }
+
+    /* ── Card ── */
+    .pv-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    .pv-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .pv-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .pv-name {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .pv-subtitle {
+      font-size: .8rem;
+      color: rgba(255,255,255,.45);
+      margin-top: 4px;
+    }
+
+    /* ── XP Bar ── */
+    .pv-xp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .pv-level-badge {
+      font-size: .78rem;
+      font-weight: 900;
+      background: rgba(124,58,237,.3);
+      border: 1px solid rgba(124,58,237,.5);
+      border-radius: 20px;
+      padding: 4px 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pv-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,.1);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .pv-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #7c3aed, #ec4899);
+      transition: width .6s ease;
+    }
+    .pv-xp-pts {
+      font-size: .78rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.6);
+      flex-shrink: 0;
+    }
+
+    /* ── Stats grid ── */
+    .pv-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 400px) { .pv-stats { grid-template-columns: repeat(4, 1fr); } }
+
+    .pv-stat {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 14px 8px 10px;
+      text-align: center;
+    }
+    .pv-stat-icon { font-size: 1.5rem; line-height: 1; }
+    .pv-stat-val {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #fff;
+      margin-top: 6px;
+      line-height: 1;
+    }
+    .pv-stat-lbl {
+      font-size: .7rem;
+      color: rgba(255,255,255,.4);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* ── Badges ── */
+    .pv-section-title {
+      font-size: .8rem;
+      font-weight: 900;
+      color: rgba(255,255,255,.5);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .pv-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pv-badge {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: .8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pv-no-badges {
+      font-size: .82rem;
+      color: rgba(255,255,255,.3);
+    }
+
+    /* ── Share link card ── */
+    .pv-share-card {
+      background: rgba(124,58,237,.1);
+      border: 1px solid rgba(124,58,237,.3);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    }
+    .pv-share-label {
+      font-size: .78rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 8px;
+    }
+    .pv-share-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .pv-share-input {
+      flex: 1;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: .76rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .pv-share-btn {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .pv-share-btn:active { opacity: .8; }
+
+    /* ── Error / loading ── */
+    .pv-loading, .pv-error {
+      text-align: center;
+      padding: 64px 20px;
+    }
+    .pv-loading { font-size: 1.2rem; color: rgba(255,255,255,.4); }
+    .pv-error-icon { font-size: 3rem; margin-bottom: 12px; }
+    .pv-error-msg { font-size: 1rem; font-weight: 800; color: #f87171; }
+    .pv-error-sub { font-size: .85rem; color: rgba(255,255,255,.4); margin-top: 8px; }
+
+    .pv-back {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: .82rem;
+      color: rgba(255,255,255,.4);
+      text-decoration: none;
+    }
+    .pv-back:hover { color: rgba(255,255,255,.7); }
+
+    /* own-profile banner */
+    .pv-own-banner {
+      background: rgba(16,185,129,.1);
+      border: 1px solid rgba(16,185,129,.3);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: .84rem;
+      font-weight: 700;
+      color: #34d399;
+      margin-bottom: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="pv-wrap">
+  <div class="pv-logo">
+    <a href="index.html">🚀 Карьерная Лаборатория</a>
+  </div>
+
+  <!-- Own-profile share card — shown only when viewing your own profile -->
+  <div class="pv-own-banner" id="own-banner">
+    📤 Это твоя страница! Скопируй ссылку ниже и отправь родителям.
+  </div>
+  <div class="pv-share-card" id="share-card" style="display:none">
+    <div class="pv-share-label">🔗 Ссылка для родителей</div>
+    <div class="pv-share-row">
+      <input class="pv-share-input" id="share-url" readonly />
+      <button class="pv-share-btn" onclick="copyLink()">📋 Копировать</button>
+    </div>
+  </div>
+
+  <div id="pv-content">
+    <div class="pv-loading" id="pv-loading">⏳ Загружаем профиль...</div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+  import {
+    getFirestore, collection, query, where, getDocs, limit
+  } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+  import { FIREBASE_CONFIG } from './firebase.config.js';
+
+  const LEVELS = [
+    { level:1, min:0,    max:50,   label:'Новичок',  icon:'🌱' },
+    { level:2, min:50,   max:150,  label:'Ученик',   icon:'📚' },
+    { level:3, min:150,  max:300,  label:'Знаток',   icon:'🔭' },
+    { level:4, min:300,  max:500,  label:'Эксперт',  icon:'🏆' },
+    { level:5, min:500,  max:1000, label:'Мастер',   icon:'🚀' },
+    { level:6, min:1000, max:9999, label:'Легенда',  icon:'👑' },
+  ];
+  function getLvl(pts) {
+    return LEVELS.find(l => pts >= l.min && pts < l.max) || LEVELS[LEVELS.length - 1];
+  }
+
+  const BADGE_DEFS = [
+    { id:'first_quiz',      emoji:'🏅', label:'Первый тест' },
+    { id:'quiz_master',     emoji:'🥇', label:'Мастер тестов' },
+    { id:'sim_pilot',       emoji:'✈️', label:'Пилот' },
+    { id:'streak_3',        emoji:'🔥', label:'3 дня подряд' },
+    { id:'streak_7',        emoji:'🌟', label:'7 дней подряд' },
+    { id:'pts_100',         emoji:'💯', label:'100 очков' },
+    { id:'pts_500',         emoji:'🚀', label:'500 очков' },
+    { id:'pts_1000',        emoji:'👑', label:'1000 очков' },
+    { id:'career_explorer', emoji:'🔭', label:'Исследователь карьер' },
+    { id:'micro_master',    emoji:'🎯', label:'Мастер мини-заданий' },
+    { id:'drone_expert',    emoji:'🚁', label:'Эксперт дронов' },
+    { id:'lesson_master',   emoji:'📚', label:'Мастер уроков' },
+    { id:'quiz_champion',   emoji:'🧠', label:'Чемпион тестов' },
+    { id:'mission_ready',   emoji:'🚀', label:'Готов к миссии' },
+  ];
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function render(data) {
+    const lvl  = getLvl(data.points || 0);
+    const pct  = Math.min(100, Math.round(((data.points||0) - lvl.min) / (lvl.max - lvl.min) * 100));
+    const badges = (data.badges || [])
+      .map(id => BADGE_DEFS.find(b => b.id === id))
+      .filter(Boolean);
+
+    const badgesHtml = badges.length
+      ? badges.map(b => `<div class="pv-badge">${b.emoji} ${esc(b.label)}</div>`).join('')
+      : '<span class="pv-no-badges">Значков пока нет — продолжай учиться!</span>';
+
+    document.getElementById('pv-content').innerHTML = `
+      <div class="pv-card">
+        <div class="pv-header">
+          <div class="pv-avatar">👤</div>
+          <div>
+            <div class="pv-name">${esc(data.name)}</div>
+            <div class="pv-subtitle">Карьерная Лаборатория · профиль</div>
+          </div>
+        </div>
+
+        <div class="pv-xp-row">
+          <div class="pv-level-badge">${lvl.icon} Ур. ${lvl.level} · ${lvl.label}</div>
+          <div class="pv-bar-wrap"><div class="pv-bar-fill" style="width:${pct}%"></div></div>
+          <div class="pv-xp-pts">${(data.points||0).toLocaleString('ru')} XP</div>
+        </div>
+
+        <div class="pv-stats">
+          <div class="pv-stat">
+            <div class="pv-stat-icon">📚</div>
+            <div class="pv-stat-val">${data.lessonsCompleted || 0}</div>
+            <div class="pv-stat-lbl">Уроков</div>
+          </div>
+          <div class="pv-stat">
+            <div class="pv-stat-icon">🎮</div>
+            <div class="pv-stat-val">${data.simDone || 0}</div>
+            <div class="pv-stat-lbl">Симуляций</div>
+          </div>
+          <div class="pv-stat">
+            <div class="pv-stat-icon">🔥</div>
+            <div class="pv-stat-val">${data.streak || 0}</div>
+            <div class="pv-stat-lbl">Дней подряд</div>
+          </div>
+          <div class="pv-stat">
+            <div class="pv-stat-icon">🧠</div>
+            <div class="pv-stat-val">${data.quizDone || 0}</div>
+            <div class="pv-stat-lbl">Тестов</div>
+          </div>
+        </div>
+
+        <div class="pv-section-title">Значки</div>
+        <div class="pv-badges">${badgesHtml}</div>
+      </div>
+      <a class="pv-back" href="index.html">← На главную</a>
+    `;
+  }
+
+  function showError(msg, sub) {
+    document.getElementById('pv-content').innerHTML = `
+      <div class="pv-error">
+        <div class="pv-error-icon">😕</div>
+        <div class="pv-error-msg">${esc(msg)}</div>
+        ${sub ? `<div class="pv-error-sub">${esc(sub)}</div>` : ''}
+        <br><a class="pv-back" href="index.html">← На главную</a>
+      </div>
+    `;
+  }
+
+  // ── Read uid from URL ──
+  const params = new URLSearchParams(location.search);
+  const uid    = params.get('id') || params.get('uid');
+
+  // ── Show share card if this is own profile ──
+  const ownUid = localStorage.getItem('kl_uid');
+  const shareCard = document.getElementById('share-card');
+  const ownBanner = document.getElementById('own-banner');
+  const shareUrl  = document.getElementById('share-url');
+
+  // Always show share card for own profile link
+  if (ownUid) {
+    const link = `${location.origin}${location.pathname}?id=${ownUid}`;
+    shareUrl.value = link;
+    shareCard.style.display = 'block';
+    if (!uid || uid === ownUid) {
+      ownBanner.style.display = 'block';
+    }
+  }
+
+  if (!uid) {
+    // No id in URL — show own profile if available
+    if (ownUid) {
+      params.set('id', ownUid);
+      history.replaceState(null, '', `?${params.toString()}`);
+    } else {
+      showError('Профиль не найден', 'Укажи ?id= в URL или войди в систему');
+      document.getElementById('pv-loading').style.display = 'none';
+    }
+  }
+
+  if (uid || ownUid) {
+    const targetUid = uid || ownUid;
+    try {
+      const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+      const db  = getFirestore(app);
+
+      // Document ID is the uid itself (see syncProgress in progress.js)
+      const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js');
+      const snap = await getDoc(doc(db, 'users', targetUid));
+
+      document.getElementById('pv-loading').style.display = 'none';
+
+      if (!snap.exists()) {
+        showError('Профиль не найден', 'Ученик ещё не начал заниматься в Карьерной Лаборатории');
+      } else {
+        render(snap.data());
+      }
+    } catch (e) {
+      document.getElementById('pv-loading').style.display = 'none';
+      showError('Ошибка загрузки', e.message);
+    }
+  }
+
+  window.copyLink = function() {
+    const inp = document.getElementById('share-url');
+    inp.select();
+    try {
+      navigator.clipboard.writeText(inp.value).then(() => {
+        const btn = document.querySelector('.pv-share-btn');
+        const orig = btn.textContent;
+        btn.textContent = '✅ Скопировано!';
+        setTimeout(() => btn.textContent = orig, 2000);
+      });
+    } catch {
+      document.execCommand('copy');
+    }
+  };
+</script>
+
+</body>
+</html>

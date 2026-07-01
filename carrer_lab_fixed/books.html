@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Книги для будущего профессионала — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(160deg, #0f0a1e 0%, #1a0a2e 50%, #0a1628 100%);
+      color: #f1f5f9;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .bk-header {
+      background: linear-gradient(135deg, #1e1340 0%, #2d1b69 100%);
+      border-bottom: 1px solid rgba(167,139,250,.2);
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .bk-back {
+      color: rgba(255,255,255,.5); text-decoration: none;
+      font-size: .85rem; font-weight: 700;
+      padding: 6px 12px; border-radius: 8px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      transition: all .2s; white-space: nowrap;
+    }
+    .bk-back:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .bk-header-title { font-size: 1.15rem; font-weight: 900; color: #fff; }
+    .bk-header-sub { font-size: .75rem; color: rgba(255,255,255,.45); font-weight: 600; }
+
+    /* ── Main ── */
+    .bk-main { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+    /* ── Filter row ── */
+    .bk-filter-row {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .bk-filter {
+      padding: 6px 14px; border-radius: 999px;
+      font-family: inherit; font-size: .8rem; font-weight: 800;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.55); cursor: pointer; transition: all .2s;
+    }
+    .bk-filter.active {
+      background: rgba(167,139,250,.2); border-color: rgba(167,139,250,.5); color: #c4b5fd;
+    }
+
+    /* ── Career section ── */
+    .bk-career-section { margin-bottom: 40px; }
+    .bk-career-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.1rem; font-weight: 900; color: #fff;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .bk-career-emoji { font-size: 1.6rem; }
+
+    /* ── Book cards ── */
+    .bk-books-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .bk-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .2s, border-color .2s;
+      cursor: pointer;
+    }
+    .bk-card:hover { transform: translateY(-3px); border-color: rgba(167,139,250,.35); }
+
+    .bk-card-top {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .bk-cover {
+      font-size: 3rem; line-height: 1;
+      margin-bottom: 12px; display: block;
+    }
+    .bk-title {
+      font-size: .95rem; font-weight: 900; color: #fff;
+      line-height: 1.3; margin-bottom: 4px;
+    }
+    .bk-author {
+      font-size: .75rem; font-weight: 700;
+      color: rgba(255,255,255,.4); margin-bottom: 8px;
+    }
+    .bk-desc {
+      font-size: .8rem; font-weight: 600;
+      color: rgba(255,255,255,.6); line-height: 1.5;
+    }
+    .bk-level {
+      display: inline-block; margin-top: 8px;
+      font-size: .68rem; font-weight: 800; padding: 3px 8px;
+      border-radius: 999px; border: 1px solid;
+    }
+    .bk-level-easy   { background: rgba(16,185,129,.12); color: #34d399; border-color: rgba(16,185,129,.3); }
+    .bk-level-medium { background: rgba(251,191,36,.1);  color: #fbbf24; border-color: rgba(251,191,36,.3); }
+    .bk-level-hard   { background: rgba(239,68,68,.1);   color: #fca5a5; border-color: rgba(239,68,68,.3); }
+
+    /* ── Takeaways (collapsible) ── */
+    .bk-card-body { padding: 14px 18px; }
+    .bk-takeaways-label {
+      font-size: .72rem; font-weight: 800;
+      color: rgba(167,139,250,.8); text-transform: uppercase;
+      letter-spacing: .06em; margin-bottom: 8px;
+    }
+    .bk-takeaways { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .bk-takeaway {
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: .8rem; font-weight: 700;
+      color: rgba(255,255,255,.75); line-height: 1.4;
+    }
+    .bk-takeaway-dot {
+      flex-shrink: 0; width: 18px; height: 18px;
+      background: rgba(167,139,250,.15); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; color: #a78bfa; font-weight: 900;
+      margin-top: 1px;
+    }
+    .bk-why {
+      margin-top: 10px; padding: 8px 10px;
+      background: rgba(124,58,237,.1); border-radius: 8px;
+      border-left: 3px solid #7c3aed;
+      font-size: .76rem; font-weight: 700;
+      color: rgba(255,255,255,.6); line-height: 1.45;
+    }
+    .bk-why strong { color: #c4b5fd; }
+
+    /* ── XP badge ── */
+    .bk-xp-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 12px; padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .bk-xp-badge {
+      font-size: .75rem; font-weight: 800; color: #fbbf24;
+    }
+    .bk-read-btn {
+      padding: 5px 12px; border-radius: 8px;
+      font-family: inherit; font-size: .75rem; font-weight: 800;
+      border: 1px solid rgba(167,139,250,.3);
+      background: rgba(124,58,237,.12); color: #c4b5fd;
+      cursor: pointer; transition: all .2s;
+    }
+    .bk-read-btn:hover { background: rgba(124,58,237,.25); }
+    .bk-read-btn.done  { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.3); color: #34d399; }
+
+    /* ── Toast ── */
+    .bk-toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e1340; border: 1px solid rgba(167,139,250,.3);
+      border-radius: 12px; padding: 12px 22px;
+      font-size: .88rem; font-weight: 800; color: #fff;
+      z-index: 999; transition: transform .35s ease;
+      pointer-events: none; white-space: nowrap;
+    }
+    .bk-toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 480px) {
+      .bk-books-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="bk-header">
+  <a href="index.html" class="bk-back">← Назад</a>
+  <div>
+    <div class="bk-header-title">📚 Книги для профессионалов</div>
+    <div class="bk-header-sub">Прочитай краткое содержание — узнай главное за 5 минут</div>
+  </div>
+</header>
+
+<main class="bk-main">
+  <div class="bk-filter-row" id="filter-row"></div>
+  <div id="books-container"></div>
+</main>
+
+<div class="bk-toast" id="bk-toast"></div>
+
+<script>
+// ════════════════════════════════════════════════
+//  BOOK DATA — 3-4 books per career
+// ════════════════════════════════════════════════
+var BOOKS = {
+  space: {
+    emoji: '🚀', label: 'Космос и авиация',
+    books: [
+      {
+        cover:'🌌', title:'Астронавт: руководство по жизни в космосе',
+        author:'Крис Хэдфилд', level:'easy',
+        desc:'Командир МКС рассказывает как готовиться к невозможному — и как страх превратить в спокойствие.',
+        takeaways:[
+          'Готовься к худшему — тогда ничто тебя не застанет врасплох',
+          'Каждый день тренируйся делать что-то впервые',
+          'Командная работа важнее личного героизма',
+          'Любопытство — главный навык исследователя',
+          'Страх можно победить знанием: учи всё что можешь'
+        ],
+        why: 'Показывает <strong>реальную психологию</strong> космонавта — не фантастику, а конкретные навыки.'
+      },
+      {
+        cover:'🪐', title:'Марсианин',
+        author:'Энди Вейр', level:'easy',
+        desc:'Астронавт застрял на Марсе один. Как выжить? Только наука, юмор и не сдаваться.',
+        takeaways:[
+          'Сложную задачу реши по шагам — не паникуй',
+          'Ботаника, химия, физика — в космосе всё пригодится',
+          'Юмор помогает выжить в самых тяжёлых условиях',
+          'Одна проблема за раз — не думай обо всём сразу',
+          'Человек может невероятно много если захочет'
+        ],
+        why: 'Лучшая книга чтобы <strong>полюбить науку</strong> — она здесь буквально спасает жизнь.'
+      },
+      {
+        cover:'🌍', title:'Вид с МКС',
+        author:'Тери Вёртс', level:'easy',
+        desc:'200 фотографий Земли из космоса с историями лётчика-испытателя и астронавта.',
+        takeaways:[
+          'Земля выглядит как один хрупкий шар — границ не видно',
+          'Путь в космос начинается с математики в школе',
+          'Физическая подготовка важна не меньше умственной',
+          'Терпение — ты ждал своего полёта 15 лет',
+          'Каждый восход солнца в космосе — каждые 90 минут'
+        ],
+        why: 'Вдохновит любого — <strong>красота Земли мотивирует изучать космос</strong>.'
+      }
+    ]
+  },
+
+  robot: {
+    emoji: '🤖', label: 'Робототехника и инженерия',
+    books: [
+      {
+        cover:'⚙️', title:'Создай робота сам',
+        author:'Каниш Кумар', level:'easy',
+        desc:'Пошаговое руководство как построить своего первого робота из простых деталей.',
+        takeaways:[
+          'Начни с малого — даже простой мигающий диод это уже твой робот',
+          'Ошибка — это данные. Каждая поломка учит больше чем успех',
+          'Arduino — лучший старт для юного инженера',
+          'Механика + электроника + код = робот',
+          'Сделай что-то руками сегодня — теория потом'
+        ],
+        why: 'Самая <strong>практичная книга</strong> — после неё захочешь немедленно что-то построить.'
+      },
+      {
+        cover:'🧠', title:'Думающие машины',
+        author:'Люк Дормель', level:'medium',
+        desc:'Как работает искусственный интеллект и почему машины пока не умнее людей.',
+        takeaways:[
+          'ИИ — это математика, а не магия',
+          'Нейросети учатся на примерах — как дети',
+          'Роботы делают то что им говорят — они не думают',
+          'Будущий инженер должен понимать и железо и код',
+          'Этика в ИИ — кто отвечает если робот ошибся?'
+        ],
+        why: 'Объясняет <strong>как работает мозг машины</strong> — незаменимо для будущего инженера.'
+      },
+      {
+        cover:'🔧', title:'Zero to Maker',
+        author:'Дэвид Лэнгдон', level:'easy',
+        desc:'История человека который ничего не умел — и стал настоящим инженером за год.',
+        takeaways:[
+          'Любой может научиться создавать вещи — нужно только начать',
+          'Maker-сообщества: найди единомышленников рядом',
+          'Главный инструмент — не паяльник, а любопытство',
+          'Рассказывай о своих проектах — обратная связь бесценна',
+          'Прогресс важнее перфекционизма — делай сейчас, улучши потом'
+        ],
+        why: 'Доказывает что <strong>нет «прирождённых» инженеров</strong> — все когда-то начинали с нуля.'
+      }
+    ]
+  },
+
+  cyber: {
+    emoji: '🛡️', label: 'Кибербезопасность',
+    books: [
+      {
+        cover:'🔐', title:'Хакинг: искусство эксплойта',
+        author:'Джон Эрикссон', level:'hard',
+        desc:'Как думают хакеры — и как использовать это знание для защиты систем.',
+        takeaways:[
+          'Чтобы защищать — надо думать как атакующий',
+          'Безопасность это процесс, а не продукт',
+          'Большинство взломов — через человека, не через код',
+          'Шифрование — основа цифровой защиты',
+          'Этичный хакер — самая востребованная профессия ближайших лет'
+        ],
+        why: 'Показывает <strong>реальное мышление специалиста по безопасности</strong> — меняет взгляд на интернет.'
+      },
+      {
+        cover:'🕵️', title:'Призрак в сети',
+        author:'Кевин Митник', level:'medium',
+        desc:'Мемуары самого известного хакера мира — как он взламывал всё и почему остановился.',
+        takeaways:[
+          'Социальная инженерия опаснее технического взлома',
+          'Любой человек уязвим — знание защищает',
+          'Любопытство без этики = тюрьма',
+          'Лучшие специалисты по безопасности — бывшие хакеры',
+          'Защити себя: сложные пароли, двухфакторка, осторожность'
+        ],
+        why: 'Самая <strong>захватывающая история</strong> о кибербезопасности — читается как детектив.'
+      },
+      {
+        cover:'💻', title:'Компьютерные сети',
+        author:'Эндрю Таненбаум', level:'hard',
+        desc:'Фундаментальная книга как работает интернет — от физики до протоколов.',
+        takeaways:[
+          'Интернет — это не облако, это физические провода и протоколы',
+          'TCP/IP — язык на котором говорят все компьютеры мира',
+          'Каждый пакет данных путешествует как письмо через сотни стран',
+          'Без этих знаний в кибербезопасности — никуда',
+          'Понимание сети = понимание где и как происходят атаки'
+        ],
+        why: 'Тяжело, но <strong>это фундамент</strong> — после неё всё остальное станет ясным.'
+      }
+    ]
+  },
+
+  doctor: {
+    emoji: '🏥', label: 'Медицина',
+    books: [
+      {
+        cover:'🩺', title:'Код. Тайный язык компьютеров',
+        author:'Чарльз Петцольд', level:'medium',
+        desc:'Нет, это не про медицину — но врачи 21 века обязаны понимать цифровые технологии.',
+        takeaways:[
+          'Цифровая медицина — будущее уже сейчас',
+          'МРТ, УЗИ, кардиограмма — всё это математика и физика',
+          'ИИ уже диагностирует рак лучше многих врачей',
+          'Врач будущего — это врач + программист + аналитик данных',
+          'Технологии не заменят врача — только усилят'
+        ],
+        why: 'Объясняет почему <strong>цифровые знания — это новый стетоскоп</strong> для врача.'
+      },
+      {
+        cover:'❤️', title:'Призвание',
+        author:'Генри Марш', level:'easy',
+        desc:'Нейрохирург о том каково это — держать в руках чужой мозг и принимать решения.',
+        takeaways:[
+          'Медицина — это не только знания, это мудрость и сочувствие',
+          'Врач тоже ошибается — и живёт с этим',
+          'Путь в медицину: 10+ лет учёбы и практики',
+          'Каждый пациент — уникальная история, не диагноз',
+          'Усталость и выгорание — реальные враги врача'
+        ],
+        why: 'Честно показывает <strong>настоящую медицину</strong> — без розовых очков, но с любовью к профессии.'
+      },
+      {
+        cover:'🔬', title:'Структура научных революций',
+        author:'Томас Кун', level:'hard',
+        desc:'Почему медицина постоянно меняется и как выглядят настоящие научные открытия.',
+        takeaways:[
+          'Наука движется скачками, а не постепенно',
+          'Вчерашняя истина — сегодняшнее заблуждение',
+          'Хороший врач всегда сомневается и проверяет',
+          'Исследования важнее авторитетов',
+          'Критическое мышление — главный инструмент учёного-медика'
+        ],
+        why: 'Учит думать как <strong>настоящий учёный</strong> — это основа доказательной медицины.'
+      }
+    ]
+  },
+
+  game: {
+    emoji: '🎮', label: 'Геймдизайн',
+    books: [
+      {
+        cover:'🕹️', title:'Теория развлечений',
+        author:'Рaф Костер', level:'medium',
+        desc:'Почему игры затягивают? Как мозг обрабатывает удовольствие от игры?',
+        takeaways:[
+          'Игра — это способ мозга учиться без риска',
+          'Хорошая игра всегда учит чему-то новому',
+          'Скука = слишком просто. Стресс = слишком сложно. Игра посередине',
+          'Эмоции важнее механик — игрок запоминает чувства',
+          'Каждая игра — это набор правил и пространство решений'
+        ],
+        why: 'Фундаментальная книга — после неё <strong>видишь игры совсем по-другому</strong>.'
+      },
+      {
+        cover:'🎲', title:'Геймдизайн: книга о том как создавать игры',
+        author:'Джесси Шелл', level:'medium',
+        desc:'100 линз через которые геймдизайнер смотрит на свою игру.',
+        takeaways:[
+          'Задавай вопросы: кто играет? зачем? что они чувствуют?',
+          'Прототип сначала, полировка потом',
+          'Игровой цикл: действие → обратная связь → награда',
+          'Сложность должна расти вместе с мастерством игрока',
+          'Лучший способ учиться дизайну — играть и анализировать'
+        ],
+        why: 'Лучший <strong>практический учебник</strong> по геймдизайну — используют в лучших школах мира.'
+      },
+      {
+        cover:'🌍', title:'Reality is Broken',
+        author:'Джейн МакГонигал', level:'easy',
+        desc:'Игры могут изменить мир — и вот как именно это работает.',
+        takeaways:[
+          'Геймеры решают задачи лучше — у них 10 000 часов практики',
+          'Игры дают то чего не хватает в жизни: смысл, прогресс, связи',
+          'Геймификация работает: реальные задачи можно сделать игрой',
+          'Будущие профессии: геймдизайнер социальных изменений',
+          'Игры — мощнейший инструмент обучения и мотивации'
+        ],
+        why: 'Доказывает что <strong>игры — это серьёзно</strong> и геймдизайнер меняет мир.'
+      }
+    ]
+  },
+
+  drone: {
+    emoji: '✈️', label: 'Дроны и авиация',
+    books: [
+      {
+        cover:'🛸', title:'Дроны: от игрушки до профессии',
+        author:'Кирилл Орлов', level:'easy',
+        desc:'Полное руководство как стать профессиональным пилотом FPV-дрона.',
+        takeaways:[
+          'Начни с симулятора — сохрани деньги на первых крашах',
+          'Физика полёта: тяга, вес, лобовое сопротивление',
+          'FPV-пилот = глаза в небе + руки на земле',
+          'Регламент важен: куда летать можно, куда нельзя и почему',
+          'Профессии: аэросъёмка, доставка, поиск и спасение, сельское хозяйство'
+        ],
+        why: 'Самый <strong>практичный старт</strong> для будущего пилота дрона.'
+      },
+      {
+        cover:'🌤️', title:'Аэродинамика для всех',
+        author:'Андерсон Скотт', level:'medium',
+        desc:'Почему самолёт летит, а не падает — объяснение без скучной физики.',
+        takeaways:[
+          'Подъёмная сила — это разница давлений над и под крылом',
+          'Каждая форма крыла решает конкретную задачу',
+          'Турбулентность — не опасность, а физика воздуха',
+          'Дрон и самолёт летят по одним и тем же законам',
+          'Пилот должен чувствовать машину — не только смотреть на приборы'
+        ],
+        why: 'Даёт <strong>понимание физики</strong> — без этого пилот только управляет, не понимает.'
+      },
+      {
+        cover:'📸', title:'Аэрофотография: съёмка с воздуха',
+        author:'Колин Мелой', level:'easy',
+        desc:'Как делать потрясающие снимки с дрона — свет, угол, композиция.',
+        takeaways:[
+          'Золотой час (рассвет/закат) — лучшее время для съёмки',
+          'Правило третей работает и с высоты птичьего полёта',
+          'Тени с воздуха создают объём которого нет на земле',
+          'Планируй маршрут заранее — батарея не бесконечна',
+          'Видео продаётся дороже фото: движение рассказывает историю'
+        ],
+        why: 'Профессиональная аэросъёмка = <strong>дрон + художественный взгляд</strong> — эта книга даёт оба.'
+      }
+    ]
+  }
+};
+
+// ── State ──────────────────────────────────────
+var activeFilter = 'all';
+var readBooks = {};
+try { readBooks = JSON.parse(localStorage.getItem('bk_read') || '{}'); } catch {}
+
+function saveRead() {
+  try { localStorage.setItem('bk_read', JSON.stringify(readBooks)); } catch {}
+}
+
+// ── Filter buttons ─────────────────────────────
+var FILTERS = [
+  { key:'all',    label:'Все' },
+  { key:'space',  label:'🚀 Космос' },
+  { key:'robot',  label:'🤖 Роботы' },
+  { key:'cyber',  label:'🛡️ Кибербез.' },
+  { key:'doctor', label:'🏥 Медицина' },
+  { key:'game',   label:'🎮 Игры' },
+  { key:'drone',  label:'✈️ Дроны' },
+];
+
+function buildFilters() {
+  var row = document.getElementById('filter-row');
+  row.innerHTML = FILTERS.map(function(f) {
+    return '<button class="bk-filter'+(f.key==='all'?' active':'')+
+      '" onclick="setFilter(\''+f.key+'\', this)">'+f.label+'</button>';
+  }).join('');
+}
+
+function setFilter(key, btn) {
+  activeFilter = key;
+  document.querySelectorAll('.bk-filter').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderBooks();
+}
+
+// ── Render ─────────────────────────────────────
+function renderBooks() {
+  var container = document.getElementById('books-container');
+  var html = '';
+
+  var careers = activeFilter === 'all' ? Object.keys(BOOKS) : [activeFilter];
+
+  careers.forEach(function(cKey) {
+    var career = BOOKS[cKey];
+    if (!career) return;
+
+    html += '<div class="bk-career-section">'+
+      '<div class="bk-career-title">'+
+        '<span class="bk-career-emoji">'+career.emoji+'</span>'+
+        career.label+
+      '</div>'+
+      '<div class="bk-books-row">'+
+      career.books.map(function(bk, bi) {
+        var bookId = cKey + '_' + bi;
+        var isRead = readBooks[bookId];
+        var lvlCls = {easy:'bk-level-easy', medium:'bk-level-medium', hard:'bk-level-hard'}[bk.level];
+        var lvlTxt = {easy:'Лёгкая', medium:'Средняя', hard:'Сложная'}[bk.level];
+
+        return '<div class="bk-card">'+
+          '<div class="bk-card-top">'+
+            '<span class="bk-cover">'+bk.cover+'</span>'+
+            '<div class="bk-title">'+bk.title+'</div>'+
+            '<div class="bk-author">'+bk.author+'</div>'+
+            '<div class="bk-desc">'+bk.desc+'</div>'+
+            '<span class="bk-level '+lvlCls+'">'+lvlTxt+'</span>'+
+          '</div>'+
+          '<div class="bk-card-body">'+
+            '<div class="bk-takeaways-label">5 главных идей</div>'+
+            '<ul class="bk-takeaways">'+
+            bk.takeaways.map(function(t, i) {
+              return '<li class="bk-takeaway">'+
+                '<span class="bk-takeaway-dot">'+(i+1)+'</span>'+
+                '<span>'+t+'</span>'+
+              '</li>';
+            }).join('')+
+            '</ul>'+
+            '<div class="bk-why">📌 <strong>Зачем читать:</strong> '+bk.why+'</div>'+
+            '<div class="bk-xp-row">'+
+              '<span class="bk-xp-badge">⭐ +15 XP</span>'+
+              '<button class="bk-read-btn'+(isRead?' done':'')+
+                '" onclick="markRead(\''+bookId+'\', this)">'+
+                (isRead ? '✅ Прочитано' : '📖 Отметить прочитанной')+
+              '</button>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+      }).join('')+
+      '</div></div>';
+  });
+
+  container.innerHTML = html;
+}
+
+// ── Mark book as read ──────────────────────────
+function markRead(id, btn) {
+  if (readBooks[id]) return;
+  readBooks[id] = true;
+  saveRead();
+
+  btn.textContent = '✅ Прочитано';
+  btn.classList.add('done');
+
+  // Award XP
+  try {
+    var p = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+    p.points = (p.points || 0) + 15;
+    localStorage.setItem('kl_progress', JSON.stringify(p));
+  } catch {}
+
+  showToast('📚 +15 XP за прочитанную книгу!');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('bk-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+// ── Auto-highlight career from localStorage ────
+function autoFilter() {
+  var MAP = { explorer:'space', builder:'robot', guardian:'doctor', creator:'game', innovator:'cyber' };
+  try {
+    var mp = JSON.parse(localStorage.getItem('kl_my_path') || 'null');
+    if (mp && mp.profile) {
+      var key = MAP[mp.profile] || mp.profile;
+      if (BOOKS[key]) {
+        activeFilter = key;
+        return;
+      }
+    }
+  } catch {}
+  try {
+    var cr = JSON.parse(localStorage.getItem('kl_career_result') || 'null');
+    if (cr && cr.key && BOOKS[cr.key]) { activeFilter = cr.key; }
+  } catch {}
+}
+
+// ── Init ──────────────────────────────────────
+autoFilter();
+buildFilters();
+// Mark the active filter button
+document.querySelectorAll('.bk-filter').forEach(function(btn) {
+  if (btn.textContent.includes(activeFilter === 'all' ? 'Все' : '')) {
+    // will be set after buildFilters renders
+  }
+});
+renderBooks();
+
+// Fix filter button highlight after autoFilter
+document.querySelectorAll('.bk-filter').forEach(function(btn) {
+  btn.classList.remove('active');
+  if ((activeFilter === 'all' && btn.textContent === 'Все') ||
+      btn.dataset && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+activeFilter+"'")) {
+    btn.classList.add('active');
+  }
+});
+</script>
+<script type="module">
+  import { trackPageVisit } from './js/activity-tracker.js';
+  trackPageVisit();
+</script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Стена мечты — Карьерная Лаборатория</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: linear-gradient(160deg, #0f0a1e 0%, #1a0a2e 50%, #0a1628 100%);
+      color: #f1f5f9;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .dw-header {
+      background: linear-gradient(135deg, #1e1340 0%, #2d1b69 100%);
+      border-bottom: 1px solid rgba(167,139,250,.2);
+      padding: 20px 20px 0;
+    }
+    .dw-header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .dw-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      transition: background .2s;
+    }
+    .dw-back:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .dw-title-wrap { flex: 1; }
+    .dw-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .dw-subtitle {
+      font-size: .8rem;
+      color: rgba(255,255,255,.5);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ── Tabs ── */
+    .dw-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 4px;
+    }
+    .dw-tab {
+      padding: 10px 18px;
+      border-radius: 10px 10px 0 0;
+      font-size: .85rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.5);
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      background: transparent;
+      transition: all .2s;
+    }
+    .dw-tab.active {
+      background: rgba(167,139,250,.12);
+      border-color: rgba(167,139,250,.2);
+      color: #c4b5fd;
+    }
+
+    /* ── Main ── */
+    .dw-main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* ── Post dream form ── */
+    .dream-form-card {
+      background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(236,72,153,.1));
+      border: 1px solid rgba(167,139,250,.25);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .dream-form-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .dream-form-hint {
+      font-size: .82rem;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 16px;
+    }
+    .dream-emoji-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .dream-emoji-btn {
+      font-size: 1.5rem;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+      cursor: pointer;
+      transition: all .2s;
+      line-height: 1;
+    }
+    .dream-emoji-btn.sel {
+      border-color: #a78bfa;
+      background: rgba(167,139,250,.2);
+      transform: scale(1.2);
+    }
+    .dream-input {
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 700;
+      padding: 12px 16px;
+      resize: none;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .dream-input:focus { border-color: rgba(167,139,250,.5); }
+    .dream-input::placeholder { color: rgba(255,255,255,.3); font-weight: 600; }
+    .dream-form-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .dream-anon-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .82rem;
+      color: rgba(255,255,255,.6);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .dream-anon-toggle input { width: 16px; height: 16px; cursor: pointer; accent-color: #7c3aed; }
+    .btn-dream-post {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-family: inherit;
+      font-size: .9rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: opacity .2s, transform .1s;
+    }
+    .btn-dream-post:hover { opacity: .88; }
+    .btn-dream-post:active { transform: scale(.97); }
+    .btn-dream-post:disabled { opacity: .4; cursor: not-allowed; }
+    .post-status {
+      font-size: .82rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .post-status.ok  { color: #34d399; }
+    .post-status.err { color: #f87171; }
+
+    /* ── Filter bar ── */
+    .dw-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .dw-filter-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: .8rem;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.6);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .dw-filter-btn.active {
+      background: rgba(167,139,250,.2);
+      border-color: rgba(167,139,250,.5);
+      color: #c4b5fd;
+    }
+
+    /* ── Dream cards grid ── */
+    .dream-wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .dream-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 18px;
+      animation: cardIn .35s ease both;
+      transition: transform .2s, border-color .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .dream-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+    .dream-card:hover { transform: translateY(-3px); border-color: rgba(167,139,250,.3); }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .dream-card-emoji {
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .dream-card-text {
+      font-size: .92rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+    }
+    .dream-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .dream-card-author {
+      font-size: .75rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.4);
+    }
+    .dream-card-career {
+      font-size: .72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(167,139,250,.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(167,139,250,.2);
+    }
+    .dream-card-like {
+      background: none;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,.5);
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s;
+    }
+    .dream-card-like:hover { border-color: #ec4899; color: #f9a8d4; }
+    .dream-card-like.liked  { border-color: #ec4899; color: #f9a8d4; background: rgba(236,72,153,.1); }
+
+    /* Career color accents */
+    .dc-space  { --accent: #6366f1; } .dc-space::before  { background: #6366f1; }
+    .dc-robot  { --accent: #f59e0b; } .dc-robot::before  { background: #f59e0b; }
+    .dc-cyber  { --accent: #10b981; } .dc-cyber::before  { background: #10b981; }
+    .dc-doctor { --accent: #ef4444; } .dc-doctor::before { background: #ef4444; }
+    .dc-game   { --accent: #8b5cf6; } .dc-game::before   { background: #8b5cf6; }
+    .dc-drone  { --accent: #0ea5e9; } .dc-drone::before  { background: #0ea5e9; }
+    .dc-other  { --accent: #a78bfa; } .dc-other::before  { background: #a78bfa; }
+
+    /* ── Empty / Loading ── */
+    .dw-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: rgba(255,255,255,.3);
+      font-size: .95rem;
+      font-weight: 700;
+    }
+    .dw-empty .dw-empty-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+    /* ── Stats bar ── */
+    .dw-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .dw-stat-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: .8rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.6);
+    }
+    .dw-stat-chip span { color: #c4b5fd; }
+
+    /* ── Toast ── */
+    .dw-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e1340;
+      border: 1px solid rgba(167,139,250,.3);
+      border-radius: 12px;
+      padding: 12px 22px;
+      font-size: .88rem;
+      font-weight: 800;
+      color: #fff;
+      z-index: 999;
+      transition: transform .35s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .dw-toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 480px) {
+      .dream-wall-grid { grid-template-columns: 1fr 1fr; }
+      .dw-title { font-size: 1.2rem; }
+    }
+    @media (max-width: 340px) {
+      .dream-wall-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="dw-header">
+  <div class="dw-header-top">
+    <a href="index.html" class="dw-back">← Назад</a>
+    <div class="dw-title-wrap">
+      <div class="dw-title">✨ Стена мечты</div>
+      <div class="dw-subtitle">Куда ты хочешь попасть?</div>
+    </div>
+  </div>
+  <div class="dw-tabs">
+    <button class="dw-tab active" id="tab-wall" onclick="showTab('wall')">🌟 Стена</button>
+    <button class="dw-tab" id="tab-mine" onclick="showTab('mine')">👤 Мои мечты</button>
+  </div>
+</header>
+
+<main class="dw-main">
+
+  <!-- ── Post form ── -->
+  <div class="dream-form-card" id="post-form">
+    <div class="dream-form-title">💭 Напиши свою мечту</div>
+    <div class="dream-form-hint">Кем ты хочешь стать? Что хочешь построить? Чего хочешь достичь?</div>
+
+    <div class="dream-emoji-row" id="emoji-row">
+      <button class="dream-emoji-btn sel" data-e="🚀" onclick="pickEmoji(this)">🚀</button>
+      <button class="dream-emoji-btn" data-e="🌍" onclick="pickEmoji(this)">🌍</button>
+      <button class="dream-emoji-btn" data-e="🤖" onclick="pickEmoji(this)">🤖</button>
+      <button class="dream-emoji-btn" data-e="🎮" onclick="pickEmoji(this)">🎮</button>
+      <button class="dream-emoji-btn" data-e="🏥" onclick="pickEmoji(this)">🏥</button>
+      <button class="dream-emoji-btn" data-e="🛡️" onclick="pickEmoji(this)">🛡️</button>
+      <button class="dream-emoji-btn" data-e="✈️" onclick="pickEmoji(this)">✈️</button>
+      <button class="dream-emoji-btn" data-e="🎨" onclick="pickEmoji(this)">🎨</button>
+      <button class="dream-emoji-btn" data-e="🔬" onclick="pickEmoji(this)">🔬</button>
+      <button class="dream-emoji-btn" data-e="⚡" onclick="pickEmoji(this)">⚡</button>
+    </div>
+
+    <textarea
+      class="dream-input"
+      id="dream-text"
+      rows="3"
+      placeholder="Я хочу стать космонавтом и первым ступить на Марс..."
+      maxlength="200"
+    ></textarea>
+
+    <div class="dream-form-bottom">
+      <label class="dream-anon-toggle">
+        <input type="checkbox" id="anon-check" />
+        Анонимно
+      </label>
+      <button class="btn-dream-post" id="btn-post" onclick="postDream()">✨ Добавить мечту</button>
+    </div>
+    <div class="post-status" id="post-status"></div>
+  </div>
+
+  <!-- ── Stats ── -->
+  <div class="dw-stats">
+    <div class="dw-stat-chip">✨ Мечтателей: <span id="stat-total">0</span></div>
+    <div class="dw-stat-chip">❤️ Лайков: <span id="stat-likes">0</span></div>
+  </div>
+
+  <!-- ── Filter bar ── -->
+  <div class="dw-filter-bar" id="filter-bar">
+    <button class="dw-filter-btn active" data-career="all" onclick="setFilter('all', this)">Все</button>
+    <button class="dw-filter-btn" data-career="space" onclick="setFilter('space', this)">🚀 Космос</button>
+    <button class="dw-filter-btn" data-career="robot" onclick="setFilter('robot', this)">🤖 Роботы</button>
+    <button class="dw-filter-btn" data-career="cyber" onclick="setFilter('cyber', this)">🛡️ Кибербез.</button>
+    <button class="dw-filter-btn" data-career="doctor" onclick="setFilter('doctor', this)">🏥 Медицина</button>
+    <button class="dw-filter-btn" data-career="game" onclick="setFilter('game', this)">🎮 Игры</button>
+    <button class="dw-filter-btn" data-career="drone" onclick="setFilter('drone', this)">✈️ Дроны</button>
+  </div>
+
+  <!-- ── Dream wall grid ── -->
+  <div class="dream-wall-grid" id="dream-grid">
+    <div class="dw-empty">
+      <span class="dw-empty-icon">⏳</span>
+      Загружаем мечты...
+    </div>
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div class="dw-toast" id="dw-toast"></div>
+
+<script>
+  /* ── emoji picker ── */
+  let pickedEmoji = '🚀';
+  function pickEmoji(btn) {
+    document.querySelectorAll('.dream-emoji-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    pickedEmoji = btn.dataset.e;
+  }
+
+  /* ── filter ── */
+  let activeFilter = 'all';
+  function setFilter(career, btn) {
+    activeFilter = career;
+    document.querySelectorAll('.dw-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderDreams();
+  }
+
+  /* ── tab ── */
+  function showTab(tab) {
+    document.querySelectorAll('.dw-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    activeTab = tab;
+    renderDreams();
+  }
+  let activeTab = 'wall';
+
+  /* ── toast ── */
+  function showToast(msg) {
+    const t = document.getElementById('dw-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  /* ── career detection ── */
+  const CAREER_KEYWORDS = {
+    space:  ['космос','ракет','астронавт','планет','nasa','марс','звезд','орбит','спутник','астрофиз'],
+    robot:  ['робот','автомат','механик','инженер','arduino','машин','манипул','искусственный'],
+    cyber:  ['кибер','хакер','безопасност','програм','код','python','javascript','взлом','защит'],
+    doctor: ['врач','доктор','медицин','хирург','лечит','болезн','анатом','здоровь','фармацев'],
+    game:   ['игр','геймдиз','unity','разраб','компьютерн','виртуальн','animat','геймер'],
+    drone:  ['дрон','беспилотн','пилот','авиац','летат','самолет','вертолет','fpv']
+  };
+
+  function detectCareer(text) {
+    const low = text.toLowerCase();
+    for (const [career, words] of Object.entries(CAREER_KEYWORDS)) {
+      if (words.some(w => low.includes(w))) return career;
+    }
+    return 'other';
+  }
+
+  const CAREER_LABELS = {
+    space:'Космос', robot:'Роботы', cyber:'Кибербез.', doctor:'Медицина',
+    game:'Геймдев', drone:'Дроны', other:'Другое'
+  };
+
+  /* ── likes (localStorage) ── */
+  function getLiked() {
+    try { return JSON.parse(localStorage.getItem('dw_liked') || '{}'); } catch { return {}; }
+  }
+  function setLiked(obj) { localStorage.setItem('dw_liked', JSON.stringify(obj)); }
+
+  /* ── uid / name ── */
+  function getUid()  { return localStorage.getItem('kl_uid')  || 'anon_' + Math.random().toString(36).slice(2, 8); }
+  function getName() { return localStorage.getItem('kl_name') || 'Аноним'; }
+
+  /* ── All dreams in memory ── */
+  let allDreams = [];
+
+  function renderDreams() {
+    const grid = document.getElementById('dream-grid');
+    const myUid = getUid();
+
+    let dreams = [...allDreams];
+
+    if (activeTab === 'mine') {
+      dreams = dreams.filter(d => d.uid === myUid);
+    }
+    if (activeFilter !== 'all') {
+      dreams = dreams.filter(d => d.career === activeFilter);
+    }
+
+    if (!dreams.length) {
+      const msg = activeTab === 'mine'
+        ? '😶 У тебя пока нет мечт. Напиши первую!'
+        : '😶 Пока никто не написал. Будь первым!';
+      grid.innerHTML = `<div class="dw-empty" style="grid-column:1/-1"><span class="dw-empty-icon">✨</span>${msg}</div>`;
+      return;
+    }
+
+    const liked = getLiked();
+    grid.innerHTML = dreams.map(d => {
+      const isLiked = !!liked[d.id];
+      return `<div class="dream-card dc-${d.career}" id="dc-${d.id}">
+        <div class="dream-card-emoji">${d.emoji || '✨'}</div>
+        <div class="dream-card-text">${esc(d.text)}</div>
+        <div class="dream-card-footer">
+          <div>
+            <div class="dream-card-author">${d.anon ? 'Аноним' : esc(d.name)}</div>
+            <div class="dream-card-career">${CAREER_LABELS[d.career] || 'Другое'}</div>
+          </div>
+          <button class="dream-card-like ${isLiked ? 'liked' : ''}"
+            onclick="toggleLike('${d.id}', this)"
+            data-id="${d.id}">
+            ❤️ ${d.likes || 0}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  /* ── Like toggle ── */
+  async function toggleLike(id, btn) {
+    const liked = getLiked();
+    const dream = allDreams.find(d => d.id === id);
+    if (!dream) return;
+
+    if (liked[id]) {
+      delete liked[id];
+      dream.likes = Math.max(0, (dream.likes || 1) - 1);
+      btn.classList.remove('liked');
+    } else {
+      liked[id] = true;
+      dream.likes = (dream.likes || 0) + 1;
+      btn.classList.add('liked');
+    }
+    setLiked(liked);
+    btn.textContent = '❤️ ' + dream.likes;
+
+    // Update Firebase
+    try {
+      const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js");
+      await updateDoc(doc(window._db, 'dreams', id), { likes: dream.likes });
+    } catch (e) { /* offline – local only */ }
+  }
+
+  /* ── Post dream ── */
+  async function postDream() {
+    const text = document.getElementById('dream-text').value.trim();
+    if (!text) {
+      document.getElementById('post-status').textContent = '⚠️ Напиши свою мечту!';
+      document.getElementById('post-status').className = 'post-status err';
+      return;
+    }
+    const btn = document.getElementById('btn-post');
+    btn.disabled = true;
+    document.getElementById('post-status').textContent = '';
+
+    const anon   = document.getElementById('anon-check').checked;
+    const uid    = getUid();
+    const name   = getName();
+    const career = detectCareer(text);
+
+    const dream = {
+      uid,
+      name:   anon ? 'Аноним' : name,
+      anon,
+      emoji:  pickedEmoji,
+      text,
+      career,
+      likes:  0,
+      ts:     Date.now()
+    };
+
+    try {
+      const { addDoc, collection, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js");
+      await addDoc(collection(window._db, 'dreams'), { ...dream, ts: serverTimestamp() });
+      document.getElementById('dream-text').value = '';
+      document.getElementById('post-status').textContent = '✅ Мечта добавлена!';
+      document.getElementById('post-status').className = 'post-status ok';
+      showToast('✨ Мечта опубликована! +10 XP');
+      awardXP(10);
+    } catch (e) {
+      // Offline fallback — save locally
+      dream.id = 'local_' + Date.now();
+      allDreams.unshift(dream);
+      renderDreams();
+      document.getElementById('dream-text').value = '';
+      document.getElementById('post-status').textContent = '✅ Сохранено локально';
+      document.getElementById('post-status').className = 'post-status ok';
+      showToast('✨ Мечта добавлена! +10 XP');
+      awardXP(10);
+    }
+    btn.disabled = false;
+    setTimeout(() => { document.getElementById('post-status').textContent = ''; }, 3000);
+  }
+
+  /* ── XP award ── */
+  function awardXP(pts) {
+    try {
+      const p = JSON.parse(localStorage.getItem('kl_progress') || '{}');
+      p.points = (p.points || 0) + pts;
+      localStorage.setItem('kl_progress', JSON.stringify(p));
+    } catch {}
+  }
+
+  /* ── Firebase init ── */
+  async function initFirebase() {
+    try {
+      const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js");
+      const { getFirestore, collection, query, orderBy, onSnapshot } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js");
+      const { FIREBASE_CONFIG } = await import("./firebase.config.js");
+
+      const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+      const db  = getFirestore(app);
+      window._db = db;
+
+      const q = query(collection(db, 'dreams'), orderBy('ts', 'desc'));
+      onSnapshot(q, snap => {
+        allDreams = [];
+        let totalLikes = 0;
+        snap.forEach(doc => {
+          const d = { id: doc.id, ...doc.data() };
+          if (!d.ts) d.ts = 0;
+          allDreams.push(d);
+          totalLikes += d.likes || 0;
+        });
+        document.getElementById('stat-total').textContent = allDreams.length;
+        document.getElementById('stat-likes').textContent = totalLikes;
+        renderDreams();
+      }, err => {
+        document.getElementById('dream-grid').innerHTML =
+          '<div class="dw-empty" style="grid-column:1/-1"><span class="dw-empty-icon">❌</span>Нет подключения. Проверь интернет.</div>';
+      });
+
+    } catch (e) {
+      document.getElementById('dream-grid').innerHTML =
+        '<div class="dw-empty" style="grid-column:1/-1"><span class="dw-empty-icon">⚠️</span>Firebase недоступен</div>';
+    }
+  }
+
+  initFirebase();
+</script>
+<script type="module">
+  import { trackPageVisit } from './js/activity-tracker.js';
+  trackPageVisit();
+</script>
+</body>
+</html>

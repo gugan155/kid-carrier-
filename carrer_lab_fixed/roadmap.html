@@ -444,7 +444,35 @@ var ROADMAPS = {
 
 // ─── State ───
 function getProg(){ try{ return JSON.parse(localStorage.getItem('kl_progress')||'{}'); }catch(e){ return {}; } }
-function saveProg(p){ try{ localStorage.setItem('kl_progress', JSON.stringify(p)); }catch(e){} }
+function saveProg(p){
+  try{ localStorage.setItem('kl_progress', JSON.stringify(p)); }catch(e){}
+  // Sync to Firebase so teacher dashboard stays up to date
+  try{
+    var uid  = localStorage.getItem('kl_uid');
+    var name = localStorage.getItem('kl_name');
+    if(!uid || !name) return;
+    import('https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js').then(function(fa){
+      Promise.all([
+        import('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js'),
+        import('./firebase.config.js')
+      ]).then(function(mods){
+        var ff = mods[0], cfg = mods[1];
+        var app = fa.getApps().length ? fa.getApps()[0] : fa.initializeApp(cfg.FIREBASE_CONFIG);
+        var db  = ff.getFirestore(app);
+        ff.setDoc(ff.doc(db,'users',uid),{
+          name: name,
+          points: p.points||0,
+          streak: p.streak||0,
+          badges: p.badges||[],
+          quizDone: p.quizDone||0,
+          simDone: p.simDone||0,
+          lessonsCompleted: Object.keys(p.lessonsCompleted||{}).length,
+          updated: ff.serverTimestamp()
+        },{merge:true}).catch(function(){});
+      }).catch(function(){});
+    }).catch(function(){});
+  }catch(e){}
+}
 
 function getCareer(){
   // Priority: my-path result > problems result > career-quiz result
@@ -508,6 +536,18 @@ function render(){
   var streak = prog.streak || 0;
   var name = '';
   try{ name = localStorage.getItem('kl_name') || ''; }catch(e){}
+  var age = '10-12';
+  try{ age = localStorage.getItem('kl_age') || '10-12'; }catch(e){}
+  var ageTips = {
+    '10-12': { icon:'🌱', text:'Совет для тебя: не торопись — делай по одному заданию в день. Каждое маленькое действие строит большое будущее!' },
+    '13-15': { icon:'🔭', text:'Совет: после каждого дня запиши 1 вопрос который появился. Любопытство — главный навык исследователя!' },
+    '16-18': { icon:'🎯', text:'Совет: ищи онлайн-курсы и олимпиады по этой теме прямо сейчас. Конкурсы в портфолио откроют двери в вуз!' }
+  };
+  var tip = ageTips[age] || ageTips['10-12'];
+  var ageTipHtml = '<div style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:14px;padding:12px 16px;margin:0 16px 16px;display:flex;align-items:flex-start;gap:10px">'+
+    '<span style="font-size:1.4rem;line-height:1;flex-shrink:0">'+tip.icon+'</span>'+
+    '<span style="font-size:.82rem;font-weight:700;color:rgba(255,255,255,.75);line-height:1.5">'+tip.text+'</span>'+
+    '</div>';
 
   var html =
     // Hero
@@ -519,6 +559,7 @@ function render(){
         '<div class="rm-hero-sub">'+(name?'Привет, '+name+'! ':'')+week.label+'</div>'+
       '</div>'+
     '</div>'+
+    ageTipHtml+
     // Days
     '<div class="rm-days">';
 
@@ -601,6 +642,35 @@ function render(){
     });
   });
 
+  // ── XP toast helper ──
+  function showXpToast(el, amount) {
+    var toast = document.createElement('div');
+    toast.textContent = '+' + amount + ' XP!';
+    toast.style.cssText = [
+      'position:fixed',
+      'background:linear-gradient(135deg,#7c3aed,#ec4899)',
+      'color:#fff','font-size:.85rem','font-weight:900',
+      'padding:6px 14px','border-radius:20px',
+      'pointer-events:none','z-index:9999',
+      'transition:transform .7s ease,opacity .7s ease',
+      'transform:translateY(0)','opacity:1'
+    ].join(';');
+    var rect = el.getBoundingClientRect();
+    toast.style.top  = (rect.top + window.scrollY - 10) + 'px';
+    toast.style.left = (rect.right + 8) + 'px';
+    document.body.appendChild(toast);
+    requestAnimationFrame(function(){
+      toast.style.transform = 'translateY(-40px)';
+      toast.style.opacity   = '0';
+    });
+    setTimeout(function(){ toast.remove(); }, 750);
+  }
+
+  // XP already-awarded guard key
+  function xpAwardedKey(di, ti){ return 'rm_d' + di + '_t' + ti + '_xp'; }
+  function wasXpAwarded(di, ti){ try{ return localStorage.getItem(xpAwardedKey(di,ti)) === '1'; }catch(e){ return false; } }
+  function markXpAwarded(di, ti){ try{ localStorage.setItem(xpAwardedKey(di,ti), '1'); }catch(e){} }
+
   // Bind task checkboxes
   document.querySelectorAll('.rm-task').forEach(function(task){
     task.addEventListener('click', function(){
@@ -612,19 +682,26 @@ function render(){
       var check = this.querySelector('.rm-task-check');
       check.textContent = now ? '✓' : '';
 
-      if(now){
+      // Award XP only on FIRST check — never on toggle or re-check
+      if(now && !wasXpAwarded(di, ti)){
+        markXpAwarded(di, ti);
         var xp = parseInt(this.querySelector('.rm-task-xp').textContent.replace(/\D/g,'')) || 5;
         var p = getProg();
         p.points = (p.points||0) + xp;
         saveProg(p);
-        document.querySelector('.rm-xp-val') && (document.querySelector('.rm-xp-val').textContent = p.points + ' XP');
+        var xpVal = document.querySelector('.rm-xp-val');
+        if(xpVal) xpVal.textContent = p.points + ' XP';
+        showXpToast(this, xp);
       }
     });
   });
 
   // Bind complete day buttons
   document.querySelectorAll('.rm-day-complete-btn').forEach(function(btn){
+    // Prevent double-click spam
     btn.addEventListener('click', function(){
+      this.disabled = true;
+      this.style.opacity = '.5';
       var di = parseInt(this.dataset.di);
       var day = week.days[di];
       setDayDone(di);
@@ -646,6 +723,18 @@ function render(){
 
       // Re-render
       render();
+
+      // Check journey completion after re-render
+      var totalDays = week.days.length;
+      var allDone = true;
+      for (var d = 0; d < totalDays; d++) {
+        if (!isDayDone(d)) { allDone = false; break; }
+      }
+      if (allDone) {
+        setTimeout(function(){ showJourneyComplete(); }, 600);
+        return;
+      }
+
       // Scroll to next day
       setTimeout(function(){
         var next = document.getElementById('day-'+(di+1));
@@ -655,7 +744,135 @@ function render(){
   });
 }
 
+// ═══ JOURNEY COMPLETION CELEBRATION ═══
+function showJourneyComplete() {
+  var name  = '';
+  var xp    = 0;
+  try { name = localStorage.getItem('kl_name') || 'Герой'; } catch(e){}
+  try { xp   = JSON.parse(localStorage.getItem('kl_progress') || '{}').points || 0; } catch(e){}
+
+  // Create overlay
+  var overlay = document.createElement('div');
+  overlay.id = 'journey-complete-overlay';
+  overlay.style.cssText = [
+    'position:fixed','top:0','left:0','width:100%','height:100%',
+    'background:rgba(10,8,30,.97)',
+    'z-index:9999',
+    'display:flex','align-items:center','justify-content:center',
+    'flex-direction:column','text-align:center','padding:24px',
+    'opacity:0','transition:opacity .5s ease'
+  ].join(';');
+
+  overlay.innerHTML =
+    // Confetti layer
+    '<div id="jc-confetti" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden"></div>' +
+
+    // Card
+    '<div style="' +
+      'background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(236,72,153,.2));' +
+      'border:1px solid rgba(124,58,237,.4);border-radius:28px;' +
+      'padding:40px 32px;max-width:440px;width:100%;position:relative;z-index:1' +
+    '">' +
+      '<div style="font-size:4rem;margin-bottom:8px;animation:jcBounce .6s ease">🏆</div>' +
+      '<h1 style="font-size:1.6rem;font-weight:900;color:#fff;margin:0 0 8px;line-height:1.2">' +
+        name + ', ты прошёл<br>весь путь! 🎉' +
+      '</h1>' +
+      '<p style="color:rgba(255,255,255,.6);font-size:.9rem;margin:0 0 20px">7 дней. Каждое задание. Без пропусков.</p>' +
+
+      // XP badge
+      '<div style="' +
+        'background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);' +
+        'border-radius:16px;padding:14px 20px;margin-bottom:24px;' +
+        'display:inline-block' +
+      '">' +
+        '<div style="font-size:1.8rem;font-weight:900;color:#fbbf24">' + xp.toLocaleString('ru') + ' XP</div>' +
+        '<div style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px">Заработано за весь путь</div>' +
+      '</div>' +
+
+      // Action buttons
+      '<div style="display:flex;flex-direction:column;gap:10px">' +
+        '<a href="certificate.html" style="' +
+          'background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;' +
+          'border-radius:14px;padding:14px 24px;font-size:.95rem;font-weight:900;' +
+          'text-decoration:none;display:block' +
+        '">🎓 Получить мой сертификат →</a>' +
+        '<a href="index.html" style="' +
+          'background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);' +
+          'color:rgba(255,255,255,.8);border-radius:14px;padding:12px 24px;' +
+          'font-size:.88rem;font-weight:700;text-decoration:none;display:block' +
+        '">🏠 Вернуться на главную</a>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(overlay);
+
+  // Animate in
+  requestAnimationFrame(function() {
+    overlay.style.opacity = '1';
+  });
+
+  // Launch confetti
+  launchConfetti();
+}
+
+function launchConfetti() {
+  var container = document.getElementById('jc-confetti');
+  if (!container) return;
+
+  var COLORS = ['#7c3aed','#ec4899','#fbbf24','#34d399','#60a5fa','#f87171'];
+  var pieces = 80;
+
+  for (var i = 0; i < pieces; i++) {
+    (function(idx) {
+      var el = document.createElement('div');
+      var size = 8 + Math.random() * 10;
+      var color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      var left  = Math.random() * 100;
+      var delay = Math.random() * 2;
+      var dur   = 2.5 + Math.random() * 2;
+      var rotate= Math.random() * 360;
+
+      el.style.cssText = [
+        'position:absolute',
+        'top:-20px',
+        'left:' + left + '%',
+        'width:' + size + 'px',
+        'height:' + (size * 0.6) + 'px',
+        'background:' + color,
+        'border-radius:2px',
+        'animation:jcFall ' + dur + 's ' + delay + 's linear forwards',
+        'transform:rotate(' + rotate + 'deg)',
+        'opacity:.9'
+      ].join(';');
+
+      container.appendChild(el);
+    })(i);
+  }
+
+  // Inject animation keyframes once
+  if (!document.getElementById('jc-styles')) {
+    var style = document.createElement('style');
+    style.id  = 'jc-styles';
+    style.textContent =
+      '@keyframes jcFall {' +
+        'from { transform: translateY(0) rotate(0deg); opacity: .9; }' +
+        'to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }' +
+      '}' +
+      '@keyframes jcBounce {' +
+        '0%,100% { transform: scale(1); }' +
+        '40%     { transform: scale(1.3); }' +
+        '70%     { transform: scale(.9); }' +
+      '}';
+    document.head.appendChild(style);
+  }
+}
+
 render();
+</script>
+<script type="module" src="js/ani-chat-connect.js"></script>
+<script type="module">
+  import { trackPageVisit } from './js/activity-tracker.js';
+  trackPageVisit();
 </script>
 </body>
 </html>

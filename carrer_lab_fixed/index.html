@@ -60,9 +60,21 @@
         <span class="sidebar-icon">🔭</span>
         <span class="sidebar-label">Профессии</span>
       </a>
-      <a href="my-path.html" class="sidebar-link" style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px">
+      <a href="books.html" class="sidebar-link" style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label">Книги</span>
+      </a>
+      <a href="career-path.html" class="sidebar-link">
+        <span class="sidebar-icon">🎯</span>
+        <span class="sidebar-label">Найди путь</span>
+      </a>
+      <a href="my-path.html" class="sidebar-link">
         <span class="sidebar-icon">🗺️</span>
         <span class="sidebar-label">Мой путь</span>
+      </a>
+      <a href="dream-wall.html" class="sidebar-link">
+        <span class="sidebar-icon">✨</span>
+        <span class="sidebar-label">Стена мечты</span>
       </a>
       <a href="problems.html" class="sidebar-link">
         <span class="sidebar-icon">🌍</span>
@@ -72,9 +84,17 @@
         <span class="sidebar-icon">🗓️</span>
         <span class="sidebar-label">Мой маршрут</span>
       </a>
+      <a href="stories.html" class="sidebar-link">
+        <span class="sidebar-icon">🎬</span>
+        <span class="sidebar-label">Истории</span>
+      </a>
       <a href="live-quiz.html" class="sidebar-link">
         <span class="sidebar-icon">🔴</span>
         <span class="sidebar-label">Живая викторина</span>
+      </a>
+      <a href="parent-view.html" class="sidebar-link">
+        <span class="sidebar-icon">👨‍👩‍👧</span>
+        <span class="sidebar-label">Родителям</span>
       </a>
       <a href="teacher-dashboard.html" class="sidebar-link">
         <span class="sidebar-icon">👩‍🏫</span>
@@ -137,6 +157,26 @@
           </div>
           <p class="name-popup-ask" id="welcome-ask">Как тебя зовут?</p>
           <input type="text" id="name-input" placeholder="Введи своё имя..." maxlength="20" autocomplete="off" />
+
+          <p class="name-popup-ask" style="margin-top:16px;margin-bottom:10px">Сколько тебе лет?</p>
+          <div class="age-btn-row" id="age-btn-row">
+            <button class="age-btn sel" data-age="10-12" onclick="klPickAge(this)">
+              <span class="age-btn-emoji">🌱</span>
+              <span class="age-btn-label">10–12</span>
+              <span class="age-btn-hint">Начинаю!</span>
+            </button>
+            <button class="age-btn" data-age="13-15" onclick="klPickAge(this)">
+              <span class="age-btn-emoji">🔭</span>
+              <span class="age-btn-label">13–15</span>
+              <span class="age-btn-hint">Исследую!</span>
+            </button>
+            <button class="age-btn" data-age="16-18" onclick="klPickAge(this)">
+              <span class="age-btn-emoji">🚀</span>
+              <span class="age-btn-label">16–18</span>
+              <span class="age-btn-hint">К карьере!</span>
+            </button>
+          </div>
+
           <button class="btn-main" id="name-submit">Поехали! 🚀</button>
         </div>
 
@@ -169,13 +209,22 @@
         </div>
 
         <div class="hero-actions hero-story-actions">
-          <button class="btn-main btn-hero-primary" id="start-onboarding-btn">
-            <span class="btn-icon">🚀</span>
-            <span>Начать</span>
-          </button>
+          <a href="my-path.html" class="btn-main btn-hero-primary" id="start-journey-btn" style="font-size:1.05rem;padding:14px 32px;text-decoration:none;display:inline-flex;align-items:center;gap:10px">
+            <span>🚀</span>
+            <span>Начать путь</span>
+            <span style="opacity:.7">→</span>
+          </a>
         </div>
+        <p class="hero-hint" style="margin-top:12px">Ответь на 5 вопросов — и узнай свою профессию!</p>
 
-        <p class="hero-hint">Пройди симуляции и узнай, какая профессия тебе подходит</p>
+        <!-- Step path for first-timers -->
+        <div style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:18px;flex-wrap:wrap">
+          <span style="font-size:.75rem;padding:5px 12px;background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.4);border-radius:20px;color:#c4b5fd;font-weight:800">1 · Узнай себя</span>
+          <span style="color:rgba(255,255,255,.3);font-size:.8rem">→</span>
+          <span style="font-size:.75rem;padding:5px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.5);font-weight:700">2 · Пройди симуляцию</span>
+          <span style="color:rgba(255,255,255,.3);font-size:.8rem">→</span>
+          <span style="font-size:.75rem;padding:5px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.5);font-weight:700">3 · Получи маршрут</span>
+        </div>
 
         <!-- Scroll hint -->
         <div class="hero-scroll-hint" aria-hidden="true">
@@ -373,15 +422,28 @@
         </div>
       </section>
 
-      <!-- ═══ REAL PROBLEMS PROMO ═══ -->
-      <section class="section-block" id="problems-promo" style="background:linear-gradient(135deg,#0a0a1a 0%,#1a0a2e 100%);border-top:1px solid rgba(239,68,68,.15);border-bottom:1px solid rgba(239,68,68,.15)">
+      <!-- ═══ CAREER PATH PROMO ═══ -->
+      <section class="section-block teal-section" id="career-path-promo">
         <div class="section-inner-flex">
-          <div class="section-emoji" aria-hidden="true" style="font-size:2.8rem">🌍</div>
+          <div class="section-emoji" aria-hidden="true">🎯</div>
           <div class="section-text">
-            <span class="section-badge" style="background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.3)">🌍 Реальные проблемы</span>
-            <h2 style="margin-top:8px">Реши настоящую проблему — узнай кто ты</h2>
+            <span class="section-badge">🎯 Найди свой путь</span>
+            <h2>Хочешь стать поваром? Музыкантом? Архитектором?</h2>
+            <p>Выбери любую профессию из 24+ вариантов — ответь на 3 вопроса — получи персональный 7-дневный план именно для тебя.</p>
+            <a href="career-path.html" class="btn-main" style="margin-top:20px">🎯 Выбрать профессию →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ REAL PROBLEMS PROMO ═══ -->
+      <section class="section-block pink-section" id="problems-promo">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">🌍</div>
+          <div class="section-text">
+            <span class="section-badge">🌍 Реальные проблемы</span>
+            <h2>Реши настоящую проблему — узнай кто ты</h2>
             <p>Хакеры атаковали больницу. Ребёнок в горной деревне умирает. Пожар идёт на город. Как бы ТЫ решил это? Твой выбор покажет твою профессию.</p>
-            <a href="problems.html" class="btn-main" style="margin-top:20px;background:linear-gradient(135deg,#dc2626,#f97316)">🌍 Решить реальную проблему →</a>
+            <a href="problems.html" class="btn-main" style="margin-top:20px">🌍 Решить реальную проблему →</a>
           </div>
         </div>
       </section>
@@ -403,20 +465,46 @@
         </div>
       </section>
 
-      <!-- ═══ LIVE QUIZ PROMO ═══ -->
-      <section class="section-block" id="live-quiz-promo" style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 100%);border-top:1px solid rgba(167,139,250,.15);border-bottom:1px solid rgba(167,139,250,.15)">
+      <!-- ═══ DREAM WALL PROMO ═══ -->
+      <section class="section-block teal-section" id="dream-wall-promo">
         <div class="section-inner-flex">
-          <div class="section-emoji" aria-hidden="true" style="font-size:2.8rem">🧠</div>
+          <div class="section-emoji" aria-hidden="true">✨</div>
           <div class="section-text">
-            <span class="section-badge" style="background:rgba(239,68,68,.15);color:#fca5a5;border-color:rgba(239,68,68,.35);display:inline-flex;align-items:center;gap:6px">
+            <span class="section-badge">✨ Стена мечты</span>
+            <h2>Что ты хочешь построить?</h2>
+            <p>Напиши свою мечту — и она появится на общей стене вместе с мечтами других ребят со всего класса!</p>
+            <a href="dream-wall.html" class="btn-main" style="margin-top:20px">✨ Написать мечту →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ STORIES PROMO ═══ -->
+      <section class="section-block pink-section" id="stories-promo">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">🎬</div>
+          <div class="section-text">
+            <span class="section-badge">🎬 Погружение</span>
+            <h2>Стань героем истории!</h2>
+            <p>4 кинематографических сценария — ты в роли персонажа. Реши реальные задачи и узнай, какая профессия тебе подходит.</p>
+            <a href="stories.html" class="btn-main" style="margin-top:20px">🎬 Начать историю →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ LIVE QUIZ PROMO ═══ -->
+      <section class="section-block blue-section" id="live-quiz-promo">
+        <div class="section-inner-flex">
+          <div class="section-emoji" aria-hidden="true">🧠</div>
+          <div class="section-text">
+            <span class="section-badge" style="display:inline-flex;align-items:center;gap:6px">
               <span style="width:7px;height:7px;background:#ef4444;border-radius:50%;display:inline-block;animation:lbPulse 1.2s ease-in-out infinite"></span>
               ЖИВАЯ ВИКТОРИНА
             </span>
-            <h2 style="margin-top:8px">Учитель запустил вопрос?</h2>
+            <h2>Учитель запустил вопрос?</h2>
             <p>Подключись к викторине в реальном времени и отвечай вместе с классом!</p>
             <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
-              <a href="live-quiz.html" class="btn-main" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">🧠 Подключиться →</a>
-              <a href="teacher-dashboard.html" class="btn-glass-dark">👩‍🏫 Для учителя</a>
+              <a href="live-quiz.html" class="btn-main">🧠 Подключиться →</a>
+              <a href="teacher-dashboard.html" class="btn-glass">👩‍🏫 Для учителя</a>
             </div>
           </div>
         </div>
@@ -561,6 +649,18 @@
             <a href="leaderboard.html" style="display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:999px;padding:3px 10px;font-size:0.72rem;font-weight:700;color:#a78bfa;text-decoration:none">⛶ Полный экран</a>
           </div>
           <style>@keyframes lbPulse{0%,100%{opacity:1}50%{opacity:.3}}</style>
+          <style>
+            .age-btn-row{display:flex;gap:8px;margin-bottom:4px;}
+            .age-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:2px solid rgba(124,58,237,.2);background:rgba(124,58,237,.06);cursor:pointer;font-family:inherit;transition:all .18s;color:#1a1a2e;}
+            .age-btn:hover{border-color:rgba(124,58,237,.5);background:rgba(124,58,237,.12);}
+            .age-btn.sel{border-color:#7c3aed;background:rgba(124,58,237,.15);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
+            .age-btn-emoji{font-size:1.5rem;line-height:1;}
+            .age-btn-label{font-size:.9rem;font-weight:900;color:#1a1a2e;}
+            .age-btn.sel .age-btn-label{color:#7c3aed;}
+            .age-btn-hint{font-size:.68rem;font-weight:700;color:#6b7280;}
+            .age-btn.sel .age-btn-hint{color:#7c3aed;}
+            @media(max-width:360px){.age-btn{padding:8px 4px;}.age-btn-emoji{font-size:1.2rem;}.age-btn-label{font-size:.8rem;}}
+          </style>
           <div class="leaderboard-box" id="leaderboard-list">
             <div class="lb-empty">Загрузка...</div>
           </div>
@@ -715,6 +815,14 @@
        This guarantees the name popup ALWAYS works no matter what.
   ═══════════════════════════════════════════════════════════════ -->
   <script>
+  /* Age picker — global so onclick="klPickAge(this)" works */
+  window._klAge = '10-12';
+  window.klPickAge = function(btn) {
+    document.querySelectorAll('.age-btn').forEach(function(b){ b.classList.remove('sel'); });
+    btn.classList.add('sel');
+    window._klAge = btn.dataset.age;
+  };
+
   /* Onboarding fallback — только русский язык */
   (function(){
     var lt = {
@@ -766,6 +874,14 @@
           if(!v){inp.style.border='2px solid #e53e3e';inp.placeholder=lt.err;inp.focus();setTimeout(function(){inp.style.border='';inp.placeholder=lt.ph;},2000);return;}
           try{localStorage.setItem('kl_name',v);}catch(e){}
           try{sessionStorage.setItem('kl_name_session',v);}catch(e){}
+          try{localStorage.setItem('kl_age',window._klAge||'10-12');}catch(e){}
+          // Generate UID immediately so activity tracking works from first page load
+          try{
+            if(!localStorage.getItem('kl_uid')){
+              var uid='u_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+              localStorage.setItem('kl_uid',uid);
+            }
+          }catch(e){}
           overlay.style.transition='opacity 0.3s ease-out';overlay.style.opacity='0';
           setTimeout(function(){overlay.style.display='none';applyNameFB(v);showCelFB(v);},300);
         }
@@ -784,7 +900,14 @@
       var cel=document.createElement('div'); cel.id='kl-celebrate';
       cel.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center';
       var safe=name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      cel.innerHTML='<div style="background:#fff;border-radius:20px;padding:2rem 2.5rem;text-align:center;max-width:320px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)"><div style="font-size:56px;margin-bottom:12px">🎉</div><h2 style="font-size:22px;margin-bottom:8px;color:#1a1a2e">'+lt.cel_h(safe)+'</h2><p style="color:#555;margin-bottom:8px">'+lt.cel_xp+'</p><p style="color:#888;font-size:13px;margin-bottom:20px">'+lt.cel_sub+'</p><button id="kl-cel-go" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:12px 32px;font-size:16px;font-weight:700;cursor:pointer;width:100%">'+lt.cel_go+'</button></div>';
+      var age='10-12'; try{age=localStorage.getItem('kl_age')||window._klAge||'10-12';}catch(e){}
+      var ageMsgs={
+        '10-12':'Начни с весёлых симуляций и зарабатывай значки! 🎮',
+        '13-15':'Открой «Мой путь» — узнай свой тип мышления! 🗺️',
+        '16-18':'Посмотри 7-дневный маршрут — реальные шаги к карьере! 🎯'
+      };
+      var ageSub = ageMsgs[age] || lt.cel_sub;
+      cel.innerHTML='<div style="background:#fff;border-radius:20px;padding:2rem 2.5rem;text-align:center;max-width:320px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)"><div style="font-size:56px;margin-bottom:12px">🎉</div><h2 style="font-size:22px;margin-bottom:8px;color:#1a1a2e">'+lt.cel_h(safe)+'</h2><p style="color:#555;margin-bottom:8px">'+lt.cel_xp+'</p><p style="color:#888;font-size:13px;margin-bottom:8px">'+ageSub+'</p><button id="kl-cel-go" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:12px 32px;font-size:16px;font-weight:700;cursor:pointer;width:100%">'+lt.cel_go+'</button></div>';
       document.body.appendChild(cel);
       ge('kl-cel-go').addEventListener('click',function(){cel.style.opacity='0';cel.style.transition='opacity 0.2s';setTimeout(function(){cel.remove();},200);});
     }
@@ -794,6 +917,421 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(function(){});
     }
+  </script>
+  <script type="module" src="js/ani-chat-connect.js"></script>
+
+  <!-- ═══ DAILY MOTIVATION POPUP ═══ -->
+  <style>
+    #dm-overlay {
+      position: fixed; inset: 0; z-index: 99998;
+      background: rgba(10,5,30,.85);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      animation: dmFadeIn .35s ease;
+    }
+    @keyframes dmFadeIn { from { opacity:0 } to { opacity:1 } }
+    #dm-popup {
+      background: linear-gradient(160deg, #1e1340 0%, #2d1b69 60%, #1a0a2e 100%);
+      border: 1px solid rgba(167,139,250,.3);
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      max-width: 360px; width: 100%;
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+      text-align: center;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      animation: dmSlideUp .4s ease;
+    }
+    @keyframes dmSlideUp { from { transform:translateY(20px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+    .dm-ani   { font-size: 3.5rem; line-height: 1; margin-bottom: 12px; display: block; }
+    .dm-greeting { font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+    .dm-msg   { font-size: .88rem; font-weight: 700; color: rgba(255,255,255,.65); line-height: 1.5; margin-bottom: 18px; }
+
+    .dm-streak-row {
+      display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .dm-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px; padding: 6px 14px;
+      font-size: .82rem; font-weight: 800; color: rgba(255,255,255,.7);
+    }
+    .dm-chip-val { color: #fbbf24; font-size: 1rem; }
+
+    .dm-task-card {
+      background: rgba(124,58,237,.12); border: 1px solid rgba(167,139,250,.2);
+      border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; text-align: left;
+    }
+    .dm-task-label {
+      font-size: .7rem; font-weight: 800; color: rgba(167,139,250,.8);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+    }
+    .dm-task-title {
+      font-size: .9rem; font-weight: 800; color: #fff; line-height: 1.4; margin-bottom: 4px;
+    }
+    .dm-task-sub { font-size: .78rem; color: rgba(255,255,255,.5); font-weight: 600; }
+
+    .dm-missed {
+      background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+      border-radius: 12px; padding: 10px 14px; margin-bottom: 16px;
+      font-size: .8rem; font-weight: 700; color: rgba(251,191,36,.8);
+    }
+
+    .dm-btn-go {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: #fff; border: none; border-radius: 14px;
+      font-family: inherit; font-size: 1rem; font-weight: 900;
+      cursor: pointer; transition: opacity .2s; margin-bottom: 8px;
+    }
+    .dm-btn-go:hover { opacity: .88; }
+    .dm-btn-skip {
+      width: 100%; padding: 10px;
+      background: transparent; border: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.4); border-radius: 12px;
+      font-family: inherit; font-size: .82rem; font-weight: 700;
+      cursor: pointer; transition: all .2s;
+    }
+    .dm-btn-skip:hover { background: rgba(255,255,255,.05); color: rgba(255,255,255,.7); }
+  </style>
+
+  <script>
+  (function(){
+    // Only show once per day, only if user has a name
+    var name = '';
+    try { name = localStorage.getItem('kl_name') || ''; } catch {}
+    if (!name) return;
+
+    var today = new Date().toDateString();
+    var lastSeen = '';
+    try { lastSeen = localStorage.getItem('dm_last_seen') || ''; } catch {}
+    if (lastSeen === today) return; // already shown today
+
+    var prog = {};
+    try { prog = JSON.parse(localStorage.getItem('kl_progress') || '{}'); } catch {}
+
+    var streak  = prog.streak  || 0;
+    var points  = prog.points  || 0;
+    var age     = '10-12';
+    try { age = localStorage.getItem('kl_age') || '10-12'; } catch {}
+
+    // Check if missed yesterday
+    var lastDate = '';
+    try { lastDate = localStorage.getItem('dm_last_seen') || ''; } catch {}
+    var missedDay = false;
+    if (lastDate) {
+      var last = new Date(lastDate);
+      var diff = Math.floor((new Date() - last) / 86400000);
+      if (diff > 1) missedDay = true;
+    }
+
+    // Get next roadmap task
+    var careerKey = null;
+    var taskInfo  = null;
+    try {
+      var mp = JSON.parse(localStorage.getItem('kl_my_path') || 'null');
+      if (mp && mp.profile) {
+        var MAP = {explorer:'space', builder:'robot', guardian:'doctor', creator:'game', innovator:'cyber'};
+        careerKey = MAP[mp.profile] || null;
+      }
+      if (!careerKey) {
+        var cr = JSON.parse(localStorage.getItem('kl_career_result') || 'null');
+        if (cr) careerKey = cr.key || null;
+      }
+    } catch {}
+
+    if (careerKey) {
+      // Find current day (first uncompleted)
+      for (var di = 0; di < 7; di++) {
+        var dayDone = '';
+        try { dayDone = localStorage.getItem('rm_day' + di + '_done') || ''; } catch {}
+        if (dayDone !== '1') {
+          // Find first uncompleted task in this day
+          for (var ti = 0; ti < 3; ti++) {
+            var taskDone = '';
+            try { taskDone = localStorage.getItem('rm_d' + di + '_t' + ti) || ''; } catch {}
+            if (taskDone !== '1') {
+              taskInfo = { day: di + 1, task: ti + 1 };
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    // Age-based motivational messages
+    var MSGS = {
+      '10-12': [
+        'Каждый великий учёный начинал так же — с одного маленького шага! 🌱',
+        'Сегодня узнаешь что-то, чего не знал вчера. Это и есть рост! ⭐',
+        'Самые крутые изобретатели мира каждый день учили что-то новое. Ты следующий! 🚀',
+      ],
+      '13-15': [
+        'Один день практики стоит больше чем неделя теории. Вперёд! 💪',
+        'Твои навыки растут каждый день. Через год ты не узнаешь себя! 🔭',
+        'Профессионалы — это любители которые не бросили. Не бросай! 🏆',
+      ],
+      '16-18': [
+        'Каждый час который ты вкладываешь сейчас — это твоё преимущество в будущем. 🎯',
+        'Университеты и компании ищут людей с реальным опытом. Строй его сегодня! 🚀',
+        'Разница между мечтой и реальностью — это действие. Сделай один шаг прямо сейчас! ⚡',
+      ]
+    };
+    var msgs = MSGS[age] || MSGS['10-12'];
+    var todayMsg = msgs[new Date().getDay() % msgs.length];
+
+    // Build popup HTML
+    var taskHtml = '';
+    if (taskInfo) {
+      taskHtml = '<div class="dm-task-card">'+
+        '<div class="dm-task-label">📍 Следующий шаг на маршруте</div>'+
+        '<div class="dm-task-title">День '+taskInfo.day+' · Задание '+taskInfo.task+'</div>'+
+        '<div class="dm-task-sub">Открой маршрут чтобы увидеть детали</div>'+
+      '</div>';
+    } else if (careerKey) {
+      taskHtml = '<div class="dm-task-card">'+
+        '<div class="dm-task-label">🏆 Маршрут завершён!</div>'+
+        '<div class="dm-task-title">Все 7 дней выполнены</div>'+
+        '<div class="dm-task-sub">Выбери новую профессию для изучения</div>'+
+      '</div>';
+    } else {
+      taskHtml = '<div class="dm-task-card">'+
+        '<div class="dm-task-label">🗺️ Начни путь</div>'+
+        '<div class="dm-task-title">У тебя ещё нет маршрута</div>'+
+        '<div class="dm-task-sub">Пройди «Найди путь» чтобы получить план</div>'+
+      '</div>';
+    }
+
+    var missedHtml = missedDay
+      ? '<div class="dm-missed">⚠️ Ты пропустил несколько дней. Это нормально — главное вернуться! Стрик сбросится, но знания остались.</div>'
+      : '';
+
+    var streakEmoji = streak >= 7 ? '🔥🔥' : streak >= 3 ? '🔥' : '✨';
+    var btnLabel = taskInfo ? '🗓️ Перейти к маршруту' : careerKey ? '🎯 Выбрать новую профессию' : '🎯 Найти свой путь';
+    var btnHref  = taskInfo ? 'roadmap.html' : careerKey ? 'career-path.html' : 'career-path.html';
+
+    var el = document.createElement('div');
+    el.id = 'dm-overlay';
+    el.innerHTML =
+      '<div id="dm-popup">'+
+        '<span class="dm-ani">🤖</span>'+
+        '<div class="dm-greeting">Привет, '+name.replace(/</g,'&lt;')+'! 👋</div>'+
+        '<div class="dm-msg">'+todayMsg+'</div>'+
+        '<div class="dm-streak-row">'+
+          '<div class="dm-chip">'+streakEmoji+' Стрик: <span class="dm-chip-val">'+streak+' дн.</span></div>'+
+          '<div class="dm-chip">⭐ XP: <span class="dm-chip-val">'+points+'</span></div>'+
+        '</div>'+
+        missedHtml+
+        taskHtml+
+        '<button class="dm-btn-go" onclick="dmGo(\''+btnHref+'\')">'+btnLabel+'</button>'+
+        '<button class="dm-btn-skip" onclick="dmClose()">Просто посмотреть сайт</button>'+
+      '</div>';
+    document.body.appendChild(el);
+
+    try { localStorage.setItem('dm_last_seen', today); } catch {}
+
+    window.dmClose = function() {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity .25s';
+      setTimeout(function(){ el.remove(); }, 260);
+    };
+    window.dmGo = function(href) {
+      dmClose();
+      setTimeout(function(){ window.location.href = href; }, 260);
+    };
+
+    // Close on backdrop click
+    el.addEventListener('click', function(e){ if (e.target === el) dmClose(); });
+  })();
+  </script>
+  <script type="module">
+    import { trackPageVisit } from './js/activity-tracker.js';
+    trackPageVisit();
+  </script>
+
+  <!-- ═══ SMART HERO + JOURNEY COMPASS ═══ -->
+  <script>
+  (function() {
+    // ── Read full journey state from localStorage ──
+    function getState() {
+      try {
+        var name = localStorage.getItem('kl_name');
+        if (!name) return null;
+
+        var myPath   = JSON.parse(localStorage.getItem('kl_my_path') || 'null');
+        var crRaw    = localStorage.getItem('kl_career_result');
+        var hasProfile = !!(myPath && myPath.profile);
+        var hasCareer  = hasProfile || !!crRaw;
+
+        // Career display name
+        var NAMES = { space:'Космонавт', robot:'Инженер-робот', cyber:'Кибер-защитник',
+                      doctor:'Врач', game:'Геймдизайнер', drone:'Пилот дрона',
+                      explorer:'Космонавт', builder:'Инженер-робот', guardian:'Врач',
+                      creator:'Геймдизайнер', innovator:'Кибер-защитник' };
+        var MAP   = { explorer:'space', builder:'robot', guardian:'doctor', creator:'game', innovator:'cyber' };
+        var careerName = '';
+        if (myPath && myPath.profile) careerName = NAMES[myPath.profile] || '';
+        if (!careerName && crRaw) {
+          try { var cr = JSON.parse(crRaw); careerName = cr.name || NAMES[cr.key] || ''; } catch(e){}
+        }
+
+        // Roadmap progress
+        var daysComplete = 0;
+        for (var i = 0; i < 7; i++) {
+          if (localStorage.getItem('rm_day' + i + '_done') === '1') daysComplete++;
+        }
+
+        var step = daysComplete >= 7 ? 4
+                 : daysComplete > 0  ? 3
+                 : hasCareer         ? 2
+                 :                     1;
+
+        return { name: name, step: step, careerName: careerName, daysComplete: daysComplete };
+      } catch(e) { return null; }
+    }
+
+    // ── Update hero based on state ──
+    function updateHero(s) {
+      var title    = document.getElementById('hero-title');
+      var subtitle = document.getElementById('header-subtitle');
+      var btn      = document.getElementById('start-journey-btn');
+      var bubble   = document.querySelector('.hero-ani-bubble');
+      var stepPath = document.querySelector('.hero-story-actions + p + div'); // step badges
+
+      if (!title || !btn) return;
+
+      var cfg = {
+        1: {
+          title:    'Привет, ' + s.name + '! 🚀',
+          sub:      'Узнай себя — и мы найдём твою идеальную профессию',
+          btn:      '🌟 Узнать свою профессию →',
+          href:     'my-path.html',
+          bubble:   'Начнём с тебя! Отвечай честно 😊',
+          step:     1
+        },
+        2: {
+          title:    s.name + ', твоя профессия ждёт! 🎯',
+          sub:      'Ты выбрал: ' + (s.careerName || 'профессию') + '. Следующий шаг — твой план на 7 дней',
+          btn:      '🗓️ Начать мой маршрут →',
+          href:     'roadmap.html',
+          bubble:   'Отличный выбор! Начнём план? 📋',
+          step:     2
+        },
+        3: {
+          title:    'День ' + s.daysComplete + ' из 7, ' + s.name + '! 🔥',
+          sub:      'Ты уже прошёл ' + s.daysComplete + ' ' + (s.daysComplete === 1 ? 'день' : 'дня') + '. Не останавливайся!',
+          btn:      '▶️ Продолжить маршрут →',
+          href:     'roadmap.html',
+          bubble:   'Ты на ' + s.daysComplete + ' из 7! Продолжай! 💪',
+          step:     3
+        },
+        4: {
+          title:    s.name + ', ты прошёл весь путь! 🏆',
+          sub:      'Поздравляем! Твой сертификат готов. Что дальше?',
+          btn:      '🏆 Получить сертификат →',
+          href:     'certificate.html',
+          bubble:   'Я так горжусь тобой! 🎉',
+          step:     4
+        }
+      }[s.step];
+
+      if (!cfg) return;
+
+      // Hero
+      title.textContent    = cfg.title;
+      subtitle.textContent = cfg.sub;
+      btn.href             = cfg.href;
+      btn.innerHTML        = '<span>' + cfg.btn + '</span>';
+      if (bubble) bubble.textContent = cfg.bubble;
+
+      // Step badges — highlight current
+      var badges = document.querySelectorAll('.hero-story-actions + p + div span[style*="border-radius:20px"]');
+      badges.forEach(function(b, idx) {
+        var active = idx + 1 <= cfg.step;
+        b.style.background = active ? 'rgba(124,58,237,.35)' : 'rgba(255,255,255,.06)';
+        b.style.borderColor = active ? 'rgba(124,58,237,.6)' : 'rgba(255,255,255,.1)';
+        b.style.color      = active ? '#c4b5fd' : 'rgba(255,255,255,.4)';
+      });
+    }
+
+    // ── Build journey compass strip ──
+    function buildCompass(s) {
+      var anchor = document.getElementById('career-discovery-section');
+      if (!anchor) return;
+
+      var STEPS = [
+        { label: '① Я познал себя',    done: s.step >= 1, href: 'my-path.html' },
+        { label: '② Нашёл профессию',  done: s.step >= 2, href: 'career-path.html' },
+        { label: '③ Прошёл симуляцию', done: s.step >= 3, href: 'play.html' },
+        { label: '④ Маршрут завершён', done: s.step >= 4, href: 'roadmap.html' }
+      ];
+
+      var nextHrefs = ['my-path.html','career-path.html','roadmap.html','certificate.html'];
+      var nextLabels = [
+        '🌟 Узнать свою профессию',
+        '🗓️ Начать 7-дневный маршрут',
+        '▶️ Продолжить маршрут',
+        '🏆 Получить сертификат'
+      ];
+      var nextIdx = Math.min(s.step - 1, 3);
+
+      var compass = document.createElement('section');
+      compass.id = 'journey-compass';
+      compass.style.cssText = [
+        'background:rgba(124,58,237,.08)',
+        'border:1px solid rgba(124,58,237,.2)',
+        'border-radius:20px',
+        'margin:0 0 12px',
+        'padding:20px 24px',
+        'max-width:900px',
+        'margin-left:auto',
+        'margin-right:auto',
+        'margin-bottom:16px'
+      ].join(';');
+
+      compass.innerHTML =
+        '<div style="font-size:.72rem;font-weight:900;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">📍 Твой путь</div>' +
+        '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:18px">' +
+          STEPS.map(function(st, i) {
+            var isNow = (i === s.step - 1);
+            return [
+              i > 0 ? '<span style="color:rgba(255,255,255,.2);font-size:.9rem;flex-shrink:0">──</span>' : '',
+              '<span style="font-size:.78rem;font-weight:800;padding:6px 12px;border-radius:20px;white-space:nowrap;' +
+                (st.done
+                  ? 'background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.35);color:#34d399;'
+                  : isNow
+                    ? 'background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.5);color:#c4b5fd;'
+                    : 'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.3);') +
+              '">' +
+                (st.done ? '✅ ' : isNow ? '📍 ' : '○ ') + st.label +
+              '</span>'
+            ].join('');
+          }).join('') +
+        '</div>' +
+        '<a href="' + nextHrefs[nextIdx] + '" style="' +
+          'display:inline-flex;align-items:center;gap:8px;' +
+          'background:linear-gradient(135deg,#7c3aed,#ec4899);' +
+          'color:#fff;border-radius:12px;padding:10px 22px;' +
+          'font-size:.88rem;font-weight:900;text-decoration:none;' +
+        '">' + nextLabels[nextIdx] + '</a>';
+
+      anchor.parentNode.insertBefore(compass, anchor);
+    }
+
+    // ── Run on DOM ready ──
+    function init() {
+      var s = getState();
+      if (!s) return; // new user — show default hero
+      updateHero(s);
+      buildCompass(s);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
 </body>
 </html>

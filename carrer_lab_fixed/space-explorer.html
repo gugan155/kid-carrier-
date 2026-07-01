@@ -328,7 +328,7 @@
     </section>
 
     <!-- ═══ MINI-GAME: Planet Quiz ═══ -->
-    <section class="lesson-section" style="background:linear-gradient(135deg,rgba(13,148,136,.15),rgba(6,95,70,.1));border:1px solid rgba(20,184,166,.25);border-radius:20px;padding:24px 20px;margin-bottom:24px">
+    <section class="lesson-section" style="background:linear-gradient(135deg,#0f766e,#0d9488);border:1px solid rgba(20,184,166,.35);border-radius:20px;padding:24px 20px;margin-bottom:24px">
       <div style="text-align:center;margin-bottom:16px">
         <span style="font-size:2rem">🌌</span>
         <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin:6px 0 4px">Мини-игра: Угадай планету!</h2>
@@ -349,6 +349,11 @@
       <div id="spg-result" style="display:none;text-align:center;padding:12px 0">
         <div id="spg-trophy" style="font-size:3rem"></div>
         <div id="spg-result-text" style="font-size:1.1rem;font-weight:800;color:#fbbf24;margin:8px 0"></div>
+        <p style="color:rgba(255,255,255,.6);font-size:.88rem;margin:6px 0 14px">+25 XP получено!</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+          <a href="roadmap.html" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;border-radius:12px;padding:11px 22px;font-weight:800;font-size:.9rem;text-decoration:none;display:inline-block">🗓️ Мой маршрут →</a>
+          <button onclick="spgInit()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:11px 22px;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
+        </div>
         <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px">+25 XP заработано!</div>
         <button onclick="spgInit()" style="background:linear-gradient(135deg,#0d9488,#14b8a6);color:#fff;font-weight:800;font-size:.9rem;padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:inherit">🔄 Ещё раз</button>
       </div>
@@ -365,12 +370,12 @@
         {e:'🔵',name:'Уран',hint:'Ледяной гигант, вращается на боку'},
         {e:'🌀',name:'Нептун',hint:'Самая далёкая от Солнца планета'}
       ];
-      var q=0, score=0, answered=false;
+      var q=0, score=0, answered=false, awarded=false;
       var questions=[];
       function shuffle(a){return a.slice().sort(function(){return Math.random()-.5;});}
-      function awardXP(){try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
+      function awardXP(){if(awarded)return;awarded=true;try{var p=JSON.parse(localStorage.getItem('kl_progress')||'{}');p.points=(p.points||0)+25;p.simDone=(p.simDone||0)+1;localStorage.setItem('kl_progress',JSON.stringify(p));}catch(e){}}
       window.spgInit=function(){
-        q=0;score=0;answered=false;
+        q=0;score=0;answered=false;awarded=false;
         questions=shuffle(PLANETS).slice(0,5);
         document.getElementById('spg-result').style.display='none';
         document.getElementById('spg-box').style.display='block';
@@ -424,10 +429,11 @@
     </script>
 
     <div class="career-next-step">
-      <h3>🎯 Что делать дальше?</h3>
-      <p>Звёзды ждут тебя! Пройди тест и узнай, подходит ли тебе профессия исследователя космоса!</p>
-      <a href="quiz.html" class="btn-next-step primary">🧠 Пройти тест на профессию</a>
-      <a href="explorer.html" class="btn-next-step">🔍 Все профессии</a>
+      <h3>🎯 Что дальше?</h3>
+      <p>Ты прошёл симуляцию! Получи свой личный 7-дневный план космонавта.</p>
+      <a href="roadmap.html" class="btn-next-step primary">🗓️ Получить мой 7-дневный план</a>
+      <a href="my-path.html" class="btn-next-step">🌟 Узнать свой профиль</a>
+      <a href="index.html" class="btn-next-step">🏠 На главную</a>
       <a href="play.html" class="btn-next-step">🎮 Попробовать симуляцию</a>
     </div>
 

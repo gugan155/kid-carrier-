@@ -5,7 +5,10 @@
       "Bash(grep -oP \".{0,300}play-sim-card.{0,50}|play-sim-\\(icon|info|title|desc|action|btn|lock|progress\\)\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/style.css\")",
       "Bash(grep -oP \".{0,800}career-paths-grid.{0,800}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/script.js\")",
       "Bash(grep -oP \".{0,200}career-path-card.{0,500}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/script.js\")",
-      "Bash(grep -oP \".{0,50}drone-game.{0,300}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/style.css\")"
+      "Bash(grep -oP \".{0,50}drone-game.{0,300}\" \"c:/carrer_lab_fixed/kid-carrier-/carrer_lab_fixed/style.css\")",
+      "WebFetch(domain:carrierkidlab.netlify.app)",
+      "Bash(powershell -command \"[System.IO.File]::WriteAllText\\('script.js', [System.IO.File]::ReadAllText\\('script.js', [System.Text.Encoding]::UTF8\\).Replace\\('\\\\\"career-quiz.html\\\\\",\\\\\"teacher-dashboard.html\\\\\"', '\\\\\"career-quiz.html\\\\\",\\\\\"my-path.html\\\\\",\\\\\"teacher-dashboard.html\\\\\"'\\), [System.Text.Encoding]::UTF8\\)\")",
+      "Bash(git push *)"
     ]
   }
 }
